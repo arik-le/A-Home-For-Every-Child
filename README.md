@@ -4,7 +4,7 @@ A template repository with wiki for a team project at JCE's software engineering
 
 (See also:rRecommended [checklist](https://github.com/ddbeck/readme-checklist/blob/master/checklist.md) for a README) 
 
-![project logo (this one for is taken from basecamp - a project management service)](https://www.klipfolio.com/sites/default/files/integrations/basecamp.png)
+![project logo (this one for is taken from basecamp - a project management service)](https://www.google.co.il/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwib0cPzx9bSAhUG8RQKHRjIBzcQjRwIBw&url=http%3A%2F%2Fwww.israeltoremet.org%2Famuta%2F580070704&psig=AFQjCNGTS9kG7KBgRC0EEwX41RzEn6Y52A&ust=1489600357645252)
 
 ## Tools & Practices
 We're trying to use the best tools and practices in order to produce a quality enginneered product.
