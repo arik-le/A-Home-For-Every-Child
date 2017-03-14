@@ -1,6 +1,6 @@
 # A-Home-For-Every-Child Project
 
-A template repository with wiki for a team project at JCE's software engineering course (replace with the mission of your project).
+
 
 (See also:rRecommended [checklist](https://github.com/ddbeck/readme-checklist/blob/master/checklist.md) for a README) 
 
