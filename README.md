@@ -1,6 +1,6 @@
 # A-Home-For-Every-Child Project
 
-
+Every Child in need deserve a better care, and we are to provide it.
 
 (See also:rRecommended [checklist](https://github.com/ddbeck/readme-checklist/blob/master/checklist.md) for a README) 
 
