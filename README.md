@@ -2,7 +2,7 @@
 
 Every Child in need deserve a better care, and we are here to provide it.
 
-(See also:rRecommended [checklist](https://github.com/ddbeck/readme-checklist/blob/master/checklist.md) for a README) 
+
 
 ![project logo (this one for is taken from basecamp - a project management service)](http://www.israeltoremet.org/Pictures/AmutaPictures/46394_Large_logo.jpg)
 
@@ -31,7 +31,7 @@ We're trying to use the best tools and practices in order to produce a quality e
 | Project Course Status | ... |
 
 ## Please visit our [live application](https://demo.reactstarterkit.com/)
-- Alright, currently only a landing page...
+Currently, The page is not available..
 
 
 ## Disclaimer
