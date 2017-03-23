@@ -6,6 +6,14 @@ Every Child in need deserve a better care, and we are here to provide it.
 
 ![project logo (this one for is taken from basecamp - a project management service)](http://www.israeltoremet.org/Pictures/AmutaPictures/46394_Large_logo.jpg)
 
+
+##Description
+
+Bayit L'Kol Yeled B'Yisrael (A Home For Every Child in Israel) promotes the wellbeing of children and families in extremely high risk populations.
+The Organization was established in 1975 as a joint venture of Israel's Welfare and Labor Department, JDC and the Hebrew University in Jerusalem. The establishing Directors included representatives of all three organizations. 
+Our mission is to protect, heal and positively advance abused and neglected children & youth through implementation of therapeutic and educational, residential and community based programs. 
+The underlying principle of our actions is that to ensure protection and promotion of our children, we must affect all those who influence their lives.  To this end, expert Bayit L'Kol Yeled B'Yisrael (BILY) personnel and volunteers treat educate and train abused and violated children, parents and educators. BILY professionals also train local care-givers and serve as consultant to partner organizations, in our area of expertise.
+
 ## Tools & Practices
 We're trying to use the best tools and practices in order to produce a quality enginneered product.
 (replace 'jce-il/project-template' with your 'username/repo' and register to the relevant services)
