@@ -7,7 +7,7 @@ Every Child in need deserve a better care, and we are here to provide it.
 ![project logo (this one for is taken from basecamp - a project management service)](http://www.israeltoremet.org/Pictures/AmutaPictures/46394_Large_logo.jpg)
 
 
-##Description
+## Description
 
 Bayit L'Kol Yeled B'Yisrael (A Home For Every Child in Israel) promotes the wellbeing of children and families in extremely high risk populations.
 The Organization was established in 1975 as a joint venture of Israel's Welfare and Labor Department, JDC and the Hebrew University in Jerusalem. The establishing Directors included representatives of all three organizations. 
