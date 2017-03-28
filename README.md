@@ -54,7 +54,7 @@ Please visit our wiki for furthur project info:
 ### Project Documents
 - [Project Idea](docs/idea.pdf) ([Presentation](docs/idea-slides.pdf))
 - [Project Inception](../../wiki/inception)
-- [Software Requirements Specification](https://github.com/arik-le/A-Home-For-Every-Child/wiki/Software-Requirements-Specification)
+- [Software Requirements Specification](https://github.com/arik-le/A-Home-For-Every-Child/blob/master/SRS%20-%20Home%20for%20every%20Child.docx)
 - [Software Design Specification](../../wiki/sds)
 
 ### Iteration Pages
