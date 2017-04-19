@@ -58,7 +58,7 @@ Please visit our wiki for furthur project info:
 - [Software Requirements Specification](https://github.com/arik-le/A-Home-For-Every-Child/blob/master/SRS%20-%20Home%20for%20every%20Child.docx)
 - [Software Design Specification](../../wiki/sds)
 - [organization website](http://www.bily.org.il)
-- [organization facebook])https://www.facebook.com/BilyIsrael)
+- [organization facebook](https://www.facebook.com/BilyIsrael)
 
 ### Iteration Pages
 - [Iteration 0 - ZFR](../../wiki/iter0-zfr)
