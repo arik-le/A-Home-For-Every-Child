@@ -47,8 +47,8 @@ This project is developed as part of the requirements for a [software engineerin
 
 Please visit our wiki for furthur project info: 
 
-### [User Manual](../../wiki/user-manual) 
-(empty for now)
+### [User Manual](https://github.com/arik-le/A-Home-For-Every-Child/wiki/User-Manual) 
+
 
 ### [Team Page](../../wiki/team)
 
