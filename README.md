@@ -50,7 +50,7 @@ Please visit our wiki for furthur project info:
 ### [User Manual](https://github.com/arik-le/A-Home-For-Every-Child/wiki/User-Manual) 
 
 
-### [Team Page](../../wiki/team)
+### [Team Page](https://github.com/arik-le/A-Home-For-Every-Child/wiki/Team-Page)
 
 ### Project Documents
 - [Project Idea](docs/idea.pdf) ([Presentation](docs/idea-slides.pdf))
