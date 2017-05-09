@@ -1,13 +1,16 @@
 var mainPage=function()
 {
     var topHeader={
-        inputSection:
-            '<div class=topHeader>'+
-                '<button type="button" class="btn btn-default btn-sm">'+
+          inputSection:
+            '<div class="topHeader row">'+
+                '<button type="button" class="btn btn-default btn-sm col-xs-4">'+
                 '<span class="glyphicon glyphicon-log-out"></span> התנתק/י'+
                 '</button>'+
-                '<label id="userName_lbl"></label>'+
-                '<span class="glyphicon glyphicon-user"></span>'+   
+                '<div class=" col-xs-6"></div>'+
+                '<div class="hi" col-xs-2>'+
+                    '<label id="userName_lbl"></label>'+
+                    '<span class="glyphicon glyphicon-user"></span>'+ 
+                '</div>'+  
             '</div>'
     }
     var nav={
