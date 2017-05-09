@@ -1,0 +1,23 @@
+.navbar
+{
+    background-color: white;
+}
+body
+{
+      background-color: #76b852;
+}
+.nav-img
+{
+    width:20%;
+    height: 20%;
+    margin-top: 2%;
+    margin-left: 1%;
+}
+#btn-menu
+{
+    background-color: #76b852;
+}
+.topHeader
+{
+    margin: 2%;
+}
