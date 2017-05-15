@@ -1,17 +1,17 @@
 var inMassagePage=function()
 {
-
-     var headLine={
-          inputSection:
-               '<div class="container">'+
-                  '<ul class="nav nav-tabs  col-xs-12">'+
-                        '<li class="active col-xs-4 inbox"><a data-toggle="tab" href="#home">נכנסות</a></li>'+
-                        '<li class="col-xs-4 outbox" ><a data-toggle="tab" href="#menu1">יוצאות</a></li>'+
-                        '<li class="col-xs-4 sendMsg" ><a data-toggle="tab" href="#menu1">שליחה</a></li>'+
-                  '</ul>'+
-               '</div>'+
-               '<div id="MassageList" class="container"></div>'
-     }
+    var flags={sendMassageIsOn:false};
+    var headLine={
+        inputSection:
+            '<div class="container">'+
+                '<ul class="nav nav-tabs  col-xs-12">'+
+                    '<li class="active col-xs-4 inbox"><a data-toggle="tab" href="#home">נכנסות</a></li>'+
+                    '<li class="col-xs-4 outbox" ><a data-toggle="tab" href="#menu1">יוצאות</a></li>'+
+                    '<li class="col-xs-4 sendMsg" ><a data-toggle="tab" href="#menu1" id="sendMsg">שליחה</a></li>'+
+                '</ul>'+
+            '</div>'+
+            '<div id="MassageList" class="container"></div>'
+    }
     var TypeMassage={
           inputSection:
                '<div class="container">'+
@@ -193,19 +193,30 @@ var inMassagePage=function()
        $("#"+id).remove();
 
      }
-
-     var sendMasgFunc = function()
+     var openSendMassage=function()
      {
-         $("#body").append(TypeMassage.inputSection);
-       
-          $("#btnGenMas").click (function()
+         if(flags.sendMassageIsOn==false)
+         {
+             console.log("fdsfas");
+            flags.sendMassageIsOn=true;
+            $("#body").append(TypeMassage.inputSection);
+            $("#btnGenMas").click (function()
             { 
                 $("#body").html(GenMsgPage.inputSection);
             });
-          $("#btnPrivMas").click (function()
+            $("#btnPrivMas").click (function()
             { 
                 $("#body").html(PriMsgPage.inputSection);
             });
+         }
+     }
+     var sendMasgFunc = function()
+     {
+        
+         $("#sendMsg").click(openSendMassage);
+         flags.sendMassageIsOn=false;
+       
+          
 
 
      }
