@@ -1,5 +1,3 @@
-
-
 var User = function(username,password)
 {
 		var offline = 0;

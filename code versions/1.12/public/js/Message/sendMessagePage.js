@@ -1,4 +1,6 @@
-var GenMsgPage={
+var sendMessagePage = function()
+{
+var genMsgPage={
           inputSection:
                '<div class="container">'+
                   
@@ -66,14 +68,14 @@ var GenMsgPage={
                   
                '</div>'
      }
-     var PriMsgPage={
+     var priMsgPage={
           inputSection:
                '<div class="container">'+
                   
                 '<div class="GenMsgText row">הודעה פרטית </div>'+
                 '<div class="row">'+
                     '<div class="col-xs-offset-3 col-xs-6">'+
-                        '<select class="form-control">'+
+                        '<select class="form-control clubHouseList">'+
                             '<option value="club1">מועדונית1</option>'+
                             '<option value="club2">מועדונית2</option>'+
                             '<option value="club3">מועדונית3</option>'+
@@ -88,19 +90,17 @@ var GenMsgPage={
              
                 '<div class="row">'+
                     '<div class="col-xs-offset-1 col-xs-5">'+
-                        '<select class="form-control">'+
-                            '<option value="user1">1</option>'+
-                            '<option value="user1">2</option>'+
-                            '<option value="user1">3</option>'+
-                            '<option value="user1">4</option>'+
+                        '<select class="form-control userList">'+
                         '</select>'+
                     '</div>'+
                     '<div class="col-xs-5">'+  
-                        '<select  class="form-control">'+
+                        '<select  class="form-control typeList">'+
                                 '<option value="type">הורה</option>'+
                                 '<option value="type">מורה</option>'+
                                 '<option value="type">מדריך</option>'+
                                 '<option value="type">עו"ס</option>'+
+                                '<option value="type">מנהל</option>'+
+
                         '</select>'+
                     '</div>'+
                 '</div>'+
@@ -126,4 +126,16 @@ var GenMsgPage={
                 '</div>'+
                       
                '</div>'
-     }
+    }
+
+    var updateUserList = function(list)
+    {
+
+        for(var i = 0;i<list.length;i++)
+            $(".userList").append('<option value="'+list[i]+'">'+list[i]+'</option>');
+        
+        
+    }
+
+    return{genMsgPage:genMsgPage,priMsgPage:priMsgPage, updateUserList:updateUserList}
+}();

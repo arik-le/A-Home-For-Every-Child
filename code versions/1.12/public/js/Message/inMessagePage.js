@@ -76,11 +76,11 @@ var inMassagePage=function()
             $("#body").append(TypeMassage.inputSection);
             $("#btnGenMas").click (function()
             { 
-                $("#body").html(GenMsgPage.inputSection);
+                $("#body").html(sendMessagePage.genMsgPage.inputSection);
             });
             $("#btnPrivMas").click (function()
             { 
-                $("#body").html(PriMsgPage.inputSection);
+                $("#body").html(sendMessagePage.priMsgPage.inputSection);
             });
          }
      }
