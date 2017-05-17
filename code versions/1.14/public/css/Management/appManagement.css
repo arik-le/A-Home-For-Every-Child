@@ -1,0 +1,28 @@
+
+
+
+/*================USER MANAGEMENT PAGE ============     */
+
+/*TITLE FOR Add User Page*/
+.addUserTitle{
+    text-align:center;
+    margin-top:2%;
+    font-size:25px;
+    font-weight: bold;
+    color:black;
+}
+
+/*ALL Texts in Add User Pag*/
+#formTxts
+{
+    text-align: right;
+}
+.form-control
+{
+    text-align: right;
+}
+.controlLabel
+{
+    text-align: right;
+}
+
