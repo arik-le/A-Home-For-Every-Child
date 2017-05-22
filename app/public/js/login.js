@@ -12,7 +12,8 @@ var login=function()
 		var correntUser=[2];
 		var userExist = false;
 		var stopEvent = true;
-
+		
+		//michael habetza
 		var connectionPage = {
 			inputSection:
 			 "<div class = '+deviceType+'>"+
