@@ -287,6 +287,30 @@ var usersManagement = function()
 
     }
 
+    var loadUsersData = function()
+	{
+		var ref = firebase.database().ref("users");
+		ref.once("value")
+		.then(function(data)		// 		when value recieved
+		{
+			if (data.val() == null)
+			{
+				alert(" לא נמצאו משתמשים להציג ");
+				return;
+			}
+			var allUsers = data.val();   // get the whole tree of clubhouses
+			var keys = Object.keys(allUsers);	// get all keys
+				
+			for(var i =0; i<keys.length;i++)
+			{
+				var k = keys[i];
+				var name = allUsers[k].username;
+				$('#Users_select').append('<option value="'+i+'">'+name+'</option>');
+			}
+		});
 
-     return{initPage:initPage,addUser:addUser};
+	}
+
+
+     return{initPage:initPage,addUser:addUser,loadUsersData:loadUsersData};
 }();
