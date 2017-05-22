@@ -329,9 +329,7 @@ var login=function()
     return { initModule : initModule, usersAndKeys:usersAndKeys,correntUser:correntUser};
 }();
 
-<<<<<<< HEAD
+
 $(document).ready(function() {login.initModule($("#login")) ; });
 
-=======
-$(document).ready(function() {login.initModule($("#login")) ; });
->>>>>>> 37dc889a037ba3514e0ccd6a3ad0c1cc076d8f30
+
