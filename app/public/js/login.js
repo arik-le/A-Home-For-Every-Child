@@ -12,7 +12,7 @@ var login=function()
 		var correntUser=[2];
 		var userExist = false;
 		var stopEvent = true;
-
+// change
 		var connectionPage = {
 			inputSection:
 			 "<div class = '+deviceType+'>"+
