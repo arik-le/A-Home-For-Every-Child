@@ -26,6 +26,7 @@ var User = function(username,password)
 				generalMessages:[]
 			}
 		}
+		
 		return {create:create}
 		
 }();
