@@ -13,7 +13,7 @@ var login=function()
 		var userExist = false;
 		var stopEvent = true;
 
-		//roty oknin habetza
+		//ko koko koko koko koko koko
 
 		var connectionPage = {
 			inputSection:
