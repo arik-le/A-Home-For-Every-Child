@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var login=function()
 {
 		var ADMIIN = 1;
@@ -163,7 +162,7 @@ var login=function()
 }();
 
 $(document).ready(function() {login.initModule($("#login")) ; });
-=======
+
 var login=function()
 {
 		var ADMIIN = 1;
@@ -328,4 +327,3 @@ var login=function()
 }();
 
 $(document).ready(function() {login.initModule($("#login")) ; });
->>>>>>> 795315f9e572f4c040be05e66b0da19f0319f88b
