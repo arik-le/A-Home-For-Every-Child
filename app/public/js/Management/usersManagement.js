@@ -113,7 +113,7 @@ var usersManagement = function()
                     '<label for="clubHouseUsers" class="cols-sm-2 controlLabel">:בחר משתמש</label>'+
                     '<div class="input-group">'+
 						    '<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>'+
-						    '<select type="text" id="Users_select" class="form-control">'+
+						    '<select type="text" id="usersInCH" class="form-control">'+
                             '</select>'+
 				    '</div>'+
                      '<button type="button" id="openUserEditBtn" class=" col-xs-offset-4 btn btn-default" >לחץ כאן לערוך</button>'+
@@ -214,8 +214,8 @@ var usersManagement = function()
 						'</div>'+
 
 						'<div class="form-group ">'+
-							'<button type="button" class="btn btn-primary btn-lg edit-button"  >סיום עריכה</button>'+
-                            '<button type="button" class="btn-danger btn-danger btn-lg  delete-button"  >מחיקת משתמש</button>'+
+							'<button type="button" class="btn btn-primary btn-block btn-lg edit-button"  >עריכה</button>'+
+                            '<button type="button" class="btn-danger btn-danger btn-block btn-lg  delete-button"  >מחיקת משתמש</button>'+
 						'</div>'+
 					'</form>'+
 				'</div>'+
@@ -240,9 +240,15 @@ var usersManagement = function()
         $('.Nav').collapse('hide');
         $("#body").html(EditUserOp.inputSection);
         clubhouseManagement.preLoadData();
+        var e = document.getElementById("clubhouse_select");
+        var clubhouseSelected= e.options[e.selectedIndex].text;
+        showUsersPerCH(clubhouseSelected);
         $("#openUserEditBtn").click(function(){
         
+            var e = document.getElementById("usersInCH");
+            var userName= e.options[e.selectedIndex].text;
             $("#body").html(EditUserPage.inputSection);
+            loadUserDetails();
             clubhouseManagement.preLoadData();
             $(".delete-button").click(removeUser);
             $(".edit-button").click(changeUser);
@@ -311,6 +317,36 @@ var usersManagement = function()
 
 	}
 
+    var loadUserDetails = function()
+    {
+      
+
+    }
+
+    var  showUsersPerCH= function(clubhouseSelected)
+    {
+       
+        var ref = firebase.database().ref("clubhouse");
+		ref.once("value")
+		.then(function(data)		// 		when value recieved
+		{
+			if (data.val() == null)
+			{
+				alert("לא נמצאו משתמשים להציג ");
+				return;
+			}
+			var allClubs = data.val();   // get the whole tree of clubhouses
+			var keys = Object.keys(allClubs);	// get all keys
+				
+			for(var i =0; i<keys.length;i++)
+			{
+				var k = keys[i];
+				var name = allUsers[k].username;
+				$('#Users_select').append('<option value="'+i+'">'+name+'</option>');
+			}
+		});
+
+    }
 
      return{addUser:addUser,loadUsersData:loadUsersData,editUser:editUser};
 }();
