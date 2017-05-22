@@ -126,7 +126,11 @@ var login=function()
 		document.getElementById("username").value = "";
 		document.getElementById("password").value = "";
 	};
-
+//---------------------------------------------------------------------------------------------------
+	var getObj=function(key)
+	{
+		return usersAndKeys[0][key];
+	}
 //---------------------------------------------------------------------------------------------------//	
 // set user status to offline
 	window.onbeforeunload = function () {
@@ -137,7 +141,7 @@ var login=function()
 
 
 	
-return { initModule : initModule, usersAndKeys:usersAndKeys,correntUser:correntUser};
+return { initModule : initModule, usersAndKeys:usersAndKeys,correntUser:correntUser,getObj:getObj};
 }();
 
 $(document).ready(function() {login.initModule($("#login")) ; });
