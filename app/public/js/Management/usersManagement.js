@@ -1,6 +1,9 @@
 var usersManagement = function()
 {
-
+	const ADMIN = 1;
+	const GSUSER = 2;
+	const PTUSER = 3;
+	const FAIL = -1;
      //-------------------------------------------------------------------------------------------------
      var addUserPage={
         inputSection:
@@ -228,21 +231,23 @@ var usersManagement = function()
     // add user function
     var addUser=function()
     {
+		clubhouseManagement.preLoadData();
         $('.Nav').collapse('hide');
         $("#body").html(addUserPage.inputSection);
-        clubhouseManagement.preLoadData();
         $("#addUser").click(createUser);
     }
      //-------------------------------------------------------------------------------------------------
     // Edit user function 
      var editUser=function()
     {
+		clubhouseManagement.preLoadData();
         $('.Nav').collapse('hide');
         $("#body").html(EditUserOp.inputSection);
-        clubhouseManagement.preLoadData();
         var e = document.getElementById("clubhouse_select");
         var clubhouseSelected= e.options[e.selectedIndex].text;
         showUsersPerCH(clubhouseSelected);
+
+    
         $("#openUserEditBtn").click(function(){
         
             var e = document.getElementById("usersInCH");
@@ -263,13 +268,24 @@ var usersManagement = function()
         var firstName=document.getElementById("UserPName").value;
         var lastName=document.getElementById("UserLName").value;
         var username=document.getElementById("username").value;
+		if (firstName == "" || lastName == "" || username == "")
+		{
+			alert("אנא מלא את כל השדות הנדרשים");
+			return;
+		}
         // selecting the clubhouse
         var e = document.getElementById("clubhouse_select");
-        var Uclubhouse= e.options[e.selectedIndex].text;
 
+		if(e.selectedIndex == -1)// when there are no clubhouses at DB
+		{
+			alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
+			return;
+		}
+        var Uclubhouse= e.options[e.selectedIndex].text;
+		
         for(var i=0;i<login.usersAndKeys[0].length;i++)
         {
-            if(login.usersAndKeys[0][i].username==username)
+            if(login.usersAndKeys[0][i].username==username )
             {
                 alert("שם משתמש כבר קיים");
                 return;
@@ -277,21 +293,57 @@ var usersManagement = function()
         }
         var fPassword=document.getElementById("password").value;
         var sPassword=document.getElementById("confirm").value;
-        if(sPassword!=fPassword)
+        if( sPassword!=fPassword && fPassword != "" )//&& fPassword < 4)
         {
-            alert("שני הסיסמאות לא תואמות");
+            alert(" הסיסמאות שהוזנו אינן תואמות");
             return;
         }
         var type=document.getElementById("userType").value;
+		if(type == "" )
+		{
+			alert("אנא מלא את כל השדות הנדרשים");
+			return;
+		}
         var database = firebase.database();	
         var usersRef = database.ref('users');
         var newUser = User.create(username,fPassword,firstName,lastName,Uclubhouse,type);
         var key = usersRef.push(newUser);
         firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
-       
+		updateClubhouse(Uclubhouse,type,key.key);
         alert("הוזן בהצלחה");
 
     }
+
+	var updateClubhouse = function(clubName,type,keyArg)
+	{
+		var arrays = clubhouseManagement.getClubhouseArrays();
+		var index = getClubKeyIndex(arrays,clubName);
+		if(index == FAIL)
+		{
+			alert("לא נמצאה מועדונית תואמת");
+			return;
+		}
+		var key = arrays.clubhousesKeysArr[index];
+		if(type == "הורה")
+		{
+			firebase.database().ref('clubhouse/'+key+'/PTusers').push(keyArg);
+		}
+		if(type == GSUSER)
+			firebase.database().ref('clubhouse/'+key+'/GSusers').push(keyArg);
+		/*if(type == ADMIN)
+			firebase.ref('clubhouse/'+key+'ADusers').push()*/
+	};
+
+	var getClubKeyIndex = function (arrays,clubName)
+	{
+		for (var i = 0; i < arrays.clubhousesNamesArr.length; i++) 
+		{
+			if(clubName == arrays.clubhousesNamesArr[i])
+				return i;
+		}
+		return FAIL;
+	}
+	
 
     var loadUsersData = function()
 	{
