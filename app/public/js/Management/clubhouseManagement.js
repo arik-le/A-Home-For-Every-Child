@@ -35,7 +35,7 @@ var clubhouseManagement = function()
 							'<label for="clubhouseName" class="cols-sm-2 controlLabel" >:שם מועדונית</label>'+
 							'<div class="cols-sm-10">'+
 								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>'+
+									'<span class="input-group-addon"><i class="fa fa-home fa" aria-hidden="true"></i></span>'+
 									'<input type="text" class="form-control" name="clubhouseName" id="clubhouseNameID"  placeholder="הכנס שם מועדונית"/>'+
 								'</div>'+
 							'</div>'+
@@ -45,7 +45,7 @@ var clubhouseManagement = function()
 							'<label for="clubhouseAddress" class="cols-sm-2 controlLabel" id="formTxts">:כתובת המועדונית</label>'+
 							'<div class="cols-sm-10">'+
 								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>'+
+									'<span class="input-group-addon"><i class="fa fa-map-marker fa" aria-hidden="true"></i></span>'+
 									'<input type="text" class="form-control" name="clubhouseAddress" id="clubhouseAddrID"  placeholder="הכנס כתובת מועדונית"/>'+
 								'</div>'+
 							'</div>'+
@@ -61,7 +61,7 @@ var clubhouseManagement = function()
      }
        //-------------------------------------------------------------------------------------------------
        //       INJECTION FOR EDIT OPTION - clubhouse and user choosing
-        var EditCluhouse={
+        var EditClubhousePage={
         inputSection:
                 '<div class="container">'+
                     '<label for="clubHouseSelect" class="cols-sm-2 controlLabel">:בחר מועדונית</label>'+
@@ -71,133 +71,30 @@ var clubhouseManagement = function()
                             '</select>'+
 				    '</div>'+
 
-                    '<label for="clubHouseUsers" class="cols-sm-2 controlLabel">:בחר משתמש</label>'+
-                    '<div class="input-group">'+
-						    '<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>'+
-						    '<select id="Users_select" type="text" class="form-control">'+
-                            '</select>'+
-				    '</div>'+
                     '<button type="button" id="editClubhouseBtn" class="tempEditPage btn btn-default" >לחץ כאן לערוך</button>'+
                     '</div>'
 
 				
         }
+    
+   
     //-------------------------------------------------------------------------------------------------
-    //          TEMP -FOR DINAMIC EDITING  USER
-	/*
-       var EditUserPage={
-        inputSection:
-        '<div class="container">'+
-            	'<div class="row main">'+
-				'<div class="panel-heading">'+
-	               '<div class="panel-title text-center">'+
-	               		'<h1 class="title">עריכת/מחיקת משתמש</h1>'+
-	               		'<hr />'+
-	                '</div>'+
-	            '</div> '+
-
-            	'<div class="main-login main-center">'+
-					'<form class="form-horizontal" method="post" action="#">'+
-						
-						'<div class="form-group">'+
-							'<label for="name" class="cols-sm-2 controlLabel" >:שם פרטי</label>'+
-							'<div class="cols-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>'+
-									'<input type="text" class="form-control" name="name" id="UserPName"  placeholder="פלוני"/>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-						'<div class="form-group">'+
-							'<label for="UserLastName" class="cols-sm-2 controlLabel" id="formTxts">:שם משפחה</label>'+
-							'<div class="cols-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>'+
-									'<input type="text" class="form-control" name="UserLastName" id="UserLName"  placeholder="אלמוני"/>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-						'<div class="form-group">'+
-							'<label for="username" class="cols-sm-2 controlLabel">:שם משתמש</label>'+
-							'<div class="cols-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>'+
-									'<input type="text" class="form-control" name="username" id="username"  placeholder="שם משתמש כלשהו"/>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-                        '<div class="form-group">'+
-							'<label for="username" class="cols-sm-2 controlLabel">:סוג משתמש</label>'+
-							'<div class="cols-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-slideshare" aria-hidden="true"></i></span>'+
-									'<select type="text" class="form-control">'+
-                                    '<option class="ptUser">הורה</option>'+
-                                    '<option class="GuUser">מדריך</option>'+
-                                    '<option class="SWUser">עו"ס</option>'+
-                                    '<option class="AdmUser">מנהל</option>'+
-                                    '</select>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-						'<div class="form-group">'+
-							'<label for="password" class="cols-sm-2 controlLabel">:סיסמא</label>'+
-							'<div class="cols-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>'+
-									'<input type="password" class="form-control" name="password" id="password"  placeholder="****"/>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-						'<div class="form-group">'+
-							'<label for="confirm" class="cols-sm-2 controlLabel">:אימות סיסמא</label>'+
-							'<div class="cols-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>'+
-									'<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="****"/>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-						'<div class="form-group ">'+
-							'<button type="button" class="btn btn-primary btn-lg edit-button"  >סיום עריכה</button>'+
-                            '<button type="button" class="btn-danger btn-danger btn-lg  delete-button"  >מחיקת משתמש</button>'+
-						'</div>'+
-					'</form>'+
-				'</div>'+
-        '</div>'
-     }
-	*/
-
-
-    //-------------------------------------------------------------------------------------------------
-    // Initial page for injecting the html components
-
-     var initPage=function()
-     {
-            $("#body").html(clubhouseOptions.inputSection);
-
-			// button on first window after click add clubhouse
-            $("#btnNewClubhouse").click ( function()
-            {
-                $("#body").html(addClubhousePage.inputSection); // opens page 
-				$("#addClubhouseBtn").click(addClubhouseListener);
-            });
-
-			// button on first window after click edit clubhouse
-            $("#btnEditClubhouse").click ( function()
-            {
-                  $("#body").html(EditCluhouse.inputSection);
-				  preLoadData();
-                  $("#editClubhouseBtn").click(EditCluhouseListener);
-            });
-
-     }
+    // Initial page for add clubHouse
+	 var addClubhouse = function ()
+	 {
+		$('.Nav').collapse('hide');
+		$("#body").html(addClubhousePage.inputSection); // opens page 
+		$("#addClubhouseBtn").click(addClubhouseListener);
+	 }
+	 //-------------------------------------------------------------------------------------------------
+    // Initial page for edit clubHouse
+	 var editClubhouse = function()
+	 {
+		$('.Nav').collapse('hide');
+		$("#body").html(EditClubhousePage.inputSection);
+		preLoadData();
+        $("#editClubhouseBtn").click(EditCluhouseListener);
+	 }
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -314,5 +211,5 @@ var clubhouseManagement = function()
 
 	
 
-    return{initPage:initPage , preLoadData:preLoadData};
+    return{preLoadData:preLoadData , addClubhouse:addClubhouse , editClubhouse:editClubhouse};
 }();

@@ -49,8 +49,8 @@ var mainPage=function()
 							'<ul class="dropdown-menu">'+
 								'<li><a id="addUser_btn">הוספת משתמשים</a></li>'+
 								'<li><a id="btnEditUser">עריכת משתמשים</a></li>'+
-								'<li><a href="#">הוספת מועדונית</a></li>'+
-								'<li><a href="#">עריכת מועדונית</a></li>'+
+								'<li><a id="addClubhouse_btn">הוספת מועדונית</a></li>'+
+								'<li><a id="editClubhouse_btn">עריכת מועדונית</a></li>'+
 								'<li role="separator" class="divider"></li>'+
 							'</ul>'+
 						'</li>'+
@@ -71,8 +71,13 @@ var mainPage=function()
         var context = topHeader.inputSection+nav.inputSection;
         $("body").html(context);
         $("#userName_lbl").html(correntUser[0].firstName);
+
 		$("#addUser_btn").click(usersManagement.addUser);
         $("#btnEditUser").click(usersManagement.editUser);
+
+        $("#addClubhouse_btn").click(clubhouseManagement.addClubhouse);
+        $("#editClubhouse_btn").click(clubhouseManagement.editClubhouse);
+
         $("#writeMessage_btn").click(inMassagePage.openSendMassage);
         $("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
         $("#logout").click(logout);

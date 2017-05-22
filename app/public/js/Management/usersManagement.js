@@ -85,7 +85,7 @@ var usersManagement = function()
 							'<label for="clubHouseName" class="cols-sm-2 controlLabel">:בחר מועדונית</label>'+
 							'<div class="cols-sm-10">'+
 								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-slideshare" aria-hidden="true"></i></span>'+
+									'<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
 									'<select type="text" class="form-control clubHouseName" id="clubhouse_select" placeholder="בחר מועדונית מתוך הרשימה">'+
                                     '</select>'+
 								'</div>'+
@@ -206,7 +206,7 @@ var usersManagement = function()
 							'<label for="clubHouseName" class="cols-sm-2 controlLabel">:בחר מועדונית</label>'+
 							'<div class="cols-sm-10">'+
 								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-slideshare" aria-hidden="true"></i></span>'+
+									'<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
 									'<select type="text" class="form-control clubHouseName" id="clubhouse_select">'+
                                     '</select>'+
 								'</div>'+
@@ -239,6 +239,7 @@ var usersManagement = function()
     {
         $('.Nav').collapse('hide');
         $("#body").html(EditUserOp.inputSection);
+        clubhouseManagement.preLoadData();
         $("#openUserEditBtn").click(function(){
         
             $("#body").html(EditUserPage.inputSection);
@@ -256,7 +257,10 @@ var usersManagement = function()
         var firstName=document.getElementById("UserPName").value;
         var lastName=document.getElementById("UserLName").value;
         var username=document.getElementById("username").value;
-        var Uclubhouse=document.getElementById("clubhouse_select").value;
+        // selecting the clubhouse
+        var e = document.getElementById("clubhouse_select");
+        var Uclubhouse= e.options[e.selectedIndex].text;
+
         for(var i=0;i<login.usersAndKeys[0].length;i++)
         {
             if(login.usersAndKeys[0][i].username==username)
@@ -291,7 +295,7 @@ var usersManagement = function()
 		{
 			if (data.val() == null)
 			{
-				alert(" לא נמצאו משתמשים להציג ");
+				alert("לא נמצאו משתמשים להציג ");
 				return;
 			}
 			var allUsers = data.val();   // get the whole tree of clubhouses
@@ -308,5 +312,5 @@ var usersManagement = function()
 	}
 
 
-     return{addUser:addUser,loadUsersData:loadUsersData};
+     return{addUser:addUser,loadUsersData:loadUsersData,editUser:editUser};
 }();
