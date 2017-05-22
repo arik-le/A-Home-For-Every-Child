@@ -208,8 +208,11 @@ var clubhouseManagement = function()
 			}
 		});
 	}
-
+	var getClubhouseArrays = function()
+	{
+		return{ clubhousesKeysArr:clubhousesKeysArr , clubhousesNamesArr:clubhousesNamesArr} ;  
+	}
 	
 
-    return{preLoadData:preLoadData , addClubhouse:addClubhouse , editClubhouse:editClubhouse};
+    return{getClubhouseArrays:getClubhouseArrays , preLoadData:preLoadData , addClubhouse:addClubhouse , editClubhouse:editClubhouse};
 }();
