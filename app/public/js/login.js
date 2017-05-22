@@ -12,8 +12,9 @@ var login=function()
 		var correntUser=[2];
 		var userExist = false;
 		var stopEvent = true;
-		
-		//michael habetza
+
+		//roty oknin habetza
+
 		var connectionPage = {
 			inputSection:
 			 "<div class = '+deviceType+'>"+
