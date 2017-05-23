@@ -1,9 +1,12 @@
 
 var login=function()
 {
-	const ADMIIN = 1;
+	const ADMIIN = 0;
+	const SWUSER = 1
 	const GSUSER = 2;
-	const PTUSER = 3;
+	const PUSER = 3;
+	const TUSER = 4;
+
 	const ONLINE = 1;   // for user status
 	const OFFLINE = 0;
 
