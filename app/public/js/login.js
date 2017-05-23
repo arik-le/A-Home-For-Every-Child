@@ -2,7 +2,7 @@
 var login=function()
 {
 	const ADMIIN = 0;
-	const SWUSER = 1
+	const SWUSER = 1;
 	const GSUSER = 2;
 	const PUSER = 3;
 	const TUSER = 4;
