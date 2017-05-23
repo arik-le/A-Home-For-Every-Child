@@ -28,10 +28,13 @@ var msgPage={
 							'<select class = "userCkecklist" id = "chooseUserSM" required >'+
 								'<option value="Larnaca" disabled selected>בחר משתמש</option>'+
 							'</select>'+
-                            '<select class = "userCkecklist"  id = "TypeUserSM" required >'+
-								'<option value="Larnaca" disabled selected>סוג משתמש</option>'+
-								'<option value="Rhodos">Rhodos</option>'+
-								'<option value="Amsterdam">Amsterdam</option>'+
+                            '<select class = "userCkecklist"  id = "TypeUserSM" required  onchange="sendMessagePage.updateUserList()">'+
+								'<option value="nan" disabled selected>סוג משתמש</option>'+
+								'<option class="ptUser">הורה</option>'+
+                                '<option class="GuUser">מדריך</option>'+
+                                '<option class="SWUser">עו"ס</option>'+
+                                '<option class="AdmUser">מנהל</option>'+
+								
 							'</select>'+
 							
 							'<label id="royLabel">:נושא</label></br>'+
@@ -88,13 +91,19 @@ var msgPage={
 		'</div>'
      }
 
-    var updateUserList = function(list)
+    var updateUserList = function()
     {
+		$("#chooseUserSM").html('<option value="nan" disabled selected>סוג משתמש</option>')
+		var list=login.usersAndKeys;
         var myIndex=login.correntUser[1];
+		var type=document.getElementById("TypeUserSM").value;
         for(var i = 0;i<list[1].length;i++)
-            if(list[1][i]!=myIndex)
+		{
+            if(list[1][i]!=myIndex	&&	list[0][list[1][i]].userType==type)
                   $("#chooseUserSM").append('<option value='+list[0][list[1][i]].userKey+'>'+list[0][list[1][i]].username+'</option>');     
-    }
+		}
+	
+  }
 
    
     var sendPriMessage=function()
