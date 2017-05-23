@@ -38,12 +38,12 @@ var inMassagePage=function()
 				'<div class="modal-dialog">'+
 					'<div class="modal-content">'+
 						'<div class="modal-header">'+
-							'<h4 class="modal-title">נושא 1</h4>'+
+							'<h4 class="modal-title">'+obj.subject+'</h4>'+
 						'</div>'+
 						'<div class="modal-body">'+
-							 '<h5 id="from'+massageID+'"> :מאת'+login.getObj(obj.source).firstName+'</h5>'+
+							 '<h5"> :מאת</h5>'+
 							'<div class = "subject">'+
-								'<textarea disabled id="sub'+massageID+'">'+obj.subject+'</textarea>'+
+								'<textarea disabled ">'+login.getObj(obj.source).firstName+'</textarea>'+
 							'</div>'+
 							'</p>'+
 							'<div class = "content">'+
