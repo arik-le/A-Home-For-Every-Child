@@ -1,8 +1,15 @@
 .topHeader
 {
     margin: 2%;
+    padding:2%;
 }
-
+#logout{
+  margin-top:-2%;
+}
+#nameInTop
+{
+  text-align:right;
+}
 nav{
 	text-align: right;
 }

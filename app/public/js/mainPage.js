@@ -5,13 +5,13 @@ var mainPage=function()
     var topHeader={
           inputSection:
             '<div class="topHeader row">'+
-                '<button type="button"  id = "logout" class="btn btn-default btn-sm col-xs-4">'+
+                '<button type="button" id = "logout" class="btn btn-default btn-sm col-xs-4">'+
                 '<span class="glyphicon glyphicon-log-out"></span> התנתק/י'+
                 '</button>'+
-                '<div class="hi col-xs-offset-6 col-xs-2">'+
+                '<div id = "nameInTop">'+
                     '<label id="userName_lbl"></label>'+
                     '<span class="glyphicon glyphicon-user"></span>'+ 
-                '</div>'+  
+                '<div>'+ 
             '</div>'
     }
     var nav={
