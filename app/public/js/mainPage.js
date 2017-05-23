@@ -32,7 +32,7 @@ var mainPage=function()
 
 				'<div class="collapse navbar-collapse NAV" id="bs-example-navbar-collapse-1">'+
 					'<ul class="nav navbar-nav">'+
-						'<li><a href="#">מסך הבית<span class="sr-only">(current)</span></a></li>'+
+						'<li><a id="homePage">מסך הבית<span class="sr-only">(current)</span></a></li>'+
 						'<li class="dropdown" id="1">'+
 							'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">הודעות <span class="caret"></span></a>'+
 							'<ul class="dropdown-menu">   '+
@@ -107,9 +107,8 @@ var mainPage=function()
         correntUser[0] = user;
         var context = topHeader.inputSection+nav.inputSection;
         $("body").html(context);
-       $("#body").html( newFeeds.inputSection);
+        $("#body").html( newFeeds.inputSection);
         $("#userName_lbl").html(correntUser[0].firstName);
-
 		$("#addUser_btn").click(usersManagement.addUser);
         $("#btnEditUser").click(usersManagement.editUser);
 
