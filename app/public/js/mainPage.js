@@ -105,8 +105,9 @@ var mainPage=function()
     var openMainPage=function(user) // user is a copy of the original user 
     {
         correntUser[0] = user;
-        var context = topHeader.inputSection+nav.inputSection+newFeeds.inputSection;
+        var context = topHeader.inputSection+nav.inputSection;
         $("body").html(context);
+       $("#body").html( newFeeds.inputSection);
         $("#userName_lbl").html(correntUser[0].firstName);
 
 		$("#addUser_btn").click(usersManagement.addUser);
