@@ -96,18 +96,10 @@ var inMassagePage=function()
 
      var openSendMassage=function()
      {
-         $('.NAV').collapse('hide');
-         if(flags.sendMassageIsOn==false)
-         {
-            flags.sendMassageIsOn=true;
-            $("#body").html(sendMessagePage.msgPage.inputSection);
-            sendMessagePage.updateUserList(login.usersAndKeys);
-            $("#sendButtonPM").click(sendMessagePage.sendPriMessage);
-            $("#userList").val("");
-         }
+        
         $('.NAV').collapse('hide');
         $("#body").html(sendMessagePage.msgPage.inputSection);
-        sendMessagePage.updateUserList(login.usersAndKeys);
+        sendMessagePage.updateUserList();
         $("#sendButtonPM").click(sendMessagePage.sendPriMessage);
         $("#userList").val("");
      }
