@@ -96,7 +96,7 @@ var msgPage={
 		$("#chooseUserSM").html('<option value="nan" disabled selected>סוג משתמש</option>')
 		var list=login.usersAndKeys;
         var myIndex=login.correntUser[1];
-		var type=document.getElementById("TypeUser SM").value;
+		var type=document.getElementById("TypeUserSM").value;
         for(var i = 0;i<list[1].length;i++)
 		{
             if(list[1][i]!=myIndex	&&	list[0][list[1][i]].userType==type)
