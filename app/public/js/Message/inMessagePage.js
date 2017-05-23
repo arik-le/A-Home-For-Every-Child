@@ -96,7 +96,6 @@ var inMassagePage=function()
 
      var openSendMassage=function()
      {
-<<<<<<< HEAD
          $('.NAV').collapse('hide');
          if(flags.sendMassageIsOn==false)
          {
@@ -106,13 +105,11 @@ var inMassagePage=function()
             $("#sendButtonPM").click(sendMessagePage.sendPriMessage);
             $("#userList").val("");
          }
-=======
         $('.NAV').collapse('hide');
-        $("#body").html(sendMessagePage.priMsgPage.inputSection);
+        $("#body").html(sendMessagePage.msgPage.inputSection);
         sendMessagePage.updateUserList(login.usersAndKeys);
-        $("#sendPM_cmd").click(sendMessagePage.sendPriMessage);
+        $("#sendButtonPM").click(sendMessagePage.sendPriMessage);
         $("#userList").val("");
->>>>>>> 1c5f6974fd0d8343d262e8d3a0b4f67f34aaa652
      }
 
 //-------------------------------------------------------------------------------------------------
