@@ -86,3 +86,40 @@ nav{
     background-color: #12b44a;
   }
 }
+/**********************************************/
+
+.title{
+	padding:3%;
+	text-align:right;
+	border-bottom:1.2px solid #456879;
+	background: #FDFC47;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #24FE41, #FDFC47);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right,#fcfdaa, #e2e32a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+
+#textAreaGM{
+	text-align:right;
+	font-size:20px;
+	background: #1FA2FF;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to bottom, #A6FFCB, #12D8FA, #1FA2FF);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to bottom, #A6FFCB, #12D8FA, #1FA2FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.deleteMessage{
+	padding:1%;
+	padding-top:3.5%;
+	padding-right:4%;
+	text-align:right;
+	border-top:1px solid #456879;
+	background: #E0EAFC;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to top, #CFDEF3, #E0EAFC);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to top, #CFDEF3, #E0EAFC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.generalMessageBox{
+	border-top:1px double  #456879;
+	border-bottom:1px double  #456879;
+}
