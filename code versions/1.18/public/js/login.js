@@ -155,8 +155,11 @@ var login=function()
 	};
 
 //---------------------------------------------------------------------------------------------------//	
-
-    return { initModule : initModule, usersAndKeys:usersAndKeys,correntUser:correntUser};
+	var getObj=function(key)
+	{
+		return usersAndKeys[0][key];
+	}
+    return { initModule : initModule, usersAndKeys:usersAndKeys,correntUser:correntUser,getObj:getObj};
 }();
 
 $(document).ready(function() {login.initModule($("#login")) ; });

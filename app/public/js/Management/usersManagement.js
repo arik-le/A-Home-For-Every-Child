@@ -1,14 +1,9 @@
 var usersManagement = function()
 {
-    //-------------------------------------------------------------------------------------------------
-    //  User Management Page Buttons-Options
-      var userOptions={
-          inputSection:
-            '<div class="container">'+
-                '<button type="button" id="btnNewUser" class="btn btn-secondry btn-lg btn-block">הוספת משתמש</button>'+
-                '<button type="button" id="btnEditUser" class="btn btn-secondry btn-lg btn-block"">עריכה</button>'+
-            '</div>'
-     }
+	const ADMIN = 1;
+	const GSUSER = 2;
+	const PTUSER = 3;
+	const FAIL = -1;
      //-------------------------------------------------------------------------------------------------
      var addUserPage={
         inputSection:
@@ -89,57 +84,42 @@ var usersManagement = function()
 							'</div>'+
 						'</div>'+
 
+                             '<div class="form-group">'+
+							'<label for="clubHouseName" class="cols-sm-2 controlLabel">:בחר מועדונית</label>'+
+							'<div class="cols-sm-10">'+
+								'<div class="input-group">'+
+									'<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
+									'<select type="text" class="form-control clubHouseName" id="clubhouse_select" placeholder="בחר מועדונית מתוך הרשימה">'+
+                                    '</select>'+
+								'</div>'+
+							'</div>'+
+						'</div>'+
+
 						'<div class="form-group ">'+
 							'<button type="button" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" id="addUser" >הרשמה</button>'+
 						'</div>'+
 					'</form>'+
 				'</div>'+
-
-
-            //  '<div class="modal fade" id="myModal" role="dialog">'+
-            //     '<div class="modal-dialog modal-sm">'+
-            //         '<div class="modal-content">'+
-            //             '<div class="modal-header">'+
-            //                 '<button type="button" class="close" data-dismiss="main">&times;</button>'+
-            //                 '<h4 class="modal-title">!הרשמה בוצעה בהצלחה</h4>'+
-            //             '</div>'+
-            //             '<div class="modal-body">'+
-            //                 '<p>תן בראש יא ביצה</p>'+
-            //             '</div>'+
-            //             '<div class="modal-footer">'+
-            //                 '<button type="button" class="btn btn-default" data-dismiss="main">סגור</button>'+
-            //             '</div>'+
-            //         '</div>'+
-            //     '</div>'+
-            // '</div>'+
         '</div>'
      }
        //-------------------------------------------------------------------------------------------------
-        var EditUser={
+        var EditUserOp={
         inputSection:
                 '<div class="container">'+
                     '<label for="clubHouseSelect" class="cols-sm-2 controlLabel">:בחר מועדונית</label>'+
                      '<div class="input-group">'+
 						    '<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
-						    '<select type="text" class="form-control">'+
-                                '<option class="1">1</option>'+
-                                '<option class="2">2</option>'+
-                                '<option class="3">3</option>'+
-                                '<option class="4">4</option>'+
+						    '<select type="text" id="clubhouse_select" class="form-control">'+
                             '</select>'+
 				    '</div>'+
 
                     '<label for="clubHouseUsers" class="cols-sm-2 controlLabel">:בחר משתמש</label>'+
                     '<div class="input-group">'+
 						    '<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>'+
-						    '<select type="text" class="form-control">'+
-                                '<option class="1">1</option>'+
-                                '<option class="2">2</option>'+
-                                '<option class="3">3</option>'+
-                                '<option class="4">4</option>'+
+						    '<select type="text" id="usersInCH" class="form-control">'+
                             '</select>'+
 				    '</div>'+
-
+                     '<button type="button" id="openUserEditBtn" class=" col-xs-offset-4 btn btn-default" >לחץ כאן לערוך</button>'+
                     '</div>'
         }
 
@@ -225,9 +205,20 @@ var usersManagement = function()
 							'</div>'+
 						'</div>'+
 
+                          '<div class="form-group">'+
+							'<label for="clubHouseName" class="cols-sm-2 controlLabel">:בחר מועדונית</label>'+
+							'<div class="cols-sm-10">'+
+								'<div class="input-group">'+
+									'<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
+									'<select type="text" class="form-control clubHouseName" id="clubhouse_select">'+
+                                    '</select>'+
+								'</div>'+
+							'</div>'+
+						'</div>'+
+
 						'<div class="form-group ">'+
-							'<button type="button" class="btn btn-primary btn-lg edit-button"  >סיום עריכה</button>'+
-                            '<button type="button" class="btn-danger btn-danger btn-lg  delete-button"  >מחיקת משתמש</button>'+
+							'<button type="button" class="btn btn-primary btn-block btn-lg edit-button"  >עריכה</button>'+
+                            '<button type="button" class="btn-danger btn-danger btn-block btn-lg  delete-button"  >מחיקת משתמש</button>'+
 						'</div>'+
 					'</form>'+
 				'</div>'+
@@ -237,23 +228,39 @@ var usersManagement = function()
 
 
     //-------------------------------------------------------------------------------------------------
-    // Initial page for injecting the html components
+    // add user function
     var addUser=function()
     {
+		clubhouseManagement.preLoadData();
         $('.Nav').collapse('hide');
         $("#body").html(addUserPage.inputSection);
         $("#addUser").click(createUser);
     }
-     var initPage=function()
-     {
-            $('.Nav').collapse('hide');
-            $("#body").html(userOptions.inputSection);
+     //-------------------------------------------------------------------------------------------------
+    // Edit user function 
+     var editUser=function()
+    {
+		clubhouseManagement.preLoadData();
+        $('.Nav').collapse('hide');
+        $("#body").html(EditUserOp.inputSection);
+        var e = document.getElementById("clubhouse_select");
+        var clubhouseSelected= e.options[e.selectedIndex].text;
+        showUsersPerCH(clubhouseSelected);
+
+    
+        $("#openUserEditBtn").click(function(){
         
-              $("#btnEditUser").click ( function()
-            {
-                 $("#body").html(EditUser.inputSection);
-            });
-     }
+            var e = document.getElementById("usersInCH");
+            var userName= e.options[e.selectedIndex].text;
+            $("#body").html(EditUserPage.inputSection);
+            loadUserDetails();
+            clubhouseManagement.preLoadData();
+            $(".delete-button").click(removeUser);
+            $(".edit-button").click(changeUser);
+        
+        });
+        
+    }
 
     //-------------------------------------------------------------------------------------------------
     var createUser=function()
@@ -261,9 +268,24 @@ var usersManagement = function()
         var firstName=document.getElementById("UserPName").value;
         var lastName=document.getElementById("UserLName").value;
         var username=document.getElementById("username").value;
+		if (firstName == "" || lastName == "" || username == "")
+		{
+			alert("אנא מלא את כל השדות הנדרשים");
+			return;
+		}
+        // selecting the clubhouse
+        var e = document.getElementById("clubhouse_select");
+
+		if(e.selectedIndex == -1)// when there are no clubhouses at DB
+		{
+			alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
+			return;
+		}
+        var Uclubhouse= e.options[e.selectedIndex].text;
+		
         for(var i=0;i<login.usersAndKeys[0].length;i++)
         {
-            if(login.usersAndKeys[0][i].username==username)
+            if(login.usersAndKeys[0][i].username==username )
             {
                 alert("שם משתמש כבר קיים");
                 return;
@@ -271,21 +293,57 @@ var usersManagement = function()
         }
         var fPassword=document.getElementById("password").value;
         var sPassword=document.getElementById("confirm").value;
-        if(sPassword!=fPassword)
+        if( sPassword!=fPassword && fPassword != "" )//&& fPassword < 4)
         {
-            alert("שני הסיסמאות לא תואמות");
+            alert(" הסיסמאות שהוזנו אינן תואמות");
             return;
         }
         var type=document.getElementById("userType").value;
+		if(type == "" )
+		{
+			alert("אנא מלא את כל השדות הנדרשים");
+			return;
+		}
         var database = firebase.database();	
         var usersRef = database.ref('users');
-        var newUser = User.create(username,fPassword,firstName,lastName,"A",type);
+        var newUser = User.create(username,fPassword,firstName,lastName,Uclubhouse,type);
         var key = usersRef.push(newUser);
         firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
-       
+		updateClubhouse(Uclubhouse,type,key.key);
         alert("הוזן בהצלחה");
 
     }
+
+	var updateClubhouse = function(clubName,type,keyArg)
+	{
+		var arrays = clubhouseManagement.getClubhouseArrays();
+		var index = getClubKeyIndex(arrays,clubName);
+		if(index == FAIL)
+		{
+			alert("לא נמצאה מועדונית תואמת");
+			return;
+		}
+		var key = arrays.clubhousesKeysArr[index];
+		if(type == "הורה")
+		{
+			firebase.database().ref('clubhouse/'+key+'/PTusers').push(keyArg);
+		}
+		if(type == GSUSER)
+			firebase.database().ref('clubhouse/'+key+'/GSusers').push(keyArg);
+		/*if(type == ADMIN)
+			firebase.ref('clubhouse/'+key+'ADusers').push()*/
+	};
+
+	var getClubKeyIndex = function (arrays,clubName)
+	{
+		for (var i = 0; i < arrays.clubhousesNamesArr.length; i++) 
+		{
+			if(clubName == arrays.clubhousesNamesArr[i])
+				return i;
+		}
+		return FAIL;
+	}
+	
 
     var loadUsersData = function()
 	{
@@ -295,7 +353,7 @@ var usersManagement = function()
 		{
 			if (data.val() == null)
 			{
-				alert(" לא נמצאו משתמשים להציג ");
+				alert("לא נמצאו משתמשים להציג ");
 				return;
 			}
 			var allUsers = data.val();   // get the whole tree of clubhouses
@@ -311,6 +369,36 @@ var usersManagement = function()
 
 	}
 
+    var loadUserDetails = function()
+    {
+      
 
-     return{initPage:initPage,addUser:addUser,loadUsersData:loadUsersData};
+    }
+
+    var  showUsersPerCH= function(clubhouseSelected)
+    {
+       
+        var ref = firebase.database().ref("clubhouse");
+		ref.once("value")
+		.then(function(data)		// 		when value recieved
+		{
+			if (data.val() == null)
+			{
+				alert("לא נמצאו משתמשים להציג ");
+				return;
+			}
+			var allClubs = data.val();   // get the whole tree of clubhouses
+			var keys = Object.keys(allClubs);	// get all keys
+				
+			for(var i =0; i<keys.length;i++)
+			{
+				var k = keys[i];
+				var name = allUsers[k].username;
+				$('#Users_select').append('<option value="'+i+'">'+name+'</option>');
+			}
+		});
+
+    }
+
+     return{addUser:addUser,loadUsersData:loadUsersData,editUser:editUser};
 }();

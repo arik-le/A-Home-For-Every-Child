@@ -23,33 +23,31 @@ var inMassagePage=function()
      }
 
     
-     var createMassage=function(massageID)
+     var createMassage=function(obj,massageID)
      {
-            return massage={
-            inputSection:
-                '<div class="row massage" id="'+massageID+'" data-toggle="modal" data-target="#myModal">'+             
+        
+            return str='<div class="row massage" id="'+massageID+'" data-toggle="modal" data-target="#myModal'+massageID+'">'+             
                             '<span class="glyphicon glyphicon-trash col-xs-2 trash" id="'+massageID+'trash"></span>'+
                             '<div class="col-xs-2"></div>'+
                             '<h5 class="topic col-xs-6" id="topic'+massageID+'"></h5>'+          
                             '<span class="glyphicon glyphicon-envelope col-xs-1 envelope"></span>'+  
                             '<div class="col-xs-1"></div>'+  
                 '</div>'+
-				
-				
-			'<div class="modal fade" id="myModal" role="dialog">'+
+					
+			'<div class="modal fade" id="myModal'+massageID+'" role="dialog">'+
 				'<div class="modal-dialog">'+
 					'<div class="modal-content">'+
 						'<div class="modal-header">'+
 							'<h4 class="modal-title">נושא 1</h4>'+
 						'</div>'+
 						'<div class="modal-body">'+
-							'<h5>admin1 :מאת</h5>'+
+							 '<h5 id="from'+massageID+'"> :מאת'+login.getObj(obj.source).firstName+'</h5>'+
 							'<div class = "subject">'+
-								'<textarea disabled>נושא: סיפור קטן מהבית ספר</textarea>'+
+								'<textarea disabled id="sub'+massageID+'">'+obj.subject+'</textarea>'+
 							'</div>'+
 							'</p>'+
 							'<div class = "content">'+
-								'<textarea disabled>שלום לכולם, היום הלכתי לבית ספר עם הילקוט החדש שאבא קנה לי וכל החברים ממש התלהבו. ואז ילד אחד פתאום הגיע אלי והתחיל לשחק לי עם הריצרץ של התיק וואני לא רציתי שזה יהרס מכיוון שהתיק ממש חדש אז הכנסתי לו בעיטה לביצים!! ככה!! שלא יתעסק איתי </textarea>'+
+								'<textarea disabled id="content'+massageID+'">'+obj.content+'</textarea>'+
 							'</div>'+
 						'</div>'+
 						'<div class="modal-footer">'+
@@ -57,10 +55,10 @@ var inMassagePage=function()
 						'</div>'+
 					'</div>'+
 				'</div>'+
-			'</div>'
+			'</div>';
 				
 			
-            } 
+         
      }
 
 //-------------------------------------------------------------------------------------------------
@@ -73,9 +71,11 @@ var inMassagePage=function()
 
 //-------------------------------------------------------------------------------------------------
 
-     var addMessage=function(topic,massageID)
+     var addMessage=function(obj,massageID)
      {
-        $("#body").append(createMassage(massageID).inputSection);
+        // console.log(obj);
+        var topic=obj.subject;
+        $("#body").append(createMassage(obj,massageID));
         $("#topic"+massageID).append(topic);
         $("#"+massageID+"trash").click(function(){
           var str=event.target.id;
@@ -96,6 +96,7 @@ var inMassagePage=function()
 
      var openSendMassage=function()
      {
+<<<<<<< HEAD
          $('.NAV').collapse('hide');
          if(flags.sendMassageIsOn==false)
          {
@@ -105,6 +106,13 @@ var inMassagePage=function()
             $("#sendButtonPM").click(sendMessagePage.sendPriMessage);
             $("#userList").val("");
          }
+=======
+        $('.NAV').collapse('hide');
+        $("#body").html(sendMessagePage.priMsgPage.inputSection);
+        sendMessagePage.updateUserList(login.usersAndKeys);
+        $("#sendPM_cmd").click(sendMessagePage.sendPriMessage);
+        $("#userList").val("");
+>>>>>>> 1c5f6974fd0d8343d262e8d3a0b4f67f34aaa652
      }
 
 //-------------------------------------------------------------------------------------------------
@@ -117,15 +125,23 @@ var inMassagePage=function()
      }
      
 //-------------------------------------------------------------------------------------------------
+    var incomingMessage={
+        topic:'<div class="row">'+
+            '<h4 class="col-xs-offset-4 col-xs-8 imt">הודעות נכנסות</h4>'+
+        '</div>'
+    }
     var openInBoxMes=function()
     {
-        $("#body").html("");
+        $("#body").html(incomingMessage.topic);
         $('.NAV').collapse('hide');
         var me=login.correntUser[1];
         var messages=login.usersAndKeys[0][me].inboxMessages;
-        var keys = Object.keys(messages);
-        for(var i=0;i<keys.length;i++)
-            addMessage(messages[keys[i]].subject,i);
+        if(messages!=null)
+        {
+            var keys = Object.keys(messages);
+            for(var i=0;i<keys.length;i++)
+                addMessage(messages[keys[i]],i);
+        }
         
     }
      return{addMessage:addMessage,initPage:initPage,openSendMassage:openSendMassage,openInBoxMes:openInBoxMes};
