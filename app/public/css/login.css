@@ -22,6 +22,7 @@
   padding: 15px;
   box-sizing: border-box;
   font-size: 14px;
+  text-align:right;
 }
 .form button {
   font-family: "Roboto", sans-serif;
