@@ -100,7 +100,7 @@ var inMassagePage=function()
          if(flags.sendMassageIsOn==false)
          {
             flags.sendMassageIsOn=true;
-            $("#body").html(sendMessagePage.priMsgPage.inputSection);
+            $("#body").html(sendMessagePage.msgPage.inputSection);
             sendMessagePage.updateUserList(login.usersAndKeys);
             $("#sendPM_cmd").click(sendMessagePage.sendPriMessage);
             $("#userList").val("");

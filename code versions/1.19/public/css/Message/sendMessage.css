@@ -1,115 +1,57 @@
-/*SEND GENERAL MASSAGESSS*/
-.sendFacilty
+#royh2
 {
-    margin-top:2%;
-    margin-left:1%;
-}
-.sendToFac 
-{
-    font-weight: bold;
-    font-size:18px;
-    margin-top:2%;
-    text-align: right;
-    color:black;
-}
-.facManuGen
-{
-    text-align: center;
-}
-.msgSubject
-{
-     font-weight: bold;
-    font-size:18px;
-    margin-top:2%;
-    text-align: right;
-    color:black;
-}
-.GenMsgText
-{
-    text-align:center;
-    margin-top:2%;
-    font-size:25px;
-    font-weight: bold;
-    color:black;
-}
-.list-group-item-primary {
-    color: rgb(255, 255, 255);
-    background-color: #76b852;
-    
-}
-.list-group {
-    margin-bottom: 0px;
-
-}
-.userType{
-    text-align: center;
-    margin-bottom: 0px;
-    
+	text-align:center;
 }
 
+#clubHouseRoy 
+{
+	margin-top:7%;
+	margin-bottom:3%;
+	border:2px solid #456879;
+	border-radius:10px;
+	height: 30px;
+	width:50%;
+}
+.userCkecklist
+{
+	margin-bottom:3%;
+	border:2px solid #456879;
+	border-radius:10px;
+	height: 30px;
+	width:46%;
+    margin:2%;
+}
+.center-pills { display: inline-block; }
 
-.state-icon {
-    left: -5px;
-}
-#usr
+.mytabs
 {
-    text-align: right;
+	text-align:center;
 }
-
-.msgTitle
-{
-    margin-left: 2%;
+.tab-pane{
+	text-align:center;
 }
-.msg-info
-{
-    margin-left:5%;
-}
-.btn
-{
-    background-color: white;
-    color:black;
-    margin-top:1%;
-}
-#clrBtn
-{
-    margin-left:1%;
-}
-
-/*SEND PRIVATE MASSAGE*/
-#guideManu
-{
-    margin-left: 4%;
-}
-.msgTitleP 
-{
-    margin-right:1%;
-}
-/*
-.dropdown-menu
-{
-    text-align: center;
-}
-*/
-
-
-.form-group input[type="checkbox"] {
-    display: none;
+#royLabel{
+	display:block;
+	text-align:right;
+	font-weight:bold;
+	font-size:20px;
+	float:right;
 }
 
-.form-group input[type="checkbox"] + .btn-group > label span {
-    width: 20px;
+#royInput{
+	text-align:right;
+}
+#royTextArea{
+	text-align:right;
+}
+.chkbox {
+   padding: 5px;
+   font-weight: bold;
+   font-size:20px;
 }
 
-.form-group input[type="checkbox"] + .btn-group > label span:first-child {
-    display: none;
-}
-.form-group input[type="checkbox"] + .btn-group > label span:last-child {
-    display: inline-block;   
-}
-
-.form-group input[type="checkbox"]:checked + .btn-group > label span:first-child {
-    display: inline-block;
-}
-.form-group input[type="checkbox"]:checked + .btn-group > label span:last-child {
-    display: none;   
+#checkBoxIn
+{
+	height:20px;
+	width:20px;
 }
