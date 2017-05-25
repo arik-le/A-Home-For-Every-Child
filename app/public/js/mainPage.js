@@ -123,10 +123,7 @@ var mainPage=function()
     var logout = function()
     {
         if(confirm('בטוח שברצונך להתנתק מהמערכת?')) 
-        {
-            firebase.database().ref('users/'+ correntUser[0].userKey + '/status').set(0);			//change field in database  
             login.initModule();
-        }
         else 
             return;
      }

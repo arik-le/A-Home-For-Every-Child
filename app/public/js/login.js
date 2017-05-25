@@ -7,9 +7,6 @@ var login=function()
 	const PUSER = 3;
 	const TUSER = 4;
 
-	const ONLINE = 1;   // for user status
-	const OFFLINE = 0;
-
 	var usersAndKeys = [2]; 
 	var correntUser=[2];	
 
@@ -92,20 +89,7 @@ var login=function()
 					{
 						correntUser[1]=k; 
 						correntUser[0] = allUsers[k];
-						if(allUsers[k].status == ONLINE)
-						{
-							allreadyOnline();
-						}
-						else
-						{
-							// set online
-							firebase.database().ref('users/' + k + '/status').set(1)
-							// load next page after set user status
-							.then(function(data)		
-							{
-								mainPage.openMainPage(correntUser[0]);
-							});	
-						}
+						mainPage.openMainPage(correntUser[0]);
 						return;
 					}
 				}
@@ -135,15 +119,7 @@ var login=function()
 		return usersAndKeys[0][key];
 	}
 //---------------------------------------------------------------------------------------------------//	
-// set user status to offline
-	window.onbeforeunload = function () {
-		if(correntUser[0] !== undefined)
-			firebase.database().ref('users/'+ correntUser[0].userKey + '/status').set(OFFLINE);			//change field in database  
-	};
 
-
-
-	
 return { initModule : initModule, usersAndKeys:usersAndKeys,correntUser:correntUser,getObj:getObj};
 }();
 

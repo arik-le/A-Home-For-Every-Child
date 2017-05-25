@@ -20,7 +20,6 @@ var User = function(username,password)
 				userType:userType,
 				userKey:0,
 				date:d.toDateString(),
-				status:offline,
 				inboxMessages:[],
 				outboxMessages:[],
 				generalMessages:[]
