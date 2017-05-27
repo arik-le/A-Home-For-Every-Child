@@ -352,10 +352,10 @@ var usersManagement = function()
 // show user list from a selected clubhouse
     var  showUsersPerCH= function(clubhouseSelected)
     {
-
-	   var arrays = clubhouseManagement.getClubhouseArrays();
-	   var index = getClubKeyIndex(arrays,clubhouseSelected);
-       if(index == FAIL)
+		document.getElementById('usersInCH').innerHTML = ""
+	    var arrays = clubhouseManagement.getClubhouseArrays();
+	    var index = getClubKeyIndex(arrays,clubhouseSelected);
+        if(index == FAIL)
 		{
 			alert("לא נמצאה מועדונית ");
 			return;
