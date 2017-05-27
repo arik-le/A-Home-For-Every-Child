@@ -63,8 +63,8 @@ Please visit our wiki for furthur project info:
 ### Iteration Pages
 - [Iteration 0 - ZFR](../../wiki/iter0-zfr)
 - [Iteration 1 - Basic Design & DB Connection](https://github.com/arik-le/A-Home-For-Every-Child/wiki/Iter1---Basic-Design-&-DB-Connection)
-- [Iteration 2 - Feature X](https://github.com/arik-le/A-Home-For-Every-Child/wiki/Iter2--Messages-Sections-and-DB-Objects)
-- [Iteration 3 - Feature Y](https://github.com/arik-le/A-Home-For-Every-Child/wiki/Iter3---Advance-programing-on-users-types)
+- [Iteration 2 - Messages Sections & DB-Objects](https://github.com/arik-le/A-Home-For-Every-Child/wiki/Iter2--Messages-Sections-and-DB-Objects)
+- [Iteration 3 - -Advance programing on userstypes](https://github.com/arik-le/A-Home-For-Every-Child/wiki/Iter3---Advance-programing-on-users-types)
 - [Iteration 4 - Feature Z]()
 
 
