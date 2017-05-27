@@ -64,7 +64,7 @@ Please visit our wiki for furthur project info:
 - [Iteration 0 - ZFR](../../wiki/iter0-zfr)
 - [Iteration 1 - Basic Design & DB Connection](https://github.com/arik-le/A-Home-For-Every-Child/wiki/Iter1---Basic-Design-&-DB-Connection)
 - [Iteration 2 - Feature X](https://github.com/arik-le/A-Home-For-Every-Child/wiki/Iter2---Feature-X)
-- [Iteration 3 - Feature Y]()
+- [Iteration 3 - Feature Y](https://github.com/arik-le/A-Home-For-Every-Child/wiki/Iter3---Advance-programing-on-users-types)
 - [Iteration 4 - Feature Z]()
 
 
