@@ -58,7 +58,7 @@ var mainPage=function()
 
 					'</ul>'+
 					'<ul class="nav navbar-nav navbar-right">'+
-						'<li><a href="#">התנתק מהמערכת</a></li>'+
+						'<li><a id="logout1">התנתק מהמערכת</a></li>'+
 					'</ul>'+
 				'</div>'+
 			'</div>'+
@@ -107,8 +107,14 @@ var mainPage=function()
         correntUser[0] = user;
         var context = topHeader.inputSection+nav.inputSection;
         $("body").html(context);
-        $("#body").html( newFeeds.inputSection);
+        $("#body").html(newFeeds.inputSection);
         $("#userName_lbl").html(correntUser[0].firstName);
+
+        $("#homePage").click(function(){
+            $('.Nav').collapse('hide');
+            $("#body").html(newFeeds.inputSection);
+        });
+        
 		$("#addUser_btn").click(usersManagement.addUser);
         $("#btnEditUser").click(usersManagement.editUser);
 
@@ -118,7 +124,9 @@ var mainPage=function()
         $("#writeMessage_btn").click(inMassagePage.openSendMassage);
         $("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
         $("#logout").click(logout);
+        $("#logout1").click(logout);
     }
+    
     
     var logout = function()
     {

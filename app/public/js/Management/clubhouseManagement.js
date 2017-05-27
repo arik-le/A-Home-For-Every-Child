@@ -5,16 +5,7 @@ var clubhouseManagement = function()
 	var clubhousesNamesArr = [];
 	var allClubhousesObjects;	
 	///////////////////////////////////////
-
-    //-------------------------------------------------------------------------------------------------
-    //  Clubhouse Management Page Buttons-Options
-      var clubhouseOptions={
-          inputSection:
-            '<div class="container">'+
-                '<button type="button" id="btnNewClubhouse" class="btn btn-secondry btn-lg btn-block">הוספת מועדונית</button>'+
-                '<button type="button" id="btnEditClubhouse" class="btn btn-secondry btn-lg btn-block"">עריכה</button>'+
-            '</div>'
-     }
+	
      //-------------------------------------------------------------------------------------------------
      // INJECTION FOR ADDING NEW CLUBHOUSE PAGE
 	var addClubhousePage={
@@ -32,8 +23,8 @@ var clubhouseManagement = function()
 					'<form class="form-horizontal" method="post" action="#">'+
 						
 						'<div class="form-group">'+
-							'<label for="clubhouseName" class="cols-sm-2 controlLabel" >:שם מועדונית</label>'+
-							'<div class="cols-sm-10">'+
+							'<label for="clubhouseName" class="col-sm-2 controlLabel" >:שם מועדונית</label>'+
+							'<div class="col-sm-10">'+
 								'<div class="input-group">'+
 									'<span class="input-group-addon"><i class="fa fa-home fa" aria-hidden="true"></i></span>'+
 									'<input type="text" class="form-control" name="clubhouseName" id="clubhouseNameID"  placeholder="הכנס שם מועדונית"/>'+
@@ -42,8 +33,8 @@ var clubhouseManagement = function()
 						'</div>'+
 
 						'<div class="form-group">'+
-							'<label for="clubhouseAddress" class="cols-sm-2 controlLabel" id="formTxts">:כתובת המועדונית</label>'+
-							'<div class="cols-sm-10">'+
+							'<label for="clubhouseAddress" class="col-sm-2 controlLabel" id="formTxts">:כתובת המועדונית</label>'+
+							'<div class="col-sm-10">'+
 								'<div class="input-group">'+
 									'<span class="input-group-addon"><i class="fa fa-map-marker fa" aria-hidden="true"></i></span>'+
 									'<input type="text" class="form-control" name="clubhouseAddress" id="clubhouseAddrID"  placeholder="הכנס כתובת מועדונית"/>'+
@@ -64,7 +55,7 @@ var clubhouseManagement = function()
         var EditClubhousePage={
         inputSection:
                 '<div class="container">'+
-                    '<label for="clubHouseSelect" class="cols-sm-2 controlLabel">:בחר מועדונית</label>'+
+                    '<label for="clubHouseSelect" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
                      '<div class="input-group">'+
 						    '<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
 						    '<select id="clubhouse_select" type="text" class="form-control">'+
