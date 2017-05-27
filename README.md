@@ -39,7 +39,7 @@ We're trying to use the best tools and practices in order to produce a quality e
 | Project Course Status | ... |
 
 ## Please visit our [live application](https://bilyisr-242e7.firebaseapp.com/)
-Alright, currently only a login page...
+Alright, the app is pretty advanced , check it out
 
 
 ## Disclaimer
