@@ -2,12 +2,17 @@
 {
 	text-align:center;
 }
+.mytabs a{
+	background-color: white;
+}
+.active a {
+  background-color: #ec2323 !important;
+}
 
 #clubHouseRoy 
 {
-	margin-top:7%;
-	margin-bottom:3%;
-	border:2px solid #456879;
+	margin-top:5%;
+	border:1px solid #ec2323;
 	border-radius:10px;
 	height: 30px;
 	width:50%;
@@ -15,7 +20,7 @@
 .userCkecklist
 {
 	margin-bottom:3%;
-	border:2px solid #456879;
+	border:1px solid #ec2323;
 	border-radius:10px;
 	height: 30px;
 	width:46%;
@@ -29,6 +34,8 @@
 }
 .tab-pane{
 	text-align:center;
+	margin-left:-7%;
+	margin-right:-7%;
 }
 #royLabel{
 	display:block;
@@ -40,16 +47,21 @@
 #sendButtonPM{
     margin:3%;
     width:60px;
-}
+	background-color: #ec2323 !important;
+}/*
 cleanButtonPM{
      margin:3%;
     width:60px;
-}
+}*/
 #subjectSM{
 	text-align:right;
+	border:1px solid #ec2323;
+	border-radius:10px;
 }
 #contentSM{
 	text-align:right;
+	border:1px solid #ec2323;
+	border-radius:10px;
 }
 .chkbox {
    padding: 5px;

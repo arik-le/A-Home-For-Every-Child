@@ -2,7 +2,7 @@ var inMassagePage=function()
 {
     var flags={sendMassageIsOn:false};
     
-    var headLine={
+   var headLine={
         inputSection:
             '<div class="container">'+
                 '<ul class="nav nav-tabs  col-xs-14">'+
@@ -56,9 +56,6 @@ var inMassagePage=function()
 					'</div>'+
 				'</div>'+
 			'</div>';
-				
-			
-         
      }
 
 //-------------------------------------------------------------------------------------------------

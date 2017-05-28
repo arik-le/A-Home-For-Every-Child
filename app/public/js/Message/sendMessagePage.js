@@ -45,7 +45,7 @@ var msgPage={
 
 						'<div class="col-sm-10 col-sm-offset-2">'+
 							'<input id="sendButtonPM" name="submit" type="submit" value="שלח" class="btn btn-primary">'+
-							'<button id="cleanButtonSM" type="button" class="btn">נקה</button>'+
+							'<button id="cleanButtonPM" type="button" class="btn">נקה</button>'+
 						'</div>'+
 					'</div>'+
 					
@@ -84,7 +84,7 @@ var msgPage={
 			
 					'<div class="col-sm-10 col-sm-offset-2">'+
 						'<input id="sendButtonPM" name="submit" type="submit" value="שלח" class="btn btn-primary">'+
-						'<butto id="cleanButtonSM" type="button" class="btn">נקה</button>'+
+						'<button id="cleanButtonPM" type="button" class="btn">נקה</button>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+

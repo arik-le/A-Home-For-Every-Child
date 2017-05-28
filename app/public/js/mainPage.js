@@ -67,17 +67,20 @@ var mainPage=function()
     }
 
     var newFeeds = {
-        inputSection:
+        inputSection:  
             '<div class = "generalMessageBox">'+
                 '<div class = "title">'+
                      '<h6>guide58 :הודעה מאת</h6>'+
                      '<label id="subjectGM">טיול לעין יעל עם הילדים המקסימים<label>'+
                 '</div>'+
                 '<textarea id = "textAreaGM" class="form-control" rows="5" name="message" disabled>היום יצאנו לטייל בחוות עין יעל המקסימה בהמשך היום נשלח אליכם תמונות של הילדים החמודים</textarea>'+
-                '<div class = "deleteMessage">'+
-                    '<label id="subjectGM">מחק הודעה <label>'+
-                    '<span class="glyphicon glyphicon-trash"></span> '+
-                '</div>'+
+               '<div class="messageFooter">'+
+					'<h4 id = "dateMessage">12.5.17</h4>'+
+					'<div class = "deleteMessage">'+
+						'<label id="subjectGM">מחק הודעה <label>'+
+						'<span class="glyphicon glyphicon-trash"></span> '+
+					'</div>'+
+				'</div>'+
             '</div></p>'+
             '<div class = "generalMessageBox">'+
                 '<div class = "title">'+
@@ -85,21 +88,27 @@ var mainPage=function()
                      '<label id="subjectGM">טיול לעין יעל עם הילדים המקסימים<label>'+
                 '</div>'+
                 '<textarea id = "textAreaGM" class="form-control" rows="5" name="message" disabled>היום יצאנו לטייל בחוות עין יעל המקסימה בהמשך היום נשלח אליכם תמונות של הילדים החמודים</textarea>'+
-                '<div class = "deleteMessage">'+
-                    '<label id="subjectGM">מחק הודעה <label>'+
-                    '<span class="glyphicon glyphicon-trash"></span> '+
-                '</div>'+
+               '<div class="messageFooter">'+
+					'<h4 id = "dateMessage">12.5.17</h4>'+
+					'<div class = "deleteMessage">'+
+						'<label id="subjectGM">מחק הודעה <label>'+
+						'<span class="glyphicon glyphicon-trash"></span> '+
+					'</div>'+
+				'</div>'+
             '</div></p>'+
-                '<div class = "generalMessageBox">'+
+            '<div class = "generalMessageBox">'+
                 '<div class = "title">'+
                      '<h6>guide58 :הודעה מאת</h6>'+
                      '<label id="subjectGM">טיול לעין יעל עם הילדים המקסימים<label>'+
                 '</div>'+
                 '<textarea id = "textAreaGM" class="form-control" rows="5" name="message" disabled>היום יצאנו לטייל בחוות עין יעל המקסימה בהמשך היום נשלח אליכם תמונות של הילדים החמודים</textarea>'+
-                '<div class = "deleteMessage">'+
-                    '<label id="subjectGM">מחק הודעה <label>'+
-                    '<span class="glyphicon glyphicon-trash"></span> '+
-                '</div>'+
+               '<div class="messageFooter">'+
+					'<h4 id = "dateMessage">12.5.17</h4>'+
+					'<div class = "deleteMessage">'+
+						'<label id="subjectGM">מחק הודעה <label>'+
+						'<span class="glyphicon glyphicon-trash"></span> '+
+					'</div>'+
+				'</div>'+
             '</div></p>'
     }
     var openMainPage=function(user) // user is a copy of the original user 
