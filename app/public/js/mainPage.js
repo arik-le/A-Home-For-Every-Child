@@ -38,7 +38,7 @@ var mainPage=function()
 							'<ul class="dropdown-menu">   '+
 								'<li><a id="writeMessage_btn">כתיבת הודעה</a></li>'+
 								'<li><a id="incomingMessage_btn">דואר נכנס</a></li>'+
-								'<li><a href="#">דואר יוצא</a></li>'+
+								'<li><a id="outMessage_btn">דואר יוצא</a></li>'+
 								'<li role="separator" class="divider"></li>'+
 							'</ul>'+
 						'</li'+
@@ -132,7 +132,7 @@ var mainPage=function()
 
         $("#writeMessage_btn").click(inMassagePage.openSendMassage);
         $("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
-                //$("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
+        $("#outMessage_btn").click(outMessagePage.open);
 
         $("#logout").click(logout);
         $("#logout1").click(logout);
