@@ -6,19 +6,21 @@ var usersManagement = function()
 	const FAIL = -1;
 	const ADDPAGE = 1;
 	const EDITPAGE = 2;
-	var clubhousesInfo = [];
+	var clubhousesInfo = []; // key and name
 
 	var page;
 	var AddSectionClubName;
 	var EditSectionClubName;
+	var clubIndex_Edit;
+
      //-------------------------------------------------------------------------------------------------
      var addUserPage={
         inputSection:
         '<div class="container">'+
             	'<div class="row main">'+
 				'<div class="panel-heading">'+
-	               '<div class="panel-title text-center">'+
-	               		'<h1 class="title">רישום משתמש</h1>'+
+	               '<div  class="panel-title text-center">'+
+	               		'<h1 id="title" class="title">רישום משתמש</h1>'+
 	               		'<hr />'+
 	                '</div>'+
 	            '</div> '+
@@ -124,7 +126,7 @@ var usersManagement = function()
                     '<label for="clubHouseUsers" class="col-sm-2 controlLabel">:בחר משתמש</label>'+
                     '<div class="input-group">'+
 						    '<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>'+
-						    '<select type="text" id="usersInCH" class="form-control" disabled>'+
+						    '<select type="text" id="usersInCH" class="form-control" >'+
                             '</select>'+
 				    '</div>'+
                      '<button type="button" id="openUserEditBtn" class=" col-xs-offset-4 btn btn-default"  >לחץ כאן לערוך</button>'+
@@ -348,8 +350,6 @@ var usersManagement = function()
 	}
 
 
-	
-
 
 	/////////////////////////////////////////////////////////////////////
 	//			EDIT USER											   //
@@ -378,7 +378,6 @@ var usersManagement = function()
 		}
 		var ClubKey = clubhousesInfo[index].key;
 		
-	   
 	    var ref = firebase.database().ref("clubhouse/"+ClubKey+"/usersList");
 		ref.once("value")
 		.then(function(data)		// 		when value recieved
@@ -398,6 +397,7 @@ var usersManagement = function()
 				$('#usersInCH').append('<option value="'+i+'">'+name+'</option>');
 			//	$('#Users_select').append('<option value="'+i+'">'+name+'</option>');
 			}
+		
 		});
     }
 
@@ -405,49 +405,67 @@ var usersManagement = function()
 	var editUserListener= function()
 	{
 		var e = document.getElementById("usersInCH");
-		var userName= e.options[e.selectedIndex].text;
-		if(userName)
-		loadUserDetails(userName);
+		var userName = e.options[e.selectedIndex].text;
+		 if(!userName)
+		 {
+			 alert('לא נבחר שם משתמש');
+			 return;
+		 }
+		var user = loadUserDetails(userName);
+
 	};
 
 	// load user data when selected
 	var loadUserDetails = function(username)
     {
-    	$("#body").html(EditUserPage.inputSection);  
-    	clubhouseManagement.preLoadData();
-		loadUsersData();
 	   
-	//    var index = getUserKeyIndex(username); 
-       if(index == FAIL)
-		{
-			alert("לא נמצאה מועדונית ");
-			return;
-		}
-		var userKey =usersKeysArr[index];
-	   
-	    var ref = firebase.database().ref("users/"+userKey);
-		ref.once("value")
-		.then(function(data)		// 		when value recieved
+	    var clubKey = clubhousesInfo[clubIndex_Edit].key;
+		firebase.database().ref("clubhouse/"+clubKey+'/usersList').once("value")
+		.then(function (data) // get user key from club users list
 		{
 			if (data.val() == null)
 			{
 				alert("לא נמצאו משתמשים להציג ");
 				return;
 			}
-			var users = data.val();   // get the whole tree of clubhouses
-			var keys = Object.keys(users);	// get all keys
-				
-			for(var i =0; i<keys.length;i++)
+			var userList = data.val();   // get the whole tree of clubhouses
+			var keys = Object.keys(userList);	// get all keys
+			for (var i = 0 ; i<keys.length;i++)
 			{
-				var k = keys[i];
-				var name = users[k].username;
-				$('#usersInCH').append('<option value="'+i+'">'+name+'</option>');
+				if(username == userList[keys[i]].username)
+				{
+					return userList[keys[i]].key;
+				}
 			}
+
+		}).then(function (key) // get the user object
+		{
+			if(!key)
+			{
+				alert('Keyerr ');
+				return;
+			}
+			// get the user object
+			firebase.database().ref("users/"+key).once("value")
+			.then(function(data)
+			{
+				var user = data.val();
+				if(user)
+				{
+					injectEditPage(user)
+				}
+			});
 		});
-	$(".delete-button").click(removeUser);
-	$(".edit-button").click(changeUser);
     }
 
+	var injectEditPage = function (user)
+	{
+		$('#body').html(addUserPage.inputSection);
+		document.getElementById('title').innerHTML ="ערוך משתמש";
+
+
+
+	}
 
 	var EditClubselectValue = function()
 	{
@@ -457,6 +475,7 @@ var usersManagement = function()
 		if(EditSectionClubName == clubhousesInfo[index].name) // ignore select the same club
 			return;
 		EditSectionClubName = clubhousesInfo[index].name;
+		clubIndex_Edit = index;
 		showUsersPerCH(EditSectionClubName);
 	}
 
@@ -465,31 +484,7 @@ var usersManagement = function()
 	/////////////////////////////////////////////////////////////////////
 	//====================================================================================
 	
-	// load all users data from DB and store it in arrays
-	var loadUsersData = function()
-	{	
-		var ref = firebase.database().ref("users");
-		ref.once("value")
-		.then(function(data)		// 		when value recieved
-		{
-			if (data.val() == null)
-			{
-				alert("לא נמצאו משתמשים להציג");
-				return;
-			}
-			allUsersObjects = data.val();
-			var allUsers = data.val();   // get the whole tree of clubhouses
-			var keys = Object.keys(allUsers);	// get all keys
-				
-			for(var i =0; i<keys.length;i++)
-			{
-				usersKeysArr[i] = keys[i];
-				usersNamesArr[i] = allUsers[usersKeysArr[i]].name;
-				//$('#clubhouse_select').append('<option value="'+i+'">'+clubhousesNamesArr[i]+'</option>');
-			}
-			
-		});
-	}
+
 	//===========================================================================================
 	// Updates clubhousesInfo array
 	var loadClubhousesData = function()
@@ -521,5 +516,5 @@ var usersManagement = function()
 
 
 
-     return{addUser:addUser,loadUsersData:loadUsersData,editUser:editUser};
+     return{addUser:addUser,editUser:editUser};
 }();
