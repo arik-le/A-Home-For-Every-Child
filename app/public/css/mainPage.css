@@ -1,3 +1,8 @@
+#body{
+    overflow: scroll;
+    max-height: 70%;
+}
+
 .topHeader
 {
     margin: 2%;

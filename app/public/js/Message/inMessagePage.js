@@ -104,7 +104,6 @@ var inMassagePage=function()
     }
     var openInBoxMes=function()
     {
-        console.log("enterred")
         $("#body").html("");
         $("#body").html(incomingMessage.topic);
         $('.NAV').collapse('hide');     //close nav bar after enterance
