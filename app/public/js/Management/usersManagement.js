@@ -262,12 +262,9 @@ var usersManagement = function()
 
 		page = EDITPAGE;
 		loadClubhousesData();
-		console.log('1');
         $("#body").html(EditUserOp.inputSection);
         $('.Nav').collapse('hide');
-		console.log('2');
 		$('#clubhouse_select_Edit').click(EditClubselectValue); // auto reads the users
-		console.log('3');
         $("#openUserEditBtn").click(editUserListener);
     }
 
@@ -388,8 +385,31 @@ var usersManagement = function()
 
 		var deleteUser = function()
 		{
-			var key = userToEdit.userkey;
-			firebase.database().ref("users/"+key).remove();
+			var clubKey = clubhousesInfo[clubIndex_Edit].key; 
+			firebase.database().ref("clubhouse/"+clubKey+"/usersList").once("value")
+			.then(function(data)
+			{
+				if (data.val() == null)
+				{
+					alert("לא נמצאו משתמשים להציג ");
+					return;
+				}
+				var users = data.val();   // get the whole tree of clubhouses
+				var keys = Object.keys(users);	// get all keys
+					
+				for(var i =0; i<keys.length;i++)
+				{
+					var key = users[keys[i]].userkey;
+					console.log(userToEdit.userKey);
+					console.log(users[keys[i]].userkey);
+					if(userToEdit.userKey == users[keys[i]].userkey)
+					{
+						alert("deleted");
+						firebase.database().ref("clubhouse/"+clubKey+"/usersList"+users[keys[i]]).remove();
+					}
+				}
+			//firebase.database().ref("users/"+userToEdit.userKey).remove();
+		});
 		}
 
 
