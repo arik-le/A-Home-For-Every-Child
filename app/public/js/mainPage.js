@@ -132,6 +132,8 @@ var mainPage=function()
 
         $("#writeMessage_btn").click(inMassagePage.openSendMassage);
         $("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
+                //$("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
+
         $("#logout").click(logout);
         $("#logout1").click(logout);
     }

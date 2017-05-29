@@ -100,7 +100,7 @@ var msgPage={
         for(var i = 0;i<list[1].length;i++)
 		{
             if(list[1][i]!=myIndex	&&	list[0][list[1][i]].userType==type)
-                  $("#chooseUserSM").append('<option value='+list[0][list[1][i]].userKey+'>'+list[0][list[1][i]].username+'</option>');     
+           $("#chooseUserSM").append('<option value='+list[0][list[1][i]].userKey+'>'+list[0][list[1][i]].username+'</option>');     
 		}
 	
   }
