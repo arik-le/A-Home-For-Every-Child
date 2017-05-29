@@ -12,7 +12,6 @@ var login=function()
 
 	var deviceType;
 	var database;
-	var usersRef;
 
 	var connectionPage = {
 		inputSection:
@@ -34,10 +33,8 @@ var login=function()
 	
 	var initModule = function($container) 
 	{
-		stateMap.$container = $container;
 		database = firebase.database();			// A reference for the database
-		usersRef = database.ref('users');
-
+		stateMap.$container = $container;
 		$("body").html(connectionPage.inputSection);
 		$("#cmdLogin").click(loginClick);
 	};
@@ -64,35 +61,35 @@ var login=function()
 		var ref = firebase.database().ref("users");
 		ref.once("value")
 		.then(function(data)		
+		{
+			// in case the root is empty  ->  name is not exist
+			if (data.val() == null)
 			{
-				// in case the root is empty  ->  name is not exist
-				if (data.val() == null)
+				alert("לא נמצאו משתמשים במערכת");
+				return; 
+			}
+
+			var allUsers = data.val();   // get the whole tree of clubhouses
+			var keys = Object.keys(allUsers);	// get all keys
+			
+			usersAndKeys[0]= allUsers;
+			usersAndKeys[1] = keys;
+
+			// loop on the answere array to find clubhouse name.
+			for(var i =0; i<keys.length;i++)
+			{
+				var k = keys[i];
+				var tempUserName = allUsers[k].username;
+				var tempUserPassword = allUsers[k].password;
+
+				if( tempUserName == nameArg && tempUserPassword == passwordArg)
 				{
-					alert("לא נמצאו משתמשים במערכת");
-					return; 
+					correntUser[1]=k; 
+					correntUser[0] = allUsers[k];
+					mainPage.openMainPage(correntUser[0]);
+					return;
 				}
-
-				var allUsers = data.val();   // get the whole tree of clubhouses
-				var keys = Object.keys(allUsers);	// get all keys
-				
-				usersAndKeys[0]= allUsers;
-				usersAndKeys[1] = keys;
-
-				// loop on the answere array to find clubhouse name.
-				for(var i =0; i<keys.length;i++)
-				{
-					var k = keys[i];
-					var tempUserName = allUsers[k].username;
-					var tempUserPassword = allUsers[k].password;
-
-					if( tempUserName == nameArg && tempUserPassword == passwordArg)
-					{
-						correntUser[1]=k; 
-						correntUser[0] = allUsers[k];
-						mainPage.openMainPage(correntUser[0]);
-						return;
-					}
-				}
+			}
 			rejectUser(); // username or password incorrect 
 		});
 	}
@@ -119,7 +116,7 @@ var login=function()
 		return usersAndKeys[0][key];
 	}
 //---------------------------------------------------------------------------------------------------//	
-
+   	
 return { initModule : initModule, usersAndKeys:usersAndKeys,correntUser:correntUser,getObj:getObj};
 }();
 
