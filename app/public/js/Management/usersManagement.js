@@ -12,9 +12,9 @@ var usersManagement = function()
 	var AddSectionClubName;
 	var EditSectionClubName;
 	var clubIndex_Edit;
-
+	var userToEdit;
      //-------------------------------------------------------------------------------------------------
-     var addUserPage={
+     var UserPage={
         inputSection:
         '<div class="container">'+
             	'<div class="row main">'+
@@ -33,7 +33,7 @@ var usersManagement = function()
 							'<div class="col-sm-10">'+
 								'<div class="input-group">'+
 									'<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>'+
-									'<input type="text" class="form-control" name="name" id="UserPName"  placeholder="הכנס שם פרטי"/>'+
+									'<input type="text" class="form-control" name="name" id="UserPName" />'+
 								'</div>'+
 							'</div>'+
 						'</div>'+
@@ -65,6 +65,7 @@ var usersManagement = function()
 									'<span class="input-group-addon"><i class="fa fa-slideshare" aria-hidden="true"></i></span>'+
 									'<select type="text" class="form-control" id="userType">'+
                                         '<option class="ptUser">הורה</option>'+
+										 '<option class="tcUser">מורה</option>'+
                                         '<option class="GuUser">מדריך</option>'+
                                         '<option class="SWUser">עו"ס</option>'+
                                         '<option class="AdmUser">מנהל</option>'+
@@ -104,8 +105,8 @@ var usersManagement = function()
 							'</div>'+
 						'</div>'+
 
-						'<div class="form-group ">'+
-							'<button type="button" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" id="addUser" >הרשמה</button>'+
+						'<div class="form-group " id="buttons_area">'+
+							
 						'</div>'+
 					'</form>'+
 				'</div>'+
@@ -132,110 +133,19 @@ var usersManagement = function()
                      '<button type="button" id="openUserEditBtn" class=" col-xs-offset-4 btn btn-default"  >לחץ כאן לערוך</button>'+
                     '</div>'
         }
-
-     //-------------------------------------------------------------------------------------------------
-    //         FOR DINAMIC EDITING  USER
-	
-       var EditUserPage={
+		var EditUserButtons={
         inputSection:
-        '<div class="container">'+
-            	'<div class="row main">'+
-				'<div class="panel-heading">'+
-	               '<div class="panel-title text-center">'+
-	               		'<h1 class="title">עריכת/מחיקת משתמש</h1>'+
-	               		'<hr />'+
-	                '</div>'+
-	            '</div> '+
+		
+			'<button id ="change-button" type="button" class="btn btn-primary btn-block btn-lg edit-button"  >עריכה</button>'+
+			'<button id ="delete-button" type="button" class="btn-danger btn-danger btn-block btn-lg  delete-button"  >מחיקת משתמש</button>'
+		
+	}
+	var addUserButton={
+        inputSection:
+	'<button type="button" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" id="addUser" >הרשמה</button>'
+				}
 
-            	'<div class="main-login main-center">'+
-					'<form class="form-horizontal" method="post" action="#">'+
-						
-						'<div class="form-group">'+
-							'<label for="name" class="col-sm-2 controlLabel" >:שם פרטי</label>'+
-							'<div class="col-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>'+
-									'<input type="text" class="form-control" name="name" id="UserPName"  placeholder="פלוני"/>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-						'<div class="form-group">'+
-							'<label for="UserLastName" class="col-sm-2 controlLabel" id="formTxts">:שם משפחה</label>'+
-							'<div class="col-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>'+
-									'<input type="text" class="form-control" name="UserLastName" id="UserLName"  placeholder="אלמוני"/>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-						'<div class="form-group">'+
-							'<label for="username" class="col-sm-2 controlLabel">:שם משתמש</label>'+
-							'<div class="col-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>'+
-									'<input type="text" class="form-control" name="username" id="username"  placeholder="שם משתמש כלשהו"/>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-                        '<div class="form-group">'+
-							'<label for="username" class="col-sm-2 controlLabel">:סוג משתמש</label>'+
-							'<div class="col-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-slideshare" aria-hidden="true"></i></span>'+
-									'<select type="text" class="form-control">'+
-                                    '<option class="ptUser">הורה</option>'+
-                                    '<option class="GuUser">מדריך</option>'+
-                                    '<option class="SWUser">עו"ס</option>'+
-                                    '<option class="AdmUser">מנהל</option>'+
-                                    '</select>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-						'<div class="form-group">'+
-							'<label for="password" class="col-sm-2 controlLabel">:סיסמא</label>'+
-							'<div class="col-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>'+
-									'<input type="password" class="form-control" name="password" id="password"  placeholder="****"/>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-						'<div class="form-group">'+
-							'<label for="confirm" class="col-sm-2 controlLabel">:אימות סיסמא</label>'+
-							'<div class="col-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>'+
-									'<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="****"/>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-                          '<div class="form-group">'+
-							'<label for="clubHouseName" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
-							'<div class="col-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
-									'<select type="text" class="form-control clubHouseName" id="clubhouse_select">'+
-                                    '</select>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-
-						'<div class="form-group ">'+
-							'<button type="button" class="btn btn-primary btn-block btn-lg edit-button"  >עריכה</button>'+
-                            '<button type="button" class="btn-danger btn-danger btn-block btn-lg  delete-button"  >מחיקת משתמש</button>'+
-						'</div>'+
-					'</form>'+
-				'</div>'+
-        '</div>'
-	   }
-
-	/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 	//			ADD USER											   //
 	/////////////////////////////////////////////////////////////////////
 
@@ -244,7 +154,8 @@ var usersManagement = function()
 		page = ADDPAGE;
 		loadClubhousesData();
         $('.Nav').collapse('hide');
-        $("#body").html(addUserPage.inputSection);
+        $("#body").html(UserPage.inputSection);
+		$('#buttons_area').html(addUserButton.inputSection);
         $("#addUser").click(createUser);
     }
 
@@ -286,12 +197,16 @@ var usersManagement = function()
             alert(" הסיסמאות שהוזנו אינן תואמות");
             return;
         }
-        var type=document.getElementById("userType").value;
-		if(type == "" )
+        e=document.getElementById("userType");
+		var type = e.selectedIndex;
+	
+		if(type < 0 )
 		{
 			alert("אנא מלא את כל השדות הנדרשים");
 			return;
 		}
+		
+		
         var database = firebase.database();	
         var usersRef = database.ref('users');
         var newUser = User.create(username,fPassword,firstName,lastName,Uclubhouse,type);
@@ -335,19 +250,6 @@ var usersManagement = function()
 		return AddSectionClubName;
 	}
 	
-	
-//===========================================================================================
-// get the userKey from the DB 
-	var getUserKeyIndex = function (name)
-	{
-		alert("פונקציה לא נכונה");
-		for (var i = 0; i < clubhousesInfo.length; i++) 
-		{	
-			if(name == clubhousesInfo[i].name)
-				return i;
-		}
-		return FAIL;
-	}
 
 
 
@@ -357,11 +259,15 @@ var usersManagement = function()
 	// Edit user function 
      var editUser=function()
     {
+
 		page = EDITPAGE;
 		loadClubhousesData();
+		console.log('1');
         $("#body").html(EditUserOp.inputSection);
         $('.Nav').collapse('hide');
+		console.log('2');
 		$('#clubhouse_select_Edit').click(EditClubselectValue); // auto reads the users
+		console.log('3');
         $("#openUserEditBtn").click(editUserListener);
     }
 
@@ -418,7 +324,6 @@ var usersManagement = function()
 	// load user data when selected
 	var loadUserDetails = function(username)
     {
-	   
 	    var clubKey = clubhousesInfo[clubIndex_Edit].key;
 		firebase.database().ref("clubhouse/"+clubKey+'/usersList').once("value")
 		.then(function (data) // get user key from club users list
@@ -434,7 +339,7 @@ var usersManagement = function()
 			{
 				if(username == userList[keys[i]].username)
 				{
-					return userList[keys[i]].key;
+					return userList[keys[i]].userkey;
 				}
 			}
 
@@ -452,6 +357,7 @@ var usersManagement = function()
 				var user = data.val();
 				if(user)
 				{
+					userToEdit = user;
 					injectEditPage(user)
 				}
 			});
@@ -460,12 +366,35 @@ var usersManagement = function()
 
 	var injectEditPage = function (user)
 	{
-		$('#body').html(addUserPage.inputSection);
-		document.getElementById('title').innerHTML ="ערוך משתמש";
-
-
-
+		$('#body').html(UserPage.inputSection);
+		document.getElementById('title').innerHTML ="עריכת/מחיקת משתמש";
+		var fName = document.getElementById('UserPName');fName.setAttribute("placeholder",user.firstName);
+		var lName = document.getElementById('UserLName');lName.setAttribute("placeholder",user.lastName);
+		document.getElementById('username').setAttribute("placeholder",user.username);
+		document.getElementById('password').setAttribute("placeholder",user.password);
+		document.getElementById('confirm').setAttribute("placeholder",user.password);
+		document.getElementById('userType').setAttribute("options",user.type);
+		
+		// document.getElementById('clubhouse').setAttribute("placeholder",user.password);
+		$('#buttons_area').html(EditUserButtons.inputSection);
+		$('#change-button').click(changeUserInfo);
+		$('#delete-button').click(deleteUser);
 	}
+
+		var changeUserInfo = function()
+		{
+
+		}
+
+		var deleteUser = function()
+		{
+			var key = userToEdit.userkey;
+			firebase.database().ref("users/"+key).remove();
+		}
+
+
+
+
 
 	var EditClubselectValue = function()
 	{

@@ -1,11 +1,11 @@
 
 var login=function()
 {
-	const ADMIIN = 0;
-	const SWUSER = 1;
+	const PUSER = 0;
+	const TUSER = 1;
 	const GSUSER = 2;
-	const PUSER = 3;
-	const TUSER = 4;
+	const SWUSER = 3;
+	const ADMIN = 4;
 
 	var usersAndKeys = [2]; 
 	var correntUser=[2];	
