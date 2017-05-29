@@ -4,13 +4,13 @@ var usersManagement = function()
 	const GSUSER = 2;
 	const PTUSER = 3;
 	const FAIL = -1;
+	const ADDPAGE = 1;
+	const EDITPAGE = 2;
+	var clubhousesInfo = [];
 
-	// load data locally for edit window
-	var usersKeysArr = [];
-	var usersNamesArr = [];
-	var allUsersObjects;	
-	///////////////////////////////////////
-
+	var page;
+	var AddSectionClubName;
+	var EditSectionClubName;
      //-------------------------------------------------------------------------------------------------
      var addUserPage={
         inputSection:
@@ -96,7 +96,7 @@ var usersManagement = function()
 							'<div class="col-sm-10">'+
 								'<div class="input-group">'+
 									'<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
-									'<select type="text" class="form-control clubHouseName" id="clubhouse_select" placeholder="בחר מועדונית מתוך הרשימה">'+
+									'<select type="text" class="form-control clubHouseName" id="clubhouse_select_Add" placeholder="בחר מועדונית מתוך הרשימה">'+
                                     '</select>'+
 								'</div>'+
 							'</div>'+
@@ -116,7 +116,7 @@ var usersManagement = function()
                     '<label for="clubHouseSelect" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
                      '<div class="input-group">'+
 						    '<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
-						    '<select type="text" id="clubhouse_select" class="form-control">'+
+						    '<select type="text" id="clubhouse_select_Edit" class="form-control">'+
                             '</select>'+
 				    '</div>'+
 					 '<button type="button" id="showUsers" class=" col-xs-offset-4 btn btn-default" >הצג משתמשים</button>'+
@@ -239,18 +239,24 @@ var usersManagement = function()
     // add user function
     var addUser=function()
     {
-		clubhouseManagement.preLoadData();
+			// clubhouseManagement.preLoadData();
+		page = ADDPAGE;
+		loadClubhousesData();
         $('.Nav').collapse('hide');
         $("#body").html(addUserPage.inputSection);
         $("#addUser").click(createUser);
+		$('#clubhouse_select_Add').click(addClubSelectValue);
+
     }
      //-------------------------------------------------------------------------------------------------
     // Edit user function 
      var editUser=function()
     {
-		clubhouseManagement.preLoadData();
-        $('.Nav').collapse('hide');
+		page = EDITPAGE;
+		loadClubhousesData();
         $("#body").html(EditUserOp.inputSection);
+        $('.Nav').collapse('hide');
+		$('#clubhouse_select_Edit').click(EditClubselectValue);
 		
 
 		$("#showUsers").click(function(){
@@ -282,15 +288,18 @@ var usersManagement = function()
 			return;
 		}
         // selecting the clubhouse
-        var e = document.getElementById("clubhouse_select");
+		var e;
+		if (page == ADDPAGE)
+        	e = document.getElementById("clubhouse_select_Add");
+		if (page == EDITPAGE)
+        	e = document.getElementById("clubhouse_select_Edit");
 
 		if(e.selectedIndex == -1)// when there are no clubhouses at DB
 		{
 			alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
 			return;
 		}
-        var Uclubhouse= e.options[e.selectedIndex].text;
-		
+        var Uclubhouse = addClubSelectValue;
         for(var i=0;i<login.usersAndKeys[0].length;i++)
         {
             if(login.usersAndKeys[0][i].username==username )
@@ -322,7 +331,7 @@ var usersManagement = function()
 
     }
 
-	var updateClubhouse = function(clubName,type,keyArg,usernameArg)
+	var updateClubhouse = function(clubName,typeArg,keyArg,usernameArg)
 	{
 		var index = getClubKeyIndex(clubName);
 		if(index == FAIL)
@@ -330,15 +339,20 @@ var usersManagement = function()
 			alert("לא נמצאה מועדונית תואמת");
 			return;
 		}
+/*
 		var key = arrays.clubhousesKeysArr[index];
 		firebase.database().ref('clubhouse/'+key+'/usersList').push({key:keyArg,username:usernameArg});
+*/
+		var key = clubhousesInfo[index].key;
+		firebase.database().ref('clubhouse/'+key+'/usersList')
+		.push({userkey:keyArg,username:usernameArg,type:typeArg});
 	};
 
-	var getClubKeyIndex = function (arrays,clubName)
+	var getClubKeyIndex = function (clubName)
 	{
-		for (var i = 0; i < arrays.clubhousesNamesArr.length; i++) 
+		for (var i = 0; i < clubhousesInfo.length; i++) 
 		{
-			if(clubName == arrays.clubhousesNamesArr[i])
+			if(clubName == clubhousesInfo[i].name)
 				return i;
 		}
 		return FAIL;
@@ -347,7 +361,6 @@ var usersManagement = function()
 
    
 
- 
 //======================================================================================
 // show user list from a selected clubhouse
     var  showUsersPerCH= function(clubhouseSelected)
@@ -380,6 +393,7 @@ var usersManagement = function()
 				var k = keys[i];
 				var name = users[k].username;
 				$('#usersInCH').append('<option value="'+i+'">'+name+'</option>');
+			//	$('#Users_select').append('<option value="'+i+'">'+name+'</option>');
 			}
 		});
 
@@ -464,5 +478,62 @@ var usersManagement = function()
 		return FAIL;
 	}
 //===========================================================================================
+
+
+
+	var loadClubhousesData = function()
+	{	
+		var ref = firebase.database().ref("clubhouse");
+		ref.once("value")
+		.then(function(data)		// 		when value recieved
+		{
+			if (data.val() == null)
+			{
+				alert("לא נמצאו מועדוניות להציג");
+				return;
+			}
+			allClubhousesObjects = data.val();
+			var allClubhouses = data.val();   // get the whole tree of clubhouses
+			var keys = Object.keys(allClubhouses);	// get all keys
+				
+			for(var i =0; i<keys.length;i++)
+			{
+				clubhousesInfo[i] = {key:keys[i],name:allClubhouses[keys[i]].name}
+				if (page == EDITPAGE)
+					$('#clubhouse_select_Edit').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
+				if (page == ADDPAGE)
+					$('#clubhouse_select_Add').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
+			}
+		});
+	}
+
+	var EditClubselectValue = function()
+	{
+		var index = document.getElementById("clubhouse_select_Edit").value;
+		if (index < clubhousesInfo.length)
+			return;
+		EditSectionClubName = clubhousesInfo[index].name;
+		showUsersPerCH(tempName);
+		}
+	var addClubSelectValue = function()
+	{
+		var index = document.getElementById("clubhouse_select_Add").value;
+		if (index < clubhousesInfo.length)
+			return;
+		AddSectionClubName = clubhousesInfo[index].name;
+		return AddSectionClubName;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
      return{addUser:addUser,loadUsersData:loadUsersData,editUser:editUser};
 }();
