@@ -3,7 +3,7 @@ var sendMessagePage = function()
 var msgPage={
           inputSection:
         
-       		'<div class="container">'+
+       	'<div class="container">'+
 			'<h2 id = "royh2">כתיבת הודעה חדשה</h2>'+
 		
 			'<div class="container" >	'+
