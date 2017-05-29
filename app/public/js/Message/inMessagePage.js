@@ -13,10 +13,9 @@ var inMassagePage=function()
         
         var createMassage=function(obj,massageID)
         {
-            return str='<div class="row massage" id="'+massageID+'" data-toggle="modal" data-target="#myModal'+massageID+'">'+             
-                            '<span class="glyphicon glyphicon-trash col-xs-2 trash" id="'+massageID+'trash"></span>'+
-                            '<div class="col-xs-2"></div>'+
-                                '<h5 class="topic col-xs-6" id="topic'+massageID+'"></h5>'+          
+            return str='<div class="row massage" id="message_'+massageID+'">'+             
+                            '<span class="glyphicon glyphicon-trash col-xs-2 trash" id="trash_'+massageID+'"></span>'+
+                                '<h5 class="topic col-xs-offset-2 col-xs-6" id="topic'+massageID+'"data-toggle="modal" data-target="#myModal'+massageID+'"></h5>'+          
                                 '<span class="glyphicon glyphicon-envelope col-xs-1 envelope"></span>'+  
                             '<div class="col-xs-1"></div>'+  
                         '</div>'+
@@ -59,11 +58,12 @@ var inMassagePage=function()
         var topic=msg.subject;
         $("#body").append(createMassage(msg,massageID));
         $("#topic"+massageID).append(topic);
-        $("#"+massageID+"trash").click(function()
+        $("#trash_"+massageID).click(function()
         {
             var idName=event.target.id;
-            idName=idName.substring(0,str.length-5);
-            removeMassage(idNamer,key);
+            idName=idName.substring(6,str.length-1);
+            console.log(idName);
+            removeMassage(idName,key);
         });
     }
 
@@ -72,9 +72,10 @@ var inMassagePage=function()
      var removeMassage=function(idName,key)
      {
         var me = login.correntUser[1];
-        var delMsg = firebase.database().ref("users/" + me + "/inboxMessages/"+key)
+        var delMsg = firebase.database().ref("users/" + me + "/inboxMessages/"+key);
+        console.log(idName);
         delMsg.remove();
-        $("#"+idName).remove();
+        $("#message_"+idName).remove();
      }
 
 //-------------------------------------------------------------------------------------------------
@@ -129,5 +130,9 @@ var inMassagePage=function()
     }
   
 
-     return{addMessage:addMessage,initPage:initPage,openSendMassage:openSendMassage,openInBoxMes:openInBoxMes};
+     return{addMessage:addMessage,
+            initPage:initPage,
+            openSendMassage:openSendMassage,
+            openInBoxMes:openInBoxMes,
+            removeMassage:removeMassage};
 }();
