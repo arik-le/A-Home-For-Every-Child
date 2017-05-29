@@ -63,8 +63,6 @@ var clubhouseManagement = function()
 
                     '<button type="button" id="editClubhouseBtn" class="tempEditPage btn btn-default" >לחץ כאן לערוך</button>'+
                     '</div>'
-
-				
         }
     
    
@@ -80,9 +78,9 @@ var clubhouseManagement = function()
     // Initial page for edit clubHouse
 	 var editClubhouse = function()
 	 {
+		loadClubhousesData();
 		$('.Nav').collapse('hide');
 		$("#body").html(EditClubhousePage.inputSection);
-		preLoadData();
         $("#editClubhouseBtn").click(EditCluhouseListener);
 	 }
 
@@ -160,18 +158,6 @@ var clubhouseManagement = function()
 
 	var EditCluhouseListener = function()
 	{
-		console.log(clubhousesNamesArr);
-		console.log(clubhousesKeysArr);
-		console.log(allClubhousesObjects);
-		// console.log($('#clubhouse_select').);
-	}
-
-	// loads clubhouse and user data for edit window
-	var preLoadData = function()
-	{
-		// load clubhouse Data locally
-		loadClubhousesData();
-				//load user form usermanage.js
 	}
  
 	// loads only strings of names for now.
@@ -192,8 +178,8 @@ var clubhouseManagement = function()
 				
 			for(var i =0; i<keys.length;i++)
 			{
-				clubhousesInfo[i] = {key:keys[i],name:allClubhouses[clubhousesKeysArr[i]].name};
-				$('#clubhouse_select').append('<option value="'+i+'">'+clubhousesNamesArr[i]+'</option>');
+				clubhousesInfo[i] = {key:keys[i],name:allClubhouses[keys[i]].name};
+				$('#clubhouse_select').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
 			}
 		});
 	}
@@ -203,5 +189,5 @@ var clubhouseManagement = function()
 	}
 	
 
-    return{getClubhousesInfo:getClubhousesInfo , preLoadData:preLoadData , addClubhouse:addClubhouse , editClubhouse:editClubhouse};
+    return{getClubhousesInfo:getClubhousesInfo  , addClubhouse:addClubhouse , editClubhouse:editClubhouse};
 }();
