@@ -60,10 +60,11 @@ var inMassagePage=function()
         var topic=obj.subject;
         $("#body").append(createMassage(obj,massageID));
         $("#topic"+massageID).append(topic);
-        $("#"+massageID+"trash").click(function(){
-          var str=event.target.id;
-          str=str.substring(0, str.length-5);
-          removeMassage(str);
+        $("#"+massageID+"trash").click(function()
+        {
+            var str=event.target.id;
+            str=str.substring(0,str.length-5);
+            removeMassage(str);
         });
     }
 
@@ -71,15 +72,14 @@ var inMassagePage=function()
 
      var removeMassage=function(id)
      {
-        // remove also from database 
-       $("#"+id).remove();
+        //remove also from database 
+        $("#"+id).remove();
      }
 
 //-------------------------------------------------------------------------------------------------
 
      var openSendMassage=function()
      {
-        
         $('.NAV').collapse('hide');
         $("#body").html(sendMessagePage.msgPage.inputSection);
         sendMessagePage.updateUserList();
@@ -92,29 +92,38 @@ var inMassagePage=function()
      var mesgFunc = function()
      {
          $("#sendMsg").click(openSendMassage);        //open all categories in message
-          $("#incomingMes").click(openInBoxMes);
+         $("#incomingMes").click(openInBoxMes);
          flags.sendMassageIsOn=false;
      }
      
 //-------------------------------------------------------------------------------------------------
     var incomingMessage={
         topic:'<div class="row">'+
-            '<h4 class="col-xs-offset-4 col-xs-8 imt">הודעות נכנסות</h4>'+
+            '<h1 class="col-xs-offset-1 col-xs-8 imt">הודעות נכנסות</h1>'+
         '</div>'
     }
     var openInBoxMes=function()
     {
+        console.log("enterred")
+        $("#body").html("");
         $("#body").html(incomingMessage.topic);
-        $('.NAV').collapse('hide');
-        var me=login.correntUser[1];
-        var messages=login.usersAndKeys[0][me].inboxMessages;
-        if(messages!=null)
-        {
-            var keys = Object.keys(messages);
-            for(var i=0;i<keys.length;i++)
-                addMessage(messages[keys[i]],i);
-        }
+        $('.NAV').collapse('hide');     //close nav bar after enterance
         
+        var me = login.correntUser[1];
+        
+        firebase.database().ref("users/" + me + "/inboxMessages").once("value")
+        .then(function(data)
+        {
+            var messages = data.val();
+            if (messages !== null)
+            {
+                var keys = Object.keys(messages);
+                for(var i=0;i<keys.length;i++)
+                    addMessage(messages[keys[i]],i);
+			}
+        });
     }
+  
+
      return{addMessage:addMessage,initPage:initPage,openSendMassage:openSendMassage,openInBoxMes:openInBoxMes};
 }();
