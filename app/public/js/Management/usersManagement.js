@@ -243,7 +243,7 @@ var usersManagement = function()
         $('.Nav').collapse('hide');
         $("#body").html(addUserPage.inputSection);
         $("#addUser").click(createUser);
-		$('#clubhouse_select_Add').click(addClubSelectValue);
+		// $('#clubhouse_select_Add').click(addClubSelectValue);
 
     }
      //-------------------------------------------------------------------------------------------------
@@ -256,15 +256,15 @@ var usersManagement = function()
         $('.Nav').collapse('hide');
 		$('#clubhouse_select_Edit').click(EditClubselectValue);
 		
-
-		$("#showUsers").click(function(){
 			document.getElementById("usersInCH").disabled=false;
 			document.getElementById("openUserEditBtn").disabled=false;
-			var e = document.getElementById("clubhouse_select");
+
+		/*$("#showUsers").click(function(){
+			var e = document.getElementById("clubhouse_select_Edit");
             var CHselect= e.options[e.selectedIndex].text;
 			
 			showUsersPerCH(CHselect);
-		  });
+		  });*/
 
         $("#openUserEditBtn").click(function(){
             var e = document.getElementById("usersInCH");
@@ -289,15 +289,14 @@ var usersManagement = function()
 		var e;
 		if (page == ADDPAGE)
         	e = document.getElementById("clubhouse_select_Add");
-		if (page == EDITPAGE)
-        	e = document.getElementById("clubhouse_select_Edit");
 
 		if(e.selectedIndex == -1)// when there are no clubhouses at DB
 		{
 			alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
 			return;
 		}
-        var Uclubhouse = addClubSelectValue;
+
+        var Uclubhouse = e.options[e.selectedIndex].text;
         for(var i=0;i<login.usersAndKeys[0].length;i++)
         {
             if(login.usersAndKeys[0][i].username==username )
@@ -363,15 +362,14 @@ var usersManagement = function()
 // show user list from a selected clubhouse
     var  showUsersPerCH= function(clubhouseSelected)
     {
-		document.getElementById('usersInCH').innerHTML = ""
-	    var arrays = clubhouseManagement.getClubhouseArrays();
-	    var index = getClubKeyIndex(arrays,clubhouseSelected);
+		document.getElementById('usersInCH').innerHTML = "";
+	    var index = getClubKeyIndex(EditSectionClubName);
         if(index == FAIL)
 		{
 			alert("לא נמצאה מועדונית ");
 			return;
 		}
-		var ClubKey = arrays.clubhousesKeysArr[index];
+		var ClubKey = clubhousesInfo[index].key;
 		
 	   
 	    var ref = firebase.database().ref("clubhouse/"+ClubKey+"/usersList");
@@ -411,7 +409,6 @@ var usersManagement = function()
 			return;
 		}
 		var userKey =usersKeysArr[index];
-		console.log(userKey);
 	   
 	    var ref = firebase.database().ref("users/"+userKey);
 		ref.once("value")
@@ -468,9 +465,9 @@ var usersManagement = function()
 // get the userKey from the DB 
 	var getUserKeyIndex = function (name)
 	{
-		for (var i = 0; i < usersNamesArr.length; i++) 
-		{	console.log(usersNamesArr[i]);
-			if(name == usersNamesArr[i])
+		for (var i = 0; i < clubhousesInfo.length; i++) 
+		{	
+			if(name == clubhousesInfo[i].name)
 				return i;
 		}
 		return FAIL;
@@ -508,15 +505,16 @@ var usersManagement = function()
 	var EditClubselectValue = function()
 	{
 		var index = document.getElementById("clubhouse_select_Edit").value;
-		if (index < clubhousesInfo.length)
+		if (index > clubhousesInfo.length)
 			return;
 		EditSectionClubName = clubhousesInfo[index].name;
-		showUsersPerCH(tempName);
-		}
+		showUsersPerCH(EditSectionClubName);
+	}
+	
 	var addClubSelectValue = function()
 	{
 		var index = document.getElementById("clubhouse_select_Add").value;
-		if (index < clubhousesInfo.length)
+		if (index > clubhousesInfo.length)
 			return;
 		AddSectionClubName = clubhousesInfo[index].name;
 		return AddSectionClubName;

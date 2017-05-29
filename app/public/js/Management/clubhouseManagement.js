@@ -1,8 +1,7 @@
 var clubhouseManagement = function()
 {
 	// load data locally for edit window
-	var clubhousesKeysArr = [];
-	var clubhousesNamesArr = [];
+	var clubhousesInfo = [];
 	var allClubhousesObjects;	
 	///////////////////////////////////////
 	
@@ -193,17 +192,16 @@ var clubhouseManagement = function()
 				
 			for(var i =0; i<keys.length;i++)
 			{
-				clubhousesKeysArr[i] = keys[i];
-				clubhousesNamesArr[i] = allClubhouses[clubhousesKeysArr[i]].name;
+				clubhousesInfo[i] = {key:keys[i],name:allClubhouses[clubhousesKeysArr[i]].name};
 				$('#clubhouse_select').append('<option value="'+i+'">'+clubhousesNamesArr[i]+'</option>');
 			}
 		});
 	}
-	var getClubhouseArrays = function()
+	var getClubhousesInfo = function()
 	{
-		return{ clubhousesKeysArr:clubhousesKeysArr , clubhousesNamesArr:clubhousesNamesArr} ;  
+		return{ clubhousesInfo:clubhousesInfo} ;  
 	}
 	
 
-    return{getClubhouseArrays:getClubhouseArrays , preLoadData:preLoadData , addClubhouse:addClubhouse , editClubhouse:editClubhouse};
+    return{getClubhousesInfo:getClubhousesInfo , preLoadData:preLoadData , addClubhouse:addClubhouse , editClubhouse:editClubhouse};
 }();
