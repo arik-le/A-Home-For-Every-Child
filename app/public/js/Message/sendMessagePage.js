@@ -81,11 +81,29 @@ var msgPage={
 					'<input id = "subjectSM" type="text" class="form-control" id="name" name="name" placeholder="נושא ההודעה" value="">'+
 					'<label id="royLabel">:תוכן ההודעה</label></br>'+
 					'<textarea id = "contentSM" class="form-control" rows="10" name="message" placeholder="תוכן ההודעה"></textarea></br>'+
-			
+					
+						'<div class="container">'+
+						'<div class="col-md-6">'+
+							'<div class="form-group">'+
+								'<label>הוסף תמונה</label>'+
+								'<div class="input-group">'+
+									'<span class="input-group-btn">'+
+										'<span class="btn btn-default btn-file">'+
+											'בחר <input type="file" id="imgInp">'+
+										'</span>'+
+									'</span>'+
+									'<input type="text" class="form-control" readonly>'+
+								'</div>'+
+								'<img id="img-upload"/>'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+
 					'<div class="col-sm-10 col-sm-offset-2">'+
 						'<input id="sendButtonPM" name="submit" type="submit" value="שלח" class="btn btn-primary">'+
 						'<button id="cleanButtonPM" type="button" class="btn">נקה</button>'+
 					'</div>'+
+				
 				'</div>'+
 			'</div>'+
 		'</div>'
@@ -102,8 +120,7 @@ var msgPage={
             if(list[1][i]!=myIndex	&&	list[0][list[1][i]].userType==type)
            $("#chooseUserSM").append('<option value='+list[0][list[1][i]].userKey+'>'+list[0][list[1][i]].username+'</option>');     
 		}
-	
-  }
+  	}
 
    
     var sendPriMessage=function()
@@ -126,6 +143,7 @@ var msgPage={
         $("#contentSM").val("");
         $("#chooseUserSM").val("");
     }
+
     return{msgPage:msgPage,
         updateUserList:updateUserList,
         sendPriMessage:sendPriMessage}

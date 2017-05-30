@@ -74,3 +74,45 @@ cleanButtonPM{
 	height:20px;
 	width:20px;
 }
+#uploadImage
+{
+	text-align: right;
+}
+
+/************************
+uploud image button
+************************/
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+		text-align: center;
+
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+		text-align: center;
+
+}
+
+#img-upload{
+	margin-top:4%;
+	background-color:lightcyan; 
+    width: 60%;
+	height: 25%;
+	border: 1px dotted darkred;
+	border-radius: 100%;
+	text-align: center;
+}

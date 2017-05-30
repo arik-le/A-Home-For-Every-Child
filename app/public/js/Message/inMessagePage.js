@@ -115,6 +115,7 @@ var inMassagePage=function()
      {
         $('.NAV').collapse('hide');
         $("#body").html(sendMessagePage.msgPage.inputSection);
+        uploadImage.init();
         sendMessagePage.updateUserList();
         $("#sendButtonPM").click(sendMessagePage.sendPriMessage);
         $("#userList").val("");
