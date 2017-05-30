@@ -102,7 +102,7 @@ var inMassagePage=function()
 
     var incomingMessage={
         topic:'<div class="row">'+
-            '<h1 class="col-xs-offset-1 col-xs-8 imt">הודעות נכנסות</h1>'+
+            '<h2 class="col-xs-offset-2 col-xs-8 smt">הודעות נכנסות</h2>'+
         '</div>'
     }
 
