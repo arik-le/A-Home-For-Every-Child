@@ -71,7 +71,7 @@ var inMassagePage=function()
         $("#enve"+id).removeClass("envelopeN");
         $("#enve"+id).addClass("envelopeR");
     }
-    var addMessage=function(msg,massageID,key)
+    var addMessage=function(msg,massageID,key,isInBox)
     {
         var topic=msg.subject;
         $("#body").append(createMassage(msg,massageID));
@@ -83,22 +83,29 @@ var inMassagePage=function()
         $("#trash_"+massageID).click(function()
         {
             var idName=event.target.id;
-            idName=idName.substring(6,str.length-1);
-            removeMassage(idName,key);
+            console.log(idName);
+            idName=idName.substring(6,idName.length);
+            removeMassage(idName,key,isInBox);
         });
     }
 
 //-------------------------------------------------------------------------------------------------
 
-     var removeMassage=function(idName,key)
+     var removeMassage=function(idName,key,isInBox)
      {
          if(confirm("האם אתה בטוח שברצונך למחוק את ההודעה?"))
          {
-                var me = login.correntUser[1];
-                var delMsg = firebase.database().ref("users/" + me + "/inboxMessages/"+key);
-                console.log(idName);
-                delMsg.remove();
                 $("#message_"+idName).remove();
+                var inOrOut;
+                if(isInBox)
+                    inOrOut="/inboxMessages/";
+                else
+                    inOrOut="/outboxMessages/";
+                var me = login.correntUser[1];
+                var delMsg = firebase.database().ref("users/" + me + inOrOut+key);
+                console.log(key);
+                delMsg.remove();
+               
          }
      }
 
@@ -148,7 +155,7 @@ var inMassagePage=function()
             {
                 var keys = Object.keys(messages);
                 for(var i=0;i<keys.length;i++)
-                    addMessage(messages[keys[i]],i,keys[i]);
+                    addMessage(messages[keys[i]],i,keys[i],true);
 			}
         });
     }

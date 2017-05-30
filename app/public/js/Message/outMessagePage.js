@@ -20,7 +20,7 @@ var outMessagePage=function()
             {
                 var keys = Object.keys(messages);
                 for(var i=0;i<keys.length;i++)
-                    inMassagePage.addMessage(messages[keys[i]],i);
+                    inMassagePage.addMessage(messages[keys[i]],i,keys[i],false);
 			}
         });
     }
