@@ -16,7 +16,6 @@
 .trash,.envelopeR
 {
     padding: 10px ; 
-
 }
 .envelopeN
 {
@@ -27,7 +26,6 @@
 .headline
 {
     text-align: center;
-    text-decoration: underline;
     font-size: 35px;
 }
 .inbox ,outbox ,sendMsg
