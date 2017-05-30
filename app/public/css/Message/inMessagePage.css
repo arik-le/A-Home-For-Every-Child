@@ -7,11 +7,7 @@
     border-radius: 2px;
     margin: 0.5%;
 }
-.imt
-{
-     text-decoration: underline;
-     font-size: 200%;
-}
+
 .topic
 {
     text-align: right;
@@ -50,7 +46,6 @@
 {
     text-align: center;
     padding: 10px 3px;
-    /*width: 33.33333333333333%;*/
 }
 .MassageList
 {

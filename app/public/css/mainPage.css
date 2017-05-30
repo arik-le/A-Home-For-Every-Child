@@ -2,6 +2,7 @@
     overflow: scroll;
     max-height: 70%;
     max-width: 100%;
+    overflow-x: hidden;
 }
 
 .topHeader
