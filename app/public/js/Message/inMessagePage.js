@@ -13,11 +13,14 @@ var inMassagePage=function()
         
         var createMassage=function(obj,massageID)
         {
-            return str='<div class="row massage" id="message_'+massageID+'">'+             
+            var str='<div class="row massage" id="message_'+massageID+'">'+             
                             '<span class="glyphicon glyphicon-trash col-xs-2 trash" id="trash_'+massageID+'"></span>'+
-                                '<h5 class="topic col-xs-offset-2 col-xs-6" id="topic'+massageID+'"data-toggle="modal" data-target="#myModal'+massageID+'"></h5>'+          
-                                '<span class="glyphicon glyphicon-envelope col-xs-1 envelope"></span>'+  
-                            '<div class="col-xs-1"></div>'+  
+                                '<h5 class="topic col-xs-offset-2 col-xs-6" id="topic'+massageID+'"data-toggle="modal" data-target="#myModal'+massageID+'"></h5>';
+                                if(obj.isRead)          
+                                    str+='<span class="glyphicon glyphicon-envelope col-xs-1 envelopeR" id="enve'+massageID+'"></span>';
+                                else
+                                    str+='<span class="glyphicon glyphicon-envelope col-xs-1 envelopeN" id="enve'+massageID+'"></span>';
+                            str+='<div class="col-xs-1"></div>'+  
                         '</div>'+
                     
             '<div class="modal fade" id="myModal'+massageID+'" role="dialog">'+
@@ -42,6 +45,7 @@ var inMassagePage=function()
                     '</div>'+
                 '</div>'+
             '</div>';
+            return str;
         }
 
 //-------------------------------------------------------------------------------------------------
@@ -52,17 +56,34 @@ var inMassagePage=function()
     }
 
 //-------------------------------------------------------------------------------------------------
-
+    var readMessage=function(id)
+    {
+        var me = login.correntUser[1];
+        firebase.database().ref("users/" + me + "/inboxMessages").once("value")
+        .then(function(data)
+            {
+                var messages = data.val();
+                var keys = Object.keys(messages);
+                var i=keys[id];
+                firebase.database().ref("users/" + me + "/inboxMessages/"+i+"/isRead").set(true);
+              
+            })
+        $("#enve"+id).removeClass("envelopeN");
+        $("#enve"+id).addClass("envelopeR");
+    }
     var addMessage=function(msg,massageID,key)
     {
         var topic=msg.subject;
         $("#body").append(createMassage(msg,massageID));
+        $("#topic"+massageID).click(function()
+        {
+            readMessage(massageID);
+        });
         $("#topic"+massageID).append(topic);
         $("#trash_"+massageID).click(function()
         {
             var idName=event.target.id;
             idName=idName.substring(6,str.length-1);
-            console.log(idName);
             removeMassage(idName,key);
         });
     }
@@ -71,11 +92,14 @@ var inMassagePage=function()
 
      var removeMassage=function(idName,key)
      {
-        var me = login.correntUser[1];
-        var delMsg = firebase.database().ref("users/" + me + "/inboxMessages/"+key);
-        console.log(idName);
-        delMsg.remove();
-        $("#message_"+idName).remove();
+         if(confirm("האם אתה בטוח שברצונך למחוק את ההודעה?"))
+         {
+                var me = login.correntUser[1];
+                var delMsg = firebase.database().ref("users/" + me + "/inboxMessages/"+key);
+                console.log(idName);
+                delMsg.remove();
+                $("#message_"+idName).remove();
+         }
      }
 
 //-------------------------------------------------------------------------------------------------
@@ -133,6 +157,5 @@ var inMassagePage=function()
      return{addMessage:addMessage,
             initPage:initPage,
             openSendMassage:openSendMassage,
-            openInBoxMes:openInBoxMes,
-            removeMassage:removeMassage};
+            openInBoxMes:openInBoxMes};
 }();
