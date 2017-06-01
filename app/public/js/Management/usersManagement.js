@@ -103,8 +103,7 @@ var usersManagement = function()
                                     '</select>'+
 								'</div>'+
 							'</div>'+
-						'</div>'+
-
+					
 						'<div class="form-group " id="buttons_area">'+
 							
 						'</div>'+
@@ -115,23 +114,21 @@ var usersManagement = function()
        //-------------------------------------------------------------------------------------------------
         var EditUserOp={
         inputSection:
-                '<div class="container">'+
-                    '<label for="clubHouseSelect" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
-                     '<div class="input-group">'+
-						    '<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
-						    '<select type="text" id="clubhouse_select_Edit" class="form-control">'+
-                            '</select>'+
-				    '</div>'+
- 
-					 '<br>'+
-                    '<label for="clubHouseUsers" class="col-sm-2 controlLabel">:בחר משתמש</label>'+
-                    '<div class="input-group">'+
-						    '<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>'+
-						    '<select type="text" id="usersInCH" class="form-control" >'+
-                            '</select>'+
-				    '</div>'+
-                     '<button type="button" id="openUserEditBtn" class=" col-xs-offset-4 btn btn-default"  >לחץ כאן לערוך</button>'+
-                    '</div>'
+			'<div class="container">'+
+				'<label for="clubBottunGroup" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
+				'<br>'+
+				'<div  id ="clubBottunGroup" class = "col-md-4">'+
+				'</div>'+
+				'<br>'+
+				'<label for="clubHouseUsers" class="col-sm-2 controlLabel">:בחר משתמש</label>'+
+				'<div class="input-group">'+
+						'<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>'+
+						'<select type="text" id="usersInCH" class="form-control" >'+
+						'</select>'+
+				'</div>'+
+
+				'<button type="button" id="openUserEditBtn" class=" col-xs-offset-4 btn btn-default"  >לחץ כאן לערוך</button>'+
+			'</div>'
         }
 		var EditUserButtons={
         inputSection:
@@ -233,7 +230,7 @@ var usersManagement = function()
 	{
 		for (var i = 0; i < clubhousesInfo.length; i++) 
 		{
-			if(clubName == clubhousesInfo[i].name)
+			if(clubName.trim() == clubhousesInfo[i].name)
 				return i;
 		}
 		return FAIL;
@@ -259,27 +256,24 @@ var usersManagement = function()
 	// Edit user function 
      var editUser=function()
     {
-
 		page = EDITPAGE;
-		loadClubhousesData();
         $("#body").html(EditUserOp.inputSection);
         $('.Nav').collapse('hide');
-		$('#clubhouse_select_Edit').click(EditClubselectValue); // auto reads the users
-        $("#openUserEditBtn").click(editUserListener);
+		loadClubhousesData(); 	// attach listeners after loading clubhouses
     }
 
 	//======================================================================================
 	// show user list from a selected clubhouse
-    var  showUsersPerCH= function(clubhouseSelected)
+    var  showUsersPerCH = function(clubhouseSelected)
     {
 		document.getElementById('usersInCH').innerHTML = "";
-	    var index = getClubKeyIndex(EditSectionClubName);
-        if(index == FAIL)
+	    var tmpIndex = getClubKeyIndex(clubhouseSelected);
+        if(tmpIndex == FAIL)
 		{
 			alert("לא נמצאה מועדונית ");
 			return;
 		}
-		var ClubKey = clubhousesInfo[index].key;
+		var ClubKey = clubhousesInfo[tmpIndex].key;
 		
 	    var ref = firebase.database().ref("clubhouse/"+ClubKey+"/usersList");
 		ref.once("value")
@@ -298,7 +292,6 @@ var usersManagement = function()
 				var k = keys[i];
 				var name = users[k].username;
 				$('#usersInCH').append('<option value="'+i+'">'+name+'</option>');
-			//	$('#Users_select').append('<option value="'+i+'">'+name+'</option>');
 			}
 		
 		});
@@ -413,20 +406,12 @@ var usersManagement = function()
 		}
 
 
-
-
-
-	var EditClubselectValue = function()
+// listener for 'select' of clubhouse
+	var EditClubselectValue = function(e)
 	{
-		var index = document.getElementById("clubhouse_select_Edit").value;
-		if (index > clubhousesInfo.length)
-			return;
-		if(EditSectionClubName == clubhousesInfo[index].name) // ignore select the same club
-			return;
-		EditSectionClubName = clubhousesInfo[index].name;
-		clubIndex_Edit = index;
-		showUsersPerCH(EditSectionClubName);
+		showUsersPerCH(e.target.innerText);
 	}
+
 
 	/////////////////////////////////////////////////////////////////////
 	//			LOAD DATA											   //
@@ -453,9 +438,17 @@ var usersManagement = function()
 				
 			for(var i =0; i<keys.length;i++)
 			{
-				clubhousesInfo[i] = {key:keys[i],name:allClubhouses[keys[i]].name}
+				var tempName = allClubhouses[keys[i]].name;
+				clubhousesInfo[i] = {key:keys[i],name:tempName}
 				if (page == EDITPAGE)
-					$('#clubhouse_select_Edit').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
+				{
+					var tempBtnID = 'btn'+i;
+					var btnInput = '<button id = '+tempBtnID+' type="button" class="btn btn-default ">'+
+									'<span class="glyphicon glyphicon-home"></span> '+tempName+
+								'</button>';
+					$('#clubBottunGroup').append(btnInput);
+					$('#'+tempBtnID).click(EditClubselectValue);
+				}
 				if (page == ADDPAGE)
 					$('#clubhouse_select_Add').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
 			}

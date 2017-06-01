@@ -43,6 +43,7 @@ var clubhouseManagement = function()
 					
 						'<div class="form-group ">'+
 							'<button type="button" id="addClubhouseBtn" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" >הוספה</button>'+
+						'</br>'+
 						'</div>'+
 					'</form>'+
 				'</div>'+
