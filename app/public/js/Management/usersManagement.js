@@ -142,7 +142,7 @@ var usersManagement = function()
 	'<button type="button" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" id="addUser" >הרשמה</button>'
 				}
 
-/////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////
 	//			ADD USER											   //
 	/////////////////////////////////////////////////////////////////////
 
@@ -211,6 +211,7 @@ var usersManagement = function()
         firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
 		updateClubhouse(Uclubhouse,type,key.key,username);
         alert("הוזן בהצלחה");
+		addUser();
     }
 
 	var updateClubhouse = function(clubName,typeArg,keyArg,usernameArg)
@@ -260,6 +261,7 @@ var usersManagement = function()
         $("#body").html(EditUserOp.inputSection);
         $('.Nav').collapse('hide');
 		loadClubhousesData(); 	// attach listeners after loading clubhouses
+		$('#openUserEditBtn').click(editUserListener);
     }
 
 	//======================================================================================
@@ -337,7 +339,7 @@ var usersManagement = function()
 		{
 			if(!key)
 			{
-				alert('Keyerr ');
+				alert('Keyerr '+key);
 				return;
 			}
 			// get the user object
@@ -393,15 +395,18 @@ var usersManagement = function()
 				for(var i =0; i<keys.length;i++)
 				{
 					var key = users[keys[i]].userkey;
-					console.log(userToEdit.userKey);
-					console.log(users[keys[i]].userkey);
+					var k = keys[i];
 					if(userToEdit.userKey == users[keys[i]].userkey)
 					{
-						alert("deleted");
-						firebase.database().ref("clubhouse/"+clubKey+"/usersList"+users[keys[i]]).remove();
+						firebase.database().ref("clubhouse/"+clubKey+"/usersList").child(k).remove();
+						return "true";
 					}
 				}
-			//firebase.database().ref("users/"+userToEdit.userKey).remove();
+				return ("false")
+		}).then(function(res)
+		{
+			if(res == "true")
+				firebase.database().ref("users/"+userToEdit.userKey).remove();
 		});
 		}
 
@@ -409,6 +414,8 @@ var usersManagement = function()
 // listener for 'select' of clubhouse
 	var EditClubselectValue = function(e)
 	{
+		EditSectionClubName = e.target.innerText;
+		clubIndex_Edit = getClubKeyIndex(e.target.innerText.trim());
 		showUsersPerCH(e.target.innerText);
 	}
 
