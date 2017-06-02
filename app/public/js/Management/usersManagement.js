@@ -135,7 +135,6 @@ var usersManagement = function()
 		
 			'<button id ="change-button" type="button" class="btn btn-primary btn-block btn-lg edit-button"  >עריכה</button>'+
 			'<button id ="delete-button" type="button" class="btn-danger btn-danger btn-block btn-lg  delete-button"  >מחיקת משתמש</button>'
-		
 	}
 	var addUserButton={
         inputSection:
