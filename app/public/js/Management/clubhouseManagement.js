@@ -7,8 +7,13 @@ var clubhouseManagement = function()
 	const EDITPAGE = 2;
 	const FAIL = -1;
 	var page;
+
+	// edit page vars
+	var clubToEdit;
 	var edit_clubname;
 	var edit_clubIndex;
+
+
 	///////////////////////////////////////
 	
      //-------------------------------------------------------------------------------------------------
@@ -59,6 +64,11 @@ var clubhouseManagement = function()
 
 			var addClubhouseBtn={
        		 inputSection:'<button type="button" id="addClubhouseBtn" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" >הוספה</button>'+
+									'</br>'
+			}
+
+			var editClubhouseBtn={
+       		 inputSection:'<button type="button" id="editClubhouseBtn" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" >עריכה</button>'+
 									'</br>'
 			}
        //-------------------------------------------------------------------------------------------------
@@ -174,24 +184,45 @@ var clubhouseManagement = function()
 	// edit button from clubhosue edit menu
 	var EditCluhouseListener = function(e)
 	{
-		console.log('EditCluhouseListener');
-		var clubhouse;
 		var clubRef = firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key);
 		clubRef.once("value").then(function(data)
 		{
-			clubhouse = data.val();
+			clubToEdit = data.val();	// keep ch info
+			// inject html and set listener for edit page
 			$('.Nav').collapse('hide');
 			$("#body").html(addClubhousePage.inputSection); 
-			document.getElementById('titleCH').innerHTML ="עריכת מועדונית";
-			document.getElementById('clubhouseAddrID').setAttribute("placeholder",data.val().name);
-			document.getElementById('clubhouseNameID').setAttribute("placeholder",data.val().address);
+			document.getElementById('titleCH').innerHTML ="עריכת מועדונית"; // change top title
+			// set inputs
+			$('#clubhouseAddrID').val(data.val().address);
+			$('#clubhouseNameID').val(data.val().name);
+			$('#buttonSection').html(editClubhouseBtn.inputSection);
+			$('#editClubhouseBtn').click(changeCHListener);
 		});
 	}
+
+
+
+	var changeCHListener = function()
+	{
+		var obj={};
+		var name = $('#clubhouseNameID').val();
+		var address = $('#clubhouseAddrID').val();
+		if(clubToEdit.name != name)
+		{
+			var cref = firebase.database().ref('clubhouse/');
+			obj.name = name;
+		}
+		if(clubToEdit.address != address)
+		{
+			obj.address = address;
+		}
+		cref.child(clubhousesInfo[edit_clubIndex].key).update(obj);
+	}
+
 	var CHsellection = function(e)
 	{
 		edit_clubname = e.target.innerText;
 		edit_clubIndex = getClubKeyIndex(e.target.innerText.trim());
-		console.log(edit_clubname+' '+edit_clubIndex);
 	}
  
 	var removeCHlistener = function()
@@ -201,7 +232,6 @@ var clubhouseManagement = function()
 		firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key).remove()
 		.then(function(res)
 		{
-			alert(res);	
 			clubhousesInfo = [];
 			editClubhouse();
 		});
