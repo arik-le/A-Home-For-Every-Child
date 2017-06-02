@@ -1,0 +1,118 @@
+#royh2
+{
+	text-align:center;
+}
+.mytabs a{
+	background-color: white;
+}
+.active a {
+  background-color: #ec2323 !important;
+}
+
+#clubHouseRoy 
+{
+	margin-top:5%;
+	border:1px solid #ec2323;
+	border-radius:10px;
+	height: 30px;
+	width:50%;
+}
+.userCkecklist
+{
+	margin-bottom:3%;
+	border:1px solid #ec2323;
+	border-radius:10px;
+	height: 30px;
+	width:46%;
+    margin:2%;
+}
+.center-pills { display: inline-block; }
+
+.mytabs
+{
+	text-align:center;
+}
+.tab-pane{
+	text-align:center;
+	margin-left:-7%;
+	margin-right:-7%;
+}
+#royLabel{
+	display:block;
+	text-align:right;
+	font-weight:bold;
+	font-size:20px;
+	float:right;
+}
+#sendButtonPM{
+    margin:3%;
+    width:60px;
+	background-color: #ec2323 !important;
+}/*
+cleanButtonPM{
+     margin:3%;
+    width:60px;
+}*/
+#subjectSM{
+	text-align:right;
+	border:1px solid #ec2323;
+	border-radius:10px;
+}
+#contentSM{
+	text-align:right;
+	border:1px solid #ec2323;
+	border-radius:10px;
+}
+.chkbox {
+   padding: 5px;
+   font-weight: bold;
+   font-size:20px;
+}
+
+#checkBoxIn
+{
+	height:20px;
+	width:20px;
+}
+#uploadImage
+{
+	text-align: right;
+}
+
+/************************
+uploud image button
+************************/
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+		text-align: center;
+
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+		text-align: center;
+
+}
+
+#img-upload{
+	margin-top:4%;
+	background-color:lightcyan; 
+    width: 60%;
+	height: 25%;
+	border: 1px dotted darkred;
+	border-radius: 100%;
+	text-align: center;
+}

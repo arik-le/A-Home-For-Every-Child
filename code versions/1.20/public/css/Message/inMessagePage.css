@@ -1,0 +1,98 @@
+.massage
+{
+    border: 1.5px solid darkred;
+    /*padding: 10px 20px; */
+    background: whitesmoke;
+    width: 100%;
+    border-radius: 2px;
+    margin: 0.5%;
+}
+
+.topic
+{
+    text-align: right;
+    font-size: 100%;
+}
+.trash,.envelopeR
+{
+    padding: 10px ; 
+}
+.envelopeN
+{
+    padding: 10px ; 
+    color: blue; 
+}
+
+.headline
+{
+    text-align: center;
+    font-size: 35px;
+}
+.inbox ,outbox ,sendMsg
+{
+    text-align: center;
+    padding: 10px 3px;
+    /*width: 33.33333333333333%;*/
+}
+.outbox 
+{
+    text-align: center;
+    padding: 10px 3px;
+    /*width: 33.33333333333333%;*/
+}
+.sendMsg
+{
+    text-align: center;
+    padding: 10px 3px;
+}
+.MassageList
+{
+    margin:0%; 
+}
+.massNav
+{
+    width: 100%;
+}
+/*----------------------------------message box design---------------------------------*/
+
+.modal-dialog
+{
+	margin-top:20%;
+}
+.modal-title
+{
+	text-align:center;
+}
+.modal-body{
+	margin-top:-15px;
+	text-align:right;
+}
+.modal-footer{
+	text-align:center;
+}
+.subject textarea {
+    width: 100%;
+    height: 35px;
+    padding: 5px 5px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+	text-align:right;
+	font-weight:bold;
+}
+
+.content textarea {
+    width: 100%;
+    height: 150px;
+    padding: 5px 5px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+	text-align:right;
+}
