@@ -209,13 +209,13 @@ var clubhouseManagement = function()
 		var address = $('#clubhouseAddrID').val();
 		if(clubToEdit.name != name)
 		{
-			var cref = firebase.database().ref('clubhouse/');
 			obj.name = name;
 		}
 		if(clubToEdit.address != address)
 		{
 			obj.address = address;
 		}
+		var cref = firebase.database().ref('clubhouse/');
 		cref.child(clubhousesInfo[edit_clubIndex].key).update(obj);
 	}
 

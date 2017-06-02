@@ -359,12 +359,12 @@ var usersManagement = function()
 	{
 		$('#body').html(UserPage.inputSection);
 		document.getElementById('title').innerHTML ="עריכת/מחיקת משתמש";
-		var fName = document.getElementById('UserPName');fName.setAttribute("placeholder",user.firstName);
-		var lName = document.getElementById('UserLName');lName.setAttribute("placeholder",user.lastName);
-		document.getElementById('username').setAttribute("placeholder",user.username);
-		document.getElementById('password').setAttribute("placeholder",user.password);
-		document.getElementById('confirm').setAttribute("placeholder",user.password);
-		document.getElementById('userType').setAttribute("options",user.type);
+		$('#UserPName').val(user.firstName);
+		$('#UserLName').val(user.lastName);
+		$('#username').val(user.username);
+		$('#password').val(user.password);
+		$('#confirm').val(user.password);
+		$('#userType').val(user.type);
 		
 		// document.getElementById('clubhouse').setAttribute("placeholder",user.password);
 		$('#buttons_area').html(EditUserButtons.inputSection);
@@ -374,7 +374,31 @@ var usersManagement = function()
 
 		var changeUserInfo = function()
 		{
+			var obj={};
+			var firstName = $('#UserPName').val();
+			var lastName = $('#UserLName').val();
+			var username = $('#username').val();
+			var password = $('#password').val();
+			var confirm = $('#confirm').val();
+			var userType = $('#userType').val();
+			if (password != confirm)
+			{
+				alert('הסיסמאות אינן תואמות');
+				return;
+			}
+			if (userToEdit.firstName != firstName)
+				obj.firstName = firstName;
+			if (userToEdit.lastName != lastName)
+				obj.lastName = lastName;
+			if (userToEdit.username != username)
+				obj.username = username;
+			if (userToEdit.password != password)
+				obj.password = password;
+			if(userToEdit.userType != userType)
+				obj.userType = userType;
 
+			var userRef = firebase.database().ref('users/');
+			userRef.child(userToEdit.userKey).update(obj);
 		}
 
 		var deleteUser = function()
