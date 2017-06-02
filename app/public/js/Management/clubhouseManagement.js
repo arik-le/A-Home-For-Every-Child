@@ -3,24 +3,30 @@ var clubhouseManagement = function()
 	// load data locally for edit window
 	var clubhousesInfo = [];
 	var allClubhousesObjects;	
+	const ADDPAGE = 1;
+	const EDITPAGE = 2;
+	const FAIL = -1;
+	var page;
+	var edit_clubname;
+	var edit_clubIndex;
 	///////////////////////////////////////
 	
      //-------------------------------------------------------------------------------------------------
      // INJECTION FOR ADDING NEW CLUBHOUSE PAGE
 	var addClubhousePage={
         inputSection:
-        '<div class="container">'+
-            	'<div class="row main">'+
+'<div class="container">'+
+	'<div class="row main">'+
 				'<div class="panel-heading">'+
-	               '<div class="panel-title text-center">'+
-	               		'<h1 class="title">הוספת מועדונית</h1>'+
-	               		'<hr />'+
-	                '</div>'+
+					'<div class="panel-title text-center">'+
+						'<h1 class="title">הוספת מועדונית</h1>'+
+						'<hr />'+
+					'</div>'+
 	            '</div> '+
 
-            	'<div class="main-login main-center">'+
+				'<div class="main-login main-center">'+
 					'<form class="form-horizontal" method="post" action="#">'+
-						
+				
 						'<div class="form-group">'+
 							'<label for="clubhouseName" class="col-sm-2 controlLabel" >:שם מועדונית</label>'+
 							'<div class="col-sm-10">'+
@@ -41,36 +47,37 @@ var clubhouseManagement = function()
 							'</div>'+
 						'</div>'+
 					
-						'<div class="form-group ">'+
-							'<button type="button" id="addClubhouseBtn" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" >הוספה</button>'+
-						'</br>'+
-						'</div>'+
+							'<div class="form-group ">'+
+								'<button type="button" id="addClubhouseBtn" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" >הוספה</button>'+
+							'</br>'+
+							'</div>'+
 					'</form>'+
 				'</div>'+
 
-        '</div>'
+		'</div>'
      }
        //-------------------------------------------------------------------------------------------------
        //       INJECTION FOR EDIT OPTION - clubhouse and user choosing
         var EditClubhousePage={
         inputSection:
                 '<div class="container">'+
-                    '<label for="clubHouseSelect" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
-                     '<div class="input-group">'+
-						    '<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
-						    '<select id="clubhouse_select" type="text" class="form-control">'+
-                            '</select>'+
+                   '<label for="clubBottunGroup_edcm" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
+					'<br>'+
+					'<div  id ="clubBottunGroup_edcm" class = "col-md-4">'+
 				    '</div>'+
-
-                    '<button type="button" id="editClubhouseBtn" class="tempEditPage btn btn-default" >לחץ כאן לערוך</button>'+
-                    '</div>'
+					'</p>'+
+					'<div class="form-group " id="buttons_area">'+
+						'<button id ="editCHbtn" type="button" class="btn btn-primary btn-block btn-lg edit-button"  >ערוך מועדונית</button>'+
+						'<button id ="deleteCHbtn" type="button" class="btn-danger btn-danger btn-block btn-lg  delete-button"  >הסר מועדונית</button>'+
+					'</div>'
         }
+
     
-   
     //-------------------------------------------------------------------------------------------------
     // Initial page for add clubHouse
 	 var addClubhouse = function ()
 	 {
+		page = ADDPAGE;
 		$('.Nav').collapse('hide');
 		$("#body").html(addClubhousePage.inputSection); // opens page 
 		$("#addClubhouseBtn").click(addClubhouseListener);
@@ -79,10 +86,12 @@ var clubhouseManagement = function()
     // Initial page for edit clubHouse
 	 var editClubhouse = function()
 	 {
+		page = EDITPAGE;
 		loadClubhousesData();
 		$('.Nav').collapse('hide');
 		$("#body").html(EditClubhousePage.inputSection);
         $("#editClubhouseBtn").click(EditCluhouseListener);
+		$('#deleteCHbtn').click(removeCHlistener);
 	 }
 
 
@@ -157,10 +166,28 @@ var clubhouseManagement = function()
 	//////////////////////////////////////////////////////////////
 
 
-	var EditCluhouseListener = function()
+	var EditCluhouseListener = function(e)
 	{
+		edit_clubname = e.target.innerText;
+		edit_clubIndex = getClubKeyIndex(e.target.innerText.trim());
+		console.log(edit_clubname+' '+edit_clubIndex);
 	}
  
+	var removeCHlistener = function()
+	{
+		if(!edit_clubname)
+			alert('לא נבחרה מועדונית');
+		firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key).remove()
+		.then(function(res)
+		{
+			alert(res);	
+			clubhousesInfo = [];
+			editClubhouse();
+		});
+		
+	}
+
+
 	// loads only strings of names for now.
 	var loadClubhousesData = function()
 	{	
@@ -179,11 +206,35 @@ var clubhouseManagement = function()
 				
 			for(var i =0; i<keys.length;i++)
 			{
-				clubhousesInfo[i] = {key:keys[i],name:allClubhouses[keys[i]].name};
-				$('#clubhouse_select').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
+				if(page == EDITPAGE)
+				{
+					clubhousesInfo[i] = {key:keys[i],name:allClubhouses[keys[i]].name};
+					var tempBtnID = 'btn'+i;
+					var btnInput = '<button id = '+tempBtnID+' type="button" class="btn btn-default ">'+
+										'<span class="glyphicon glyphicon-home"></span> '+clubhousesInfo[i].name+
+									'</button>';
+					$('#clubBottunGroup_edcm').append(btnInput);
+					$('#'+tempBtnID).click(EditCluhouseListener);
+				}
+				if(page == ADDPAGE)
+				{
+					clubhousesInfo[i] = {key:keys[i],name:allClubhouses[keys[i]].name};
+					$('#clubhouse_select').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
+				}
 			}
 		});
 	}
+
+	var getClubKeyIndex = function (clubName)
+	{
+		for (var i = 0; i < clubhousesInfo.length; i++) 
+		{
+			if(clubName.trim() == clubhousesInfo[i].name)
+				return i;
+		}
+		return FAIL;
+	}
+
 	var getClubhousesInfo = function()
 	{
 		return{ clubhousesInfo:clubhousesInfo} ;  
