@@ -104,7 +104,7 @@ var usersManagement = function()
 								'</div>'+
 							'</div>'+
 					
-						'<div class="form-group " id="buttons_area">'+
+						'<div class="form-group" id="buttons_area">'+
 							
 						'</div>'+
 					'</form>'+
@@ -473,7 +473,7 @@ var usersManagement = function()
 				if (page == EDITPAGE)
 				{
 					var tempBtnID = 'btn'+i;
-					var btnInput = '<button id = '+tempBtnID+' type="button" class="btn btn-default ">'+
+					var btnInput = '<button id = '+tempBtnID+' type="button" class="btn btn-default">'+
 									'<span class="glyphicon glyphicon-home"></span> '+tempName+
 								'</button>';
 					$('#clubBottunGroup').append(btnInput);
