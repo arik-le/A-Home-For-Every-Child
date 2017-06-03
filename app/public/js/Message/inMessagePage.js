@@ -11,33 +11,46 @@ var inMassagePage=function()
         }
 
         
-        var createMassage=function(obj,massageID)
+        var createMassage=function(obj,messageID,isInBox)
         {
-            var str='<div class="row massage" id="message_'+massageID+'">'+             
-                            '<span class="glyphicon glyphicon-trash col-xs-2 trash" id="trash_'+massageID+'"></span>'+
-                                '<h5 class="topic col-xs-offset-2 col-xs-6" id="topic'+massageID+'"data-toggle="modal" data-target="#myModal'+massageID+'"></h5>';
+            var str='<div class="row massage" id="message_'+messageID+'">'+             
+                            '<span class="glyphicon glyphicon-trash col-xs-2 trash" id="trash_'+messageID+'"></span>'+
+                                '<h5 class="topic col-xs-offset-2 col-xs-6" id="topic'+messageID+'"data-toggle="modal" data-target="#myModal'+messageID+'"></h5>';
                                 if(obj.isRead)          
-                                    str+='<span class="glyphicon glyphicon-envelope col-xs-1 envelopeR" id="enve'+massageID+'"></span>';
+                                    str+='<span class="glyphicon glyphicon-envelope col-xs-1 envelopeR" id="enve'+messageID+'"></span>';
                                 else
-                                    str+='<span class="glyphicon glyphicon-envelope col-xs-1 envelopeN" id="enve'+massageID+'"></span>';
+                                    str+='<span class="glyphicon glyphicon-envelope col-xs-1 envelopeN" id="enve'+messageID+'"></span>';
                             str+='<div class="col-xs-1"></div>'+  
                         '</div>'+
                     
-            '<div class="modal fade" id="myModal'+massageID+'" role="dialog">'+
+            '<div class="modal fade" id="myModal'+messageID+'" role="dialog">'+
                 '<div class="modal-dialog">'+
                     '<div class="modal-content">'+
                         '<div class="modal-header">'+
                             '<h4 class="modal-title">'+obj.subject+'</h4>'+
                         '</div>'+
-                        '<div class="modal-body">'+
-                            '<h5"> :מאת</h5>'+
-                            '<div class = "subject">'+
-                                '<textarea disabled ">'+login.getObj(obj.source).firstName+'</textarea>'+
-                            '</div>'+
-                            '</p>'+
+                        '<div class="modal-body">';
+                       if(isInBox)
+                       {
+                            str+='<h5"> :מאת</h5>'+
+                                '<div class = "subject">'+
+                                    '<textarea disabled ">'+login.getObj(obj.source).firstName+'</textarea>'+
+                                '</div>';
+                       }
+                        else
+                        {
+                            str+='<h5"> :אל</h5>'+
+                                '<div class = "subject">'+
+                                    '<textarea disabled ">'+login.getObj(obj.destination).firstName+'</textarea>'+
+                                '</div>';
+                        }
+                           str+= '</p>'+
                             '<div class = "content">'+
-                                '<textarea disabled id="content'+massageID+'">'+obj.content+'</textarea>'+
+                                '<textarea disabled id="content'+messageID+'">'+obj.content+'</textarea>'+
                             '</div>'+
+                        '</div>'+
+                        '<div>'+
+                             getDate(obj)+
                         '</div>'+
                         '<div class="modal-footer">'+
                             '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'+
@@ -45,9 +58,17 @@ var inMassagePage=function()
                     '</div>'+
                 '</div>'+
             '</div>';
+           
             return str;
         }
-
+    var getDate=function(message)
+    {
+        var date=new Date(message.date);
+        var d=date.getDate();
+        var m=date.getMonth()+1;
+        var y=date.getFullYear();
+        return d+"/"+m+"/"+y;
+    }
 //-------------------------------------------------------------------------------------------------
 
     var initPage=function()
@@ -71,19 +92,18 @@ var inMassagePage=function()
         $("#enve"+id).removeClass("envelopeN");
         $("#enve"+id).addClass("envelopeR");
     }
-    var addMessage=function(msg,massageID,key,isInBox)
+    var addMessage=function(msg,messageID,key,isInBox)
     {
         var topic=msg.subject;
-        $("#body").append(createMassage(msg,massageID));
-        $("#topic"+massageID).click(function()
+        $("#body").append(createMassage(msg,messageID,isInBox));
+        $("#topic"+messageID).click(function()
         {
-            readMessage(massageID);
+            readMessage(messageID);
         });
-        $("#topic"+massageID).append(topic);
-        $("#trash_"+massageID).click(function()
+        $("#topic"+messageID).append(topic);
+        $("#trash_"+messageID).click(function()
         {
             var idName=event.target.id;
-            console.log(idName);
             idName=idName.substring(6,idName.length);
             removeMassage(idName,key,isInBox);
         });
@@ -103,7 +123,6 @@ var inMassagePage=function()
                     inOrOut="/outboxMessages/";
                 var me = login.correntUser[1];
                 var delMsg = firebase.database().ref("users/" + me + inOrOut+key);
-                console.log(key);
                 delMsg.remove();
                
          }
@@ -117,6 +136,7 @@ var inMassagePage=function()
         $("#body").html(sendMessagePage.msgPage.inputSection);
         uploadImage.init();
         sendMessagePage.updateUserList();
+        sendMessagePage.updateClubList();
         $("#sendButtonPM").click(sendMessagePage.sendPriMessage);
         $("#userList").val("");
      }
@@ -155,7 +175,7 @@ var inMassagePage=function()
             if (messages !== null)
             {
                 var keys = Object.keys(messages);
-                for(var i=0;i<keys.length;i++)
+                for(var i=keys.length-1;i>=0;i--)
                     addMessage(messages[keys[i]],i,keys[i],true);
 			}
         });
