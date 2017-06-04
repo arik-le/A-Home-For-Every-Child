@@ -31,10 +31,11 @@ var sendMessagePage = function()
 								'</select>'+
 								'<select class = "userCkecklist"  id = "TypeUserSM" required  onchange="sendMessagePage.updateUserList()">'+
 									'<option value="nan" disabled selected>סוג משתמש</option>'+
-									'<option class="ptUser">הורה</option>'+
-									'<option class="GuUser">מדריך</option>'+
-									'<option class="SWUser">עו"ס</option>'+
-									'<option class="AdmUser">מנהל</option>'+
+									'<option class="ptUser" value="0">הורה</option>'+
+									'<option class="TtUser" value="1">מורה</option>'+
+									'<option class="GuUser" value="2">מדריך</option>'+
+									'<option class="SWUser" value="3">עו"ס</option>'+
+									'<option class="AdmUser" value="4">מנהל</option>'+
 									
 								'</select>'+
 								
@@ -108,62 +109,72 @@ var sendMessagePage = function()
 					'</div>'+
 				'</div>'+
 			'</div>'
-		}
-		var updateClubList=function()
+	}
+	var updateClubList=function()				//update the list of clubHouses
+	{
+		firebase.database().ref("clubhouse/").once("value")
+		.then(function(data)
 		{
-			firebase.database().ref("clubhouse/").once("value")
-			.then(function(data)
-			{
-				clubs=data.val();
-				keys=Object.keys(clubs);
-				$("#clubHouseSM").html('<option value="nan" disabled selected>בחר מועדונית</option>')
-				
-				for(var i=0;i<keys.length;i++)
-				{
-						$("#clubHouseSM").append('<option value='+clubs[keys[i]].name+'>'+clubs[keys[i]].name+'</option>');
-				}
-				
-			});
+			clubs=data.val();
+			keys=Object.keys(clubs);
+			$("#clubHouseSM").html('<option value="nan" disabled selected>בחר מועדונית</option>');
 			
-		}
-		var updateUserList = function()
+			for(var i=0;i<keys.length;i++)
+				$("#clubHouseSM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
+		});
+
+	}
+	var updateUserList = function()			//update the list of users according the clubHouses
+	{
+		$("#chooseUserSM").html('<option value="nan" disabled selected>בחר משתמש</option>');
+		var list=login.usersAndKeys;
+		var myIndex=login.correntUser[1];
+		var type=document.getElementById("TypeUserSM").value;
+		var club=document.getElementById("clubHouseSM").value;
+
+		firebase.database().ref("clubhouse/").once("value")
+		.then(function(data)
 		{
-			$("#chooseUserSM").html('<option value="nan" disabled selected>סוג משתמש</option>')
-			var list=login.usersAndKeys;
-			var myIndex=login.correntUser[1];
-			var type=document.getElementById("TypeUserSM").value;
-			var club=document.getElementById("clubHouseSM").value;
-			for(var i = 0;i<list[1].length;i++)
+			var clubHouses = data.val();
+			var mykeys=Object.keys(clubHouses);
+
+			for(var i=0;i<mykeys.length;i++)
 			{
-				if(list[1][i]!=myIndex	&&	list[0][list[1][i]].userType==type && list[0][list[1][i]].clubhouse==club)
-					$("#chooseUserSM").append('<option value='+list[0][list[1][i]].userKey+'>'+list[0][list[1][i]].username+'</option>');     
+				if(clubHouses[mykeys[i]].ClubhouseDBkey == club)
+				{
+					var curClub = clubHouses[mykeys[i]].usersList;
+					var allUsersInClub = Object.keys(curClub);
+					for(var j=0;j<allUsersInClub.length;j++)
+						if(curClub[allUsersInClub[j]].type == type && curClub[allUsersInClub[j]].username != login.correntUser[0].username)
+							$("#chooseUserSM").append('<option value='+curClub[allUsersInClub[j]].userkey+'>'+curClub[allUsersInClub[j]].username+'</option>');
+				}
 			}
-		}
+		});
+	}
 
+
+	var sendPriMessage=function()
+	{
+		var from=login.correntUser[1];
+		var to=document.getElementById("chooseUserSM").value;
+		var subject=document.getElementById("subjectSM").value;
+		var content=document.getElementById("contentSM").value;
+		var message=Message.create(from,to,subject,content,1)
+		var allUsers = login.usersAndKeys[0];
+		firebase.database().ref('users/'+ to+ '/inboxMessages').push(message);
+		firebase.database().ref('users/'+ from+ '/outboxMessages').push(message);
+		clearValue();
 	
-		var sendPriMessage=function()
-		{
-			var from=login.correntUser[1];
-			var to=document.getElementById("chooseUserSM").value;
-			var subject=document.getElementById("subjectSM").value;
-			var content=document.getElementById("contentSM").value;
-		
-			var message=Message.create(from,to,subject,content,1)
-			var allUsers = login.usersAndKeys[0];
-			firebase.database().ref('users/'+ to+ '/inboxMessages').push(message);
-			firebase.database().ref('users/'+ from+ '/outboxMessages').push(message);
-			clearValue();
-		
-		}
-		var clearValue=function()
-		{
-			$("#subjectSM").val("");
-			$("#contentSM").val("");
-			$("#chooseUserSM").val("");
-		}
+	}
+	var clearValue=function()
+	{
+		$("#subjectSM").val("");
+		$("#contentSM").val("");
+		$("#chooseUserSM").val("");
+	}
 
-		return{msgPage:msgPage,
-			updateUserList:updateUserList,
-			sendPriMessage:sendPriMessage,
-			updateClubList:updateClubList}
+	return{msgPage:msgPage,
+		updateUserList:updateUserList,
+		sendPriMessage:sendPriMessage,
+		updateClubList:updateClubList}
 }();

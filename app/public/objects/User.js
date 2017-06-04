@@ -8,7 +8,7 @@ var User = function(username,password)
         // for Parent/Teacher users only
         //this.childName;
 		
-		var create = function(username,password,firstName,lastName,clubhouse,userType)
+		var create = function(username,password,firstName,lastName,userType)
 		{
 			var d = new Date();
 			return{
@@ -16,7 +16,6 @@ var User = function(username,password)
 				password:password,
 				firstName:firstName,
 				lastName:lastName,
-				clubhouse:clubhouse,
 				userType:userType,
 				userKey:0,
 				date:d.toDateString(),

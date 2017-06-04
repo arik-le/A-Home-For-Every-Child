@@ -202,10 +202,9 @@ var usersManagement = function()
 			return;
 		}
 		
-		
         var database = firebase.database();	
         var usersRef = database.ref('users');
-        var newUser = User.create(username,fPassword,firstName,lastName,Uclubhouse,type);
+        var newUser = User.create(username,fPassword,firstName,lastName,type);
         var key = usersRef.push(newUser);
         firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
 		updateClubhouse(Uclubhouse,type,key.key,username);
