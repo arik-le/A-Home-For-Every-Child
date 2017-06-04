@@ -2,7 +2,7 @@ var outMessagePage=function()
 {
     var sendMessage={
         topic:'<div class="row">'+
-            '<h2 class="col-xs-offset-2 col-xs-8 smt">הודעות יוצאות</h2>'+
+            '<h2 id = "inboxTitle">הודעות יוצאות</h2>'+
         '</div>'
     }
     var open=function()

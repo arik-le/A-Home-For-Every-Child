@@ -49,8 +49,8 @@ var inMassagePage=function()
                                 '<textarea disabled id="content'+messageID+'" dir="rtl">'+obj.content+'</textarea>'+
                             '</div>'+
                         '</div>'+
-                        '<div>'+
-                             getDate(obj)+
+                        '<div id="dateInboxLabel">'+
+                             '<label>'+getDate(obj)+'</label>'+
                         '</div>'+
                         '<div class="modal-footer">'+
                             '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'+
@@ -155,7 +155,7 @@ var inMassagePage=function()
 
     var incomingMessage={
         topic:'<div class="row">'+
-            '<h2 class="col-xs-offset-1 col-xs-8 smt">הודעות נכנסות</h2>'+
+            '<h2 id = "inboxTitle">הודעות נכנסות</h2>'+
         '</div>'
     }
 
