@@ -15,7 +15,7 @@ var inMassagePage=function()
         {
             var str='<div class="row massage" id="message_'+messageID+'">'+             
                             '<span class="glyphicon glyphicon-trash col-xs-2 trash" id="trash_'+messageID+'"></span>'+
-                                '<h5 class="topic col-xs-offset-2 col-xs-6" id="topic'+messageID+'"data-toggle="modal" data-target="#myModal'+messageID+'"></h5>';
+                                '<h5 class="topic col-xs-offset-2 col-xs-6" id="topic'+messageID+'"data-toggle="modal" data-target="#myModal'+messageID+'"  dir="rtl"></h5>';
                                 if(obj.isRead)          
                                     str+='<span class="glyphicon glyphicon-envelope col-xs-1 envelopeR" id="enve'+messageID+'"></span>';
                                 else
@@ -27,26 +27,26 @@ var inMassagePage=function()
                 '<div class="modal-dialog">'+
                     '<div class="modal-content">'+
                         '<div class="modal-header">'+
-                            '<h4 class="modal-title">'+obj.subject+'</h4>'+
+                            '<h4 class="modal-title" dir="rtl">'+obj.subject+'</h4>'+
                         '</div>'+
                         '<div class="modal-body">';
                        if(isInBox)
                        {
                             str+='<h5"> :מאת</h5>'+
                                 '<div class = "subject">'+
-                                    '<textarea disabled ">'+login.getObj(obj.source).firstName+'</textarea>'+
+                                    '<textarea disabled dir="rtl"">'+login.getObj(obj.source).firstName+'</textarea>'+
                                 '</div>';
                        }
                         else
                         {
                             str+='<h5"> :אל</h5>'+
                                 '<div class = "subject">'+
-                                    '<textarea disabled ">'+login.getObj(obj.destination).firstName+'</textarea>'+
+                                    '<textarea disabled " dir="rtl">'+login.getObj(obj.destination).firstName+'</textarea>'+
                                 '</div>';
                         }
                            str+= '</p>'+
                             '<div class = "content">'+
-                                '<textarea disabled id="content'+messageID+'">'+obj.content+'</textarea>'+
+                                '<textarea disabled id="content'+messageID+'" dir="rtl">'+obj.content+'</textarea>'+
                             '</div>'+
                         '</div>'+
                         '<div>'+
@@ -138,6 +138,7 @@ var inMassagePage=function()
         sendMessagePage.updateUserList();
         sendMessagePage.updateClubList();
         $("#sendButtonPM").click(sendMessagePage.sendPriMessage);
+        $("#cleanButtonPM").click(sendMessagePage.clearValue);
         $("#userList").val("");
      }
 

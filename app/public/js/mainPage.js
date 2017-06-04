@@ -70,10 +70,10 @@ var mainPage=function()
         inputSection:  
             '<div class = "generalMessageBox">'+
                 '<div class = "title">'+
-                     '<h6>guide58 :הודעה מאת</h6>'+
-                     '<label id="subjectGM">טיול לעין יעל עם הילדים המקסימים<label>'+
+                     '<h6  dir="rtl">הודעה מאת: guide23</h6>'+
+                     '<label id="subjectGM" dir="rtl">טיול לעין יעל עם הילדים המקסימים.<label>'+
                 '</div>'+
-                '<textarea id = "textAreaGM" class="form-control" rows="5" name="message" disabled>היום יצאנו לטייל בחוות עין יעל המקסימה בהמשך היום נשלח אליכם תמונות של הילדים החמודים</textarea>'+
+                '<textarea id = "textAreaGM" class="form-control" rows="5" name="message" disabled  dir="rtl">היום יצאנו לטייל בחוות עין יעל המקסימה בהמשך היום נשלח אליכם תמונות של הילדים החמודים?</textarea>'+
                '<div class="messageFooter">'+
 					'<h4 id = "dateMessage">12.5.17</h4>'+
 					'<div class = "deleteMessage">'+
@@ -84,10 +84,10 @@ var mainPage=function()
             '</div></p>'+
             '<div class = "generalMessageBox">'+
                 '<div class = "title">'+
-                     '<h6>guide58 :הודעה מאת</h6>'+
-                     '<label id="subjectGM">טיול לעין יעל עם הילדים המקסימים<label>'+
+                     '<h6  dir="rtl">הודעה מאת: guide23</h6>'+
+                     '<label id="subjectGM" dir="rtl">טיול לעין יעל עם הילדים המקסימים.<label>'+
                 '</div>'+
-                '<textarea id = "textAreaGM" class="form-control" rows="5" name="message" disabled>היום יצאנו לטייל בחוות עין יעל המקסימה בהמשך היום נשלח אליכם תמונות של הילדים החמודים</textarea>'+
+                '<textarea id = "textAreaGM" class="form-control" rows="5" name="message" disabled  dir="rtl">היום יצאנו לטייל בחוות עין יעל המקסימה בהמשך היום נשלח אליכם תמונות של הילדים החמודים?</textarea>'+
                '<div class="messageFooter">'+
 					'<h4 id = "dateMessage">12.5.17</h4>'+
 					'<div class = "deleteMessage">'+
@@ -96,12 +96,12 @@ var mainPage=function()
 					'</div>'+
 				'</div>'+
             '</div></p>'+
-            '<div class = "generalMessageBox">'+
+           '<div class = "generalMessageBox">'+
                 '<div class = "title">'+
-                     '<h6>guide58 :הודעה מאת</h6>'+
-                     '<label id="subjectGM">טיול לעין יעל עם הילדים המקסימים<label>'+
+                     '<h6  dir="rtl">הודעה מאת: guide23</h6>'+
+                     '<label id="subjectGM" dir="rtl">טיול לעין יעל עם הילדים המקסימים.<label>'+
                 '</div>'+
-                '<textarea id = "textAreaGM" class="form-control" rows="5" name="message" disabled>היום יצאנו לטייל בחוות עין יעל המקסימה בהמשך היום נשלח אליכם תמונות של הילדים החמודים</textarea>'+
+                '<textarea id = "textAreaGM" class="form-control" rows="5" name="message" disabled  dir="rtl">היום יצאנו לטייל בחוות עין יעל המקסימה בהמשך היום נשלח אליכם תמונות של הילדים החמודים?</textarea>'+
                '<div class="messageFooter">'+
 					'<h4 id = "dateMessage">12.5.17</h4>'+
 					'<div class = "deleteMessage">'+

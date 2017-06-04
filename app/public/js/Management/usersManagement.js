@@ -245,8 +245,6 @@ var usersManagement = function()
 		AddSectionClubName = clubhousesInfo[index].name;
 		return AddSectionClubName;
 	}
-	
-
 
 
 	/////////////////////////////////////////////////////////////////////
