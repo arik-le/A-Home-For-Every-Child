@@ -40,6 +40,11 @@ We're trying to use the best tools and practices in order to produce a quality e
 
 ## Please visit our [live application](https://bilyisr-242e7.firebaseapp.com/)
 Alright, the app is pretty advanced , check it out
+ #### For Login to the app use this details:
+     
+     * Login Name: guest
+     * Password: 1
+
 
 
 ## Disclaimer
