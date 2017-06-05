@@ -1,6 +1,11 @@
 var sendMessagePage = function()
 {
-	var clubs,keys;
+	var GENERAL_MESSAGE = 0;
+	var PRIVATE_MESSAGE = 1;
+	var ONLY_PARENTS = 0;
+	var ONLY_TEACHERS = 1;
+	var EVERYBODY = 2;
+
 	var msgPage={
 	inputSection:
 	
@@ -21,13 +26,11 @@ var sendMessagePage = function()
 			'<div class="tab-content clearfix">'+
 				'<div class="tab-pane active" id="privatreMessage">'+
 						'<select class = "userCkecklist" id = "clubHouseSM" required onchange="sendMessagePage.updateUserList()" >'+
-							'<option value="Larnaca" disabled selected>בחר מועדונית</option>'+
 						'</select></br>'+
 				
 			
 						'<label id="royLabel">:שלח אל</label></br></br>'+
 						'<select class = "userCkecklist" id = "chooseUserSM" required >'+
-							'<option value="Larnaca" disabled selected>בחר משתמש</option>'+
 						'</select>'+
 						'<select class = "userCkecklist"  id = "TypeUserSM" required  onchange="sendMessagePage.updateUserList()">'+
 							'<option value="nan" disabled selected>סוג משתמש</option>'+
@@ -52,37 +55,20 @@ var sendMessagePage = function()
 				'</div>'+
 				
 			'<div class="tab-pane " id="generalMessage">'+
-				'<select id = "clubHouseRoy" required >'+
-					'<option value="Larnaca" disabled selected>בחר מועדונית</option>'+
-					'<option value="Rhodos">Rhodos</option>'+
-					'<option value="Amsterdam">Amsterdam</option>'+
-					'<option value="Prague">Prague</option>'+
-					'<option value="London">London</option>'+
-					'<option value="Athens">Athens</option>'+
-					'<option value="Barcelona">Barcelona</option>'+
-					'<option value="Madrid">Madrid</option>'+
-					'<option value="Cancun">Cancun</option>'+
-					'<option value="Bangkok">Bangkok</option>'+
-					'<option value="China">China</option>'+
-					'<option value="Basel">Basel</option>'+
-					'<option value="China">China</option>'+
-					'<option value="Paris">Paris</option>'+
-					'<option value="Budpest">Budpest</option>'+
-					'<option value="Kiev">Kiev</option>'+
-					'<option value="Moscov">Moscov</option>'+
+				'<select id = "clubHouseGM" required >'+
 				'</select></br>'+
 	
 				'<label id="royLabel">:שלח אל</label></br></br>'+
 				'<label for="teachers" class="chkbox">מורים</label>'+
-				'<input id="checkBoxIn" type="checkbox" name="teachers" id="teachers" class="custom" />'+
+				'<input id="selTeachers" type="checkbox" name="teachers" id="teachers" class="custom" />'+
 				'<label for="parents" class="chkbox">הורים</label>'+
-				'<input id="checkBoxIn" type="checkbox" name="parents" id="parents" class="custom" checked/>'+
+				'<input id="selParents" type="checkbox" name="parents" id="parents" class="custom" checked/>'+
 				'</br>'+
 				
 				'<label id="royLabel">:נושא</label></br>'+
-				'<input id = "subjectSM" type="text" class="form-control" id="name" name="name" placeholder="נושא ההודעה" value="" maxlength="50" dir="rtl">'+
+				'<input id = "subjectGM" type="text" class="form-control" id="name" name="name" placeholder="נושא ההודעה" value="" maxlength="50" dir="rtl">'+
 				'<label id="royLabel">:תוכן ההודעה</label></br>'+
-				'<textarea id = "contentSM" class="form-control" rows="10" name="message" placeholder="תוכן ההודעה" dir="rtl"></textarea></br>'+
+				'<textarea id = "contentGM" class="form-control" rows="10" name="message" placeholder="תוכן ההודעה" dir="rtl"></textarea></br>'+
 				
 					'<div class="container">'+
 					'<div class="col-md-6">'+
@@ -102,8 +88,8 @@ var sendMessagePage = function()
 				'</div>'+
 
 				'<div class="col-sm-10 col-sm-offset-2">'+
-					'<input id="sendButtonPM" name="submit" type="submit" value="שלח" class="btn btn-primary">'+
-					'<button id="cleanButtonPM" type="button" class="btn">נקה</button>'+
+					'<input id="sendButtonGM" name="submit" type="submit" value="שלח" class="btn btn-primary">'+
+					'<button id="cleanButtonGM" type="button" class="btn">נקה</button>'+
 				'</div>'+
 			
 			'</div>'+
@@ -116,14 +102,17 @@ var sendMessagePage = function()
 		firebase.database().ref("clubhouse/").once("value")
 		.then(function(data)
 		{
-			clubs=data.val();
-			keys=Object.keys(clubs);
+			var clubs=data.val();
+			var keys=Object.keys(clubs);
 			$("#clubHouseSM").html('<option value="nan" disabled selected>בחר מועדונית</option>');
-			
-			for(var i=0;i<keys.length;i++)
-				$("#clubHouseSM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
-		});
+			$("#clubHouseGM").html('<option value="nan" disabled selected>בחר מועדונית</option>');
 
+			for(var i=0;i<keys.length;i++)
+			{
+				$("#clubHouseSM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
+				$("#clubHouseGM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
+			}
+		});
 	}
 
 	var updateUserList = function()			//update the list of users according the clubHouses
@@ -168,19 +157,58 @@ var sendMessagePage = function()
 		}
 		if(subject == null || subject == undefined || subject == "")
 		{
-			alert("אנה בחר/י נושא");
+			alert("אנה הזן נושא");
 			return;
 		}
 		if(content == null || content == undefined || content == "")
 		{
-			alert("אנה בחר/י נושא");
+			alert("אנה הזן תוכן");
 			return;
 		}
 
-		var message=Message.create(from,to,subject,content,1);
+		var message=Message.create(from,to,subject,content, PRIVATE_MESSAGE);
 		var allUsers = login.usersAndKeys[0];
 		firebase.database().ref('users/'+ to+ '/inboxMessages').push(message);
 		firebase.database().ref('users/'+ from+ '/outboxMessages').push(message);
+		clearValue();
+	}
+
+
+	var sendGenMessage=function()
+	{
+		var from=login.correntUser[1];
+		var toClubHouse = document.getElementById("clubHouseGM").value;
+		var toTeachers = document.getElementById("selTeachers").checked; 
+		var toParents = document.getElementById("selParents").checked;
+
+		var subject=document.getElementById("subjectGM").value;
+		var content=document.getElementById("contentGM").value;
+
+		if(toClubHouse == "nan" || toClubHouse == null || toClubHouse == undefined)
+		{
+			alert("אנה בחר/י מועדונית");
+			return;
+		}
+		if(subject == null || subject == undefined || subject == "")
+		{
+			alert("אנה הזן נושא");
+			return;
+		}
+		if(content == null || content == undefined || content == "")
+		{
+			alert("אנה הזן תוכן");
+			return;
+		}
+
+		var message;
+		if(toTeachers && toParents)
+			message=Message.create(from,"general",subject,content, GENERAL_MESSAGE,EVERYBODY);
+		else if(!toTeachers && toParents)
+			message=Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_PARENTS);
+		else if(toTeachers && !toParents)
+			message=Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_TEACHERS);
+
+		firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
 		clearValue();
 	}
 
@@ -188,12 +216,15 @@ var sendMessagePage = function()
 	{
 		$("#subjectSM").val("");
 		$("#contentSM").val("");
-		$("#chooseUserSM").val("");
+		$("#chooseUserSM").val("בחר משתמש");
+		$("#subjectGM").val("");
+		$("#contentGM").val("");
 	}
 
 	return{msgPage:msgPage,
 		updateUserList:updateUserList,
 		sendPriMessage:sendPriMessage,
 		clearValue:clearValue,
-		updateClubList:updateClubList}
+		updateClubList:updateClubList,
+		sendGenMessage:sendGenMessage}
 }();

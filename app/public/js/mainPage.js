@@ -66,57 +66,11 @@ var mainPage=function()
         '<div id="body"></div>'
     }
 
-    var newFeeds = {
-        inputSection:  
-            '<div class = "generalMessageBox">'+
-                '<div class = "title">'+
-                     '<h6  dir="rtl">הודעה מאת: guide23</h6>'+
-                     '<label id="subjectGM" dir="rtl">טיול לעין יעל עם הילדים המקסימים.<label>'+
-                '</div>'+
-                '<textarea id = "textAreaGM" class="form-control" rows="5" name="message" disabled  dir="rtl">היום יצאנו לטייל בחוות עין יעל המקסימה בהמשך היום נשלח אליכם תמונות של הילדים החמודים?</textarea>'+
-               '<div class="messageFooter">'+
-					'<h4 id = "dateMessage">12.5.17</h4>'+
-					'<div class = "deleteMessage">'+
-						'<label id="subjectGM">מחק הודעה <label>'+
-						'<span class="glyphicon glyphicon-trash"></span> '+
-					'</div>'+
-				'</div>'+
-            '</div></p>'+
-            '<div class = "generalMessageBox">'+
-                '<div class = "title">'+
-                     '<h6  dir="rtl">הודעה מאת: guide23</h6>'+
-                     '<label id="subjectGM" dir="rtl">טיול לעין יעל עם הילדים המקסימים.<label>'+
-                '</div>'+
-                '<textarea id = "textAreaGM" class="form-control" rows="5" name="message" disabled  dir="rtl">היום יצאנו לטייל בחוות עין יעל המקסימה בהמשך היום נשלח אליכם תמונות של הילדים החמודים?</textarea>'+
-               '<div class="messageFooter">'+
-					'<h4 id = "dateMessage">12.5.17</h4>'+
-					'<div class = "deleteMessage">'+
-						'<label id="subjectGM">מחק הודעה <label>'+
-						'<span class="glyphicon glyphicon-trash"></span> '+
-					'</div>'+
-				'</div>'+
-            '</div></p>'+
-           '<div class = "generalMessageBox">'+
-                '<div class = "title">'+
-                     '<h6  dir="rtl">הודעה מאת: guide23</h6>'+
-                     '<label id="subjectGM" dir="rtl">טיול לעין יעל עם הילדים המקסימים.<label>'+
-                '</div>'+
-                '<textarea id = "textAreaGM" class="form-control" rows="5" name="message" disabled  dir="rtl">היום יצאנו לטייל בחוות עין יעל המקסימה בהמשך היום נשלח אליכם תמונות של הילדים החמודים?</textarea>'+
-               '<div class="messageFooter">'+
-					'<h4 id = "dateMessage">12.5.17</h4>'+
-					'<div class = "deleteMessage">'+
-						'<label id="subjectGM">מחק הודעה <label>'+
-						'<span class="glyphicon glyphicon-trash"></span> '+
-					'</div>'+
-				'</div>'+
-            '</div></p>'
-    }
     var openMainPage=function(user) // user is a copy of the original user 
     {
         correntUser[0] = user;
         var context = topHeader.inputSection+nav.inputSection;
         $("body").html(context);
-        $("#body").html(newFeeds.inputSection);
         $("#userName_lbl").html(correntUser[0].firstName);
 
         $("#homePage").click(function(){

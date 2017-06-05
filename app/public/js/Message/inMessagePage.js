@@ -135,10 +135,13 @@ var inMassagePage=function()
         $('.NAV').collapse('hide');
         $("#body").html(sendMessagePage.msgPage.inputSection);
         uploadImage.init();
-        sendMessagePage.updateUserList();
+        sendMessagePage.updateUserList();   //check if needed
         sendMessagePage.updateClubList();
         $("#sendButtonPM").click(sendMessagePage.sendPriMessage);
         $("#cleanButtonPM").click(sendMessagePage.clearValue);
+        $("#sendButtonGM").click(sendMessagePage.sendGenMessage);
+        $("#cleanButtonGM").click(sendMessagePage.clearValue);
+
         $("#userList").val("");
      }
 

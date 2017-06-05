@@ -118,7 +118,10 @@ var login=function()
 	}
 //---------------------------------------------------------------------------------------------------//	
    	
-return { initModule : initModule, usersAndKeys:usersAndKeys,correntUser:correntUser,getObj:getObj};
+return { initModule : initModule,
+		 usersAndKeys:usersAndKeys,
+		 correntUser:correntUser,
+		 getObj:getObj};
 }();
 
 $(document).ready(function() {login.initModule($("#login")) ; });
