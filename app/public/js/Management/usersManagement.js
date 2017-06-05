@@ -232,6 +232,8 @@ var usersManagement = function()
 
 	
 
+	
+
 	var addClubSelectValue = function()
 	{
 		var index = document.getElementById("clubhouse_select_Add").value;
@@ -379,12 +381,13 @@ var usersManagement = function()
 		var obj={};
 		var firstName = $('#UserPName').val();
 		var lastName = $('#UserLName').val();
-		var username = $('#username').val();
+		var Nusername = $('#username').val();
 		var password = $('#password').val();
 		var confirm = $('#confirm').val();
 		var userType = $('#userType').val();
 
 		var currClubIndex = $('#clubhouse_select_Add').val();
+
 		var currClubKey = clubhousesInfo[currClubIndex].key;
 		if (password != confirm)
 		{
@@ -395,14 +398,23 @@ var usersManagement = function()
 			obj.firstName = firstName;
 		if (userToEdit.lastName != lastName)
 			obj.lastName = lastName;
-		if (userToEdit.username != username)
-			obj.username = username;
+		if (userToEdit.username != Nusername)
+			obj.username = Nusername;
 		if (userToEdit.password != password)
 			obj.password = password;
 		if(userToEdit.userType != userType)
 			obj.userType = userType;
-		if(userToEdit.clubhouseKey != currClubKey)
-			obj.clubhouseKey = currClubKey;
+		if(userToEdit.clubhouseKey != currClubKey) // clubhouse changed
+		{
+			// update new clubhouse
+			firebase.database().ref('clubhouse/'+currClubKey+'/usersList')
+				.push({userkey:userToEdit.userKey,username:Nusername,type:userType});
+			
+			// remove from old clubhouse 
+			removeUserFromClubOnly(userToEdit.clubhouseKey);
+			
+			obj.clubhouseKey = currClubKey; // update user object
+		}
 		
 		var e = document.getElementById("clubhouse_select_Add");
 		var userRef = firebase.database().ref('users/');
@@ -440,6 +452,33 @@ var usersManagement = function()
 				firebase.database().ref("users/"+userToEdit.userKey).remove();
 		});
 	}
+
+
+	var removeUserFromClubOnly = function(clubKey)
+	{
+		firebase.database().ref("clubhouse/"+clubKey+"/usersList").once("value")
+		.then(function(data)
+		{
+			if (data.val() == null)
+			{
+				alert("לא נמצאה מועדונית ");
+				return;
+			}
+			var users = data.val();   // get the whole tree of clubhouses
+			var keys = Object.keys(users);	// get all keys
+				
+			for(var i =0; i<keys.length;i++)
+			{
+				var key = users[keys[i]].userkey;
+				var k = keys[i];
+				if(userToEdit.userKey == users[keys[i]].userkey)
+				{
+					firebase.database().ref("clubhouse/"+clubKey+"/usersList").child(k).remove();
+				}
+			}
+		});
+	}
+
 
 
 	// listener for clubhouse Buttons for user edit
