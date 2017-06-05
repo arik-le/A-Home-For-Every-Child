@@ -1,8 +1,11 @@
 var usersManagement = function()
 {
-	const ADMIN = 1;
+	const PUSER = 0;
+	const TUSER = 1;
 	const GSUSER = 2;
-	const PTUSER = 3;
+	const SWUSER = 3;
+	const ADMIN = 4;
+
 	const FAIL = -1;
 	const ADDPAGE = 1;
 	const EDITPAGE = 2;
@@ -64,11 +67,11 @@ var usersManagement = function()
 								'<div class="input-group">'+
 									'<span class="input-group-addon"><i class="fa fa-slideshare" aria-hidden="true"></i></span>'+
 									'<select type="text" class="form-control" id="userType">'+
-                                        '<option class="ptUser">הורה</option>'+
-										 '<option class="tcUser">מורה</option>'+
-                                        '<option class="GuUser">מדריך</option>'+
-                                        '<option class="SWUser">עו"ס</option>'+
-                                        '<option class="AdmUser">מנהל</option>'+
+                                        '<option value = "0" class="ptUser">הורה</option>'+
+										'<option value = "1" class="tcUser">מורה</option>'+
+                                        '<option value = "2" class="GuUser">מדריך</option>'+
+                                        '<option value = "3" class="SWUser">עו"ס</option>'+
+                                        '<option value = "4" class="AdmUser">מנהל</option>'+
                                     '</select>'+
 								'</div>'+
 							'</div>'+
@@ -99,7 +102,7 @@ var usersManagement = function()
 							'<div class="col-sm-10">'+
 								'<div class="input-group">'+
 									'<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
-									'<select type="text" class="form-control clubHouseName" id="clubhouse_select_Add" placeholder="בחר מועדונית מתוך הרשימה">'+
+									'<select type="text" id="clubhouse_select_Add" class="form-control clubHouseName"  placeholder="בחר מועדונית מתוך הרשימה">'+
                                     '</select>'+
 								'</div>'+
 							'</div>'+
@@ -178,6 +181,8 @@ var usersManagement = function()
 		}
 
         var Uclubhouse = e.options[e.selectedIndex].text;
+		var clubKey = getClubKeyByName(Uclubhouse);
+
         for(var i=0;i<login.usersAndKeys[0].length;i++)
         {
             if(login.usersAndKeys[0][i].username==username )
@@ -204,7 +209,7 @@ var usersManagement = function()
 		
         var database = firebase.database();	
         var usersRef = database.ref('users');
-        var newUser = User.create(username,fPassword,firstName,lastName,type);
+        var newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
         var key = usersRef.push(newUser);
         firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
 		updateClubhouse(Uclubhouse,type,key.key,username);
@@ -225,15 +230,7 @@ var usersManagement = function()
 		.push({userkey:keyArg,username:usernameArg,type:typeArg});
 	};
 
-	var getClubKeyIndex = function (clubName)
-	{
-		for (var i = 0; i < clubhousesInfo.length; i++) 
-		{
-			if(clubName.trim() == clubhousesInfo[i].name)
-				return i;
-		}
-		return FAIL;
-	}
+	
 
 	var addClubSelectValue = function()
 	{
@@ -311,8 +308,8 @@ var usersManagement = function()
 
 	// load user data when selected
 	var loadUserDetails = function(username)
-    {
-	    var clubKey = clubhousesInfo[clubIndex_Edit].key;
+	{
+		var clubKey = clubhousesInfo[clubIndex_Edit].key;
 		firebase.database().ref("clubhouse/"+clubKey+'/usersList').once("value")
 		.then(function (data) // get user key from club users list
 		{
@@ -350,7 +347,7 @@ var usersManagement = function()
 				}
 			});
 		});
-    }
+	}
 
 	var injectEditPage = function (user)
 	{
@@ -361,77 +358,91 @@ var usersManagement = function()
 		$('#username').val(user.username);
 		$('#password').val(user.password);
 		$('#confirm').val(user.password);
-		$('#userType').val(user.type);
-		
-		// document.getElementById('clubhouse').setAttribute("placeholder",user.password);
+		$('#userType').val(user.userType);	
+
+		var tempIndex;
+		for(var i =0; i<clubhousesInfo.length;i++)
+		{
+			if (clubhousesInfo[i].key == user.clubhouseKey)
+				tempIndex = i;
+			$('#clubhouse_select_Add').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
+		}
+
+		$('#clubhouse_select_Add').val(tempIndex);
 		$('#buttons_area').html(EditUserButtons.inputSection);
 		$('#change-button').click(changeUserInfo);
 		$('#delete-button').click(deleteUser);
 	}
 
-		var changeUserInfo = function()
+	var changeUserInfo = function()
+	{
+		var obj={};
+		var firstName = $('#UserPName').val();
+		var lastName = $('#UserLName').val();
+		var username = $('#username').val();
+		var password = $('#password').val();
+		var confirm = $('#confirm').val();
+		var userType = $('#userType').val();
+
+		var currClubIndex = $('#clubhouse_select_Add').val();
+		var currClubKey = clubhousesInfo[currClubIndex].key;
+		if (password != confirm)
 		{
-			var obj={};
-			var firstName = $('#UserPName').val();
-			var lastName = $('#UserLName').val();
-			var username = $('#username').val();
-			var password = $('#password').val();
-			var confirm = $('#confirm').val();
-			var userType = $('#userType').val();
-			if (password != confirm)
+			alert('הסיסמאות אינן תואמות');
+			return;
+		}
+		if (userToEdit.firstName != firstName)
+			obj.firstName = firstName;
+		if (userToEdit.lastName != lastName)
+			obj.lastName = lastName;
+		if (userToEdit.username != username)
+			obj.username = username;
+		if (userToEdit.password != password)
+			obj.password = password;
+		if(userToEdit.userType != userType)
+			obj.userType = userType;
+		if(userToEdit.clubhouseKey != currClubKey)
+			obj.clubhouseKey = currClubKey;
+		
+		var e = document.getElementById("clubhouse_select_Add");
+		var userRef = firebase.database().ref('users/');
+		userRef.child(userToEdit.userKey).update(obj);
+	}
+
+	var deleteUser = function()
+	{
+		var clubKey = clubhousesInfo[clubIndex_Edit].key; 
+		firebase.database().ref("clubhouse/"+clubKey+"/usersList").once("value")
+		.then(function(data)
+		{
+			if (data.val() == null)
 			{
-				alert('הסיסמאות אינן תואמות');
+				alert("לא נמצאו משתמשים להציג ");
 				return;
 			}
-			if (userToEdit.firstName != firstName)
-				obj.firstName = firstName;
-			if (userToEdit.lastName != lastName)
-				obj.lastName = lastName;
-			if (userToEdit.username != username)
-				obj.username = username;
-			if (userToEdit.password != password)
-				obj.password = password;
-			if(userToEdit.userType != userType)
-				obj.userType = userType;
-
-			var userRef = firebase.database().ref('users/');
-			userRef.child(userToEdit.userKey).update(obj);
-		}
-
-		var deleteUser = function()
-		{
-			var clubKey = clubhousesInfo[clubIndex_Edit].key; 
-			firebase.database().ref("clubhouse/"+clubKey+"/usersList").once("value")
-			.then(function(data)
+			var users = data.val();   // get the whole tree of clubhouses
+			var keys = Object.keys(users);	// get all keys
+				
+			for(var i =0; i<keys.length;i++)
 			{
-				if (data.val() == null)
+				var key = users[keys[i]].userkey;
+				var k = keys[i];
+				if(userToEdit.userKey == users[keys[i]].userkey)
 				{
-					alert("לא נמצאו משתמשים להציג ");
-					return;
+					firebase.database().ref("clubhouse/"+clubKey+"/usersList").child(k).remove();
+					return "true";
 				}
-				var users = data.val();   // get the whole tree of clubhouses
-				var keys = Object.keys(users);	// get all keys
-					
-				for(var i =0; i<keys.length;i++)
-				{
-					var key = users[keys[i]].userkey;
-					var k = keys[i];
-					if(userToEdit.userKey == users[keys[i]].userkey)
-					{
-						firebase.database().ref("clubhouse/"+clubKey+"/usersList").child(k).remove();
-						return "true";
-					}
-				}
-				return ("false")
+			}
+			return ("false")
 		}).then(function(res)
 		{
 			if(res == "true")
 				firebase.database().ref("users/"+userToEdit.userKey).remove();
 		});
-		}
+	}
 
 
-// listener for 'select' of clubhouse
+	// listener for clubhouse Buttons for user edit
 	var EditClubselectValue = function(e)
 	{
 		EditSectionClubName = e.target.innerText;
@@ -443,10 +454,6 @@ var usersManagement = function()
 	/////////////////////////////////////////////////////////////////////
 	//			LOAD DATA											   //
 	/////////////////////////////////////////////////////////////////////
-	//====================================================================================
-	
-
-	//===========================================================================================
 	// Updates clubhousesInfo array
 	var loadClubhousesData = function()
 	{	
@@ -482,7 +489,45 @@ var usersManagement = function()
 		});
 	}
 
+	/////////////////////////////////////////////////////////////////////
+	//			GENERAL METHODS										   //
+	/////////////////////////////////////////////////////////////////////
+	var getTypeAsString = function(type)
+	{	
+		if(type == PUSER)
+			return "הורה";
+		if(type == TUSER)
+			return "מורה";
+		if(type == GSUSER)
+			return "מדריך";
+		if(type == SWUSER)
+			return 'עו"ס';
+		if(type == ADMIN)
+			return "מנהל";
+		else
+			return"";
+	}
 
+
+	var getClubKeyIndex = function (clubName)
+	{
+		for (var i = 0; i < clubhousesInfo.length; i++) 
+		{
+			if(clubName.trim() == clubhousesInfo[i].name)
+				return i;
+		}
+		return FAIL;
+	}
+	
+	var getClubKeyByName = function (clubName)
+	{
+		for (var i = 0; i < clubhousesInfo.length; i++) 
+		{
+			if(clubName.trim() == clubhousesInfo[i].name)
+				return clubhousesInfo[i].key;
+		}
+		return "";
+	}
 
 
      return{addUser:addUser,editUser:editUser};
