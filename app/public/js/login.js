@@ -128,7 +128,6 @@ var login=function()
    	var catchSize = function()		// loader design by screen high
 	{
 		var curHeigth = screen.height;
-		console.log(curHeigth);
 		if(curHeigth < 500)
 		{
 			$(".login-form").css("max-height","70%");
