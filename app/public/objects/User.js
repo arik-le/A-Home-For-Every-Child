@@ -22,7 +22,7 @@ var User = function(username,password)
 				inboxMessages:[],
 				outboxMessages:[],
 				generalMessages:[],
-				clubhouseKey
+				clubhouseKey:clubhouseKey
 			}
 		}
 		return {create:create}

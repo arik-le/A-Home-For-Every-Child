@@ -200,14 +200,7 @@ var sendMessagePage = function()
 			return;
 		}
 
-		var message;
-		if(toTeachers && toParents)
-			message=Message.create(from,"general",subject,content, GENERAL_MESSAGE,EVERYBODY);
-		else if(!toTeachers && toParents)
-			message=Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_PARENTS);
-		else if(toTeachers && !toParents)
-			message=Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_TEACHERS);
-
+		var message = pickMesByPermision(toTeachers,toParents,from,subject,content,null);
 		firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
 		clearValue();
 	}
@@ -219,6 +212,16 @@ var sendMessagePage = function()
 		$("#chooseUserSM").val("בחר משתמש");
 		$("#subjectGM").val("");
 		$("#contentGM").val("");
+	}
+
+	var pickMesByPermision = function(toTeachers,toParents,from,subject,content,imageURL)
+	{
+		if(toTeachers && toParents)
+			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,EVERYBODY,imageURL);
+		else if(!toTeachers && toParents)
+			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_PARENTS,imageURL);
+		else
+			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_TEACHERS,imageURL);
 	}
 
 	return{msgPage:msgPage,
