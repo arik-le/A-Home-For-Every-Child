@@ -205,16 +205,15 @@ var clubhouseManagement = function()
 	var changeCHListener = function()
 	{
 		var obj={};
-		var name = $('#clubhouseNameID').val();
+		var name = $('#clubhouseNameID').val();  //current value
 		var address = $('#clubhouseAddrID').val();
+		
 		if(clubToEdit.name != name)
-		{
 			obj.name = name;
-		}
+
 		if(clubToEdit.address != address)
-		{
 			obj.address = address;
-		}
+
 		var cref = firebase.database().ref('clubhouse/');
 		cref.child(clubhousesInfo[edit_clubIndex].key).update(obj);
 	}
@@ -229,6 +228,9 @@ var clubhouseManagement = function()
 	{
 		if(!edit_clubname)
 			alert('לא נבחרה מועדונית');
+		else
+			alert('האם אתה בטוח ?פעולה זו תמחק את כל המשתמשים');
+		removeAllUsersFromCh(clubhousesInfo[edit_clubIndex].key);
 		firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key).remove()
 		.then(function(res)
 		{
@@ -238,6 +240,28 @@ var clubhouseManagement = function()
 		
 	}
 
+//	 not working yet
+	var removeAllUsersFromCh = function(clubKey)
+	{
+		console.log(clubKey);
+		firebase.database().ref('clubhouse/'+clubKey+"/usersList").once("value")
+		.then(function(data)
+		{
+			if(data.val() == null)
+				return;
+			var allUsers = data.val();   // get the whole tree of clubhouses
+			var keys = Object.keys(allUsers);	// get all keys
+			return keys;
+		}).then(function(keys)
+		{
+			for (var i = 0; i < keys.length; i++) {
+				firebase.database().ref("users/"+keys[i]).remove();
+				
+			}
+			
+		});
+	
+	}
 
 	// loads only strings of names for now.
 	var loadClubhousesData = function()

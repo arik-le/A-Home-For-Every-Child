@@ -151,6 +151,7 @@ var usersManagement = function()
     var addUser=function()
     {
 		page = ADDPAGE;
+		clubhousesInfo = [];
 		loadClubhousesData();
         $('.Nav').collapse('hide');
         $("#body").html(UserPage.inputSection);
@@ -255,6 +256,7 @@ var usersManagement = function()
 		page = EDITPAGE;
         $("#body").html(EditUserOp.inputSection);
         $('.Nav').collapse('hide');
+		clubhousesInfo = [];
 		loadClubhousesData(); 	// attach listeners after loading clubhouses
 		$('#openUserEditBtn').click(editUserListener);
     }
