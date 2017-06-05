@@ -17,12 +17,14 @@ var login=function()
 		inputSection:
 			"<div class = '+deviceType+'>"+
 			"<div class='login-page'>"+
+
 				"<div class='form'>"+
 					"<div class='login-form'>"+
 						"<img src ='images/pictureLogo.jpg' width='200' height='110'/>"+
 						"<input id='username' type='text' placeholder='הכנס שם משתמש'/>"+
 						"<input id='password' type='password' placeholder='הכנס סיסמה'/>"+
-						"<button id = 'cmdLogin' >התחבר</button>"+
+						"<button id = 'cmdLogin' >התחבר</button></br>"+
+						"<img id='loader' src='images/homepreloader.gif'/>"+
 					"</div>"+
 				"</div>"+
 			"</div>"+
@@ -86,7 +88,13 @@ var login=function()
 				{
 					correntUser[1]=k; 
 					correntUser[0] = allUsers[k];
-					mainPage.openMainPage(correntUser[0]);
+					catchSize();	//for design loader currectly
+					$("#loader").css("display", "inline-block");
+					setTimeout(function()
+					{ 
+						mainPage.openMainPage(correntUser[0]); 
+					}, 2000);
+					
 					return;
 				}
 			}
@@ -117,7 +125,30 @@ var login=function()
 		
 	}
 //---------------------------------------------------------------------------------------------------//	
-   	
+   	var catchSize = function()		// loader design by screen high
+	{
+		var curHeigth = screen.height;
+		console.log(curHeigth);
+		if(curHeigth < 500)
+		{
+			$(".login-form").css("max-height","70%");
+			return;
+		}
+		if(curHeigth < 600)
+		{
+			$(".login-form").css("max-height","60%");
+			return;
+		}
+		if(curHeigth < 750)
+		{
+			$(".login-form").css("max-height","50%");
+			return;
+		}
+		else
+			$(".login-form").css("max-height","35%");
+
+
+	}
 return { initModule : initModule,
 		 usersAndKeys:usersAndKeys,
 		 correntUser:correntUser,
