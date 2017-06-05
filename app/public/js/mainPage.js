@@ -74,8 +74,7 @@ var mainPage=function()
         $("#userName_lbl").html(correntUser[0].firstName);
 
         $("#homePage").click(function(){
-            $('.Nav').collapse('hide');
-            $("#body").html(newFeeds.inputSection);
+        $('.Nav').collapse('hide');
         });
         
 		$("#addUser_btn").click(usersManagement.addUser);
@@ -90,8 +89,25 @@ var mainPage=function()
 
         $("#logout").click(logout);
         $("#logout1").click(logout);
+        loadGeneralMessages();
     }
     
+    var loadGeneralMessages = function()
+    {
+        var curClubKey = login.correntUser[0].clubhouseKey;
+        firebase.database().ref("clubhouse/" + curClubKey + "/generalMessages").once("value")
+        .then(function(data)
+        {
+            var messages = data.val();
+            console.log(messages);
+            if (messages !== null)
+            {
+                var keys = Object.keys(messages);
+                for(var i=keys.length-1;i>=0;i--)
+                    Message.addGenMes(messages[keys[i]]);
+			}
+        });
+    }
     
     var logout = function()
     {

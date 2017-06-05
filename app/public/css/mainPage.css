@@ -132,6 +132,7 @@ nav{
 #dateMessage{
 	margin: auto;
 	float:left;
+  margin-left:2%;
 }
 .generalMessageBox{
 	border:1px double  #456879;
