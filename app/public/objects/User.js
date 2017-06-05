@@ -8,7 +8,7 @@ var User = function(username,password)
         // for Parent/Teacher users only
         //this.childName;
 		
-		var create = function(username,password,firstName,lastName,userType)
+		var create = function(username,password,firstName,lastName,userType,clubhouseKey)
 		{
 			var d = new Date();
 			return{
@@ -21,7 +21,8 @@ var User = function(username,password)
 				date:d.toDateString(),
 				inboxMessages:[],
 				outboxMessages:[],
-				generalMessages:[]
+				generalMessages:[],
+				clubhouseKey
 			}
 		}
 		return {create:create}
