@@ -92,7 +92,7 @@ var login=function()
 					setTimeout(function()
 					{ 
 						mainPage.openMainPage(correntUser[0]); 
-					}, 2000);
+					}, 500);
 					
 					return;
 				}

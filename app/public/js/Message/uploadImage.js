@@ -30,6 +30,7 @@ var uploadImage=function()
                     $('#img-upload').attr('src', e.target.result);
                 }
                 reader.readAsDataURL(input.files[0]);
+                console.log(input.files[0]);
             }
         }
         var init=function()
@@ -39,5 +40,5 @@ var uploadImage=function()
             }); 	
         }
         
-    return{init:init}
+    return{init:init,input:input}
 }();

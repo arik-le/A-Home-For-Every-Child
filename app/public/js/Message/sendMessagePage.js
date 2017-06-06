@@ -200,6 +200,12 @@ var sendMessagePage = function()
 			return;
 		}
 
+		//upload image to  firebase storage
+		var file = uploadImage.input.file[0];
+		firebase.storage().ref('images').put(sourceImg);
+
+
+
 		var message = pickMesByPermision(toTeachers,toParents,from,subject,content,null);
 		firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
 		clearValue();
