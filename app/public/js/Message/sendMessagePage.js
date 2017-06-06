@@ -201,8 +201,7 @@ var sendMessagePage = function()
 		}
 
 		//upload image to  firebase storage
-		var file = uploadImage.myFileImg;
-		console.log(file);
+		var file = uploadImage.myFileImg[0];
 		//firebase.storage().ref('images').put(file);
 
 
