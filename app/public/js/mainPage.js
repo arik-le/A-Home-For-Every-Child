@@ -74,7 +74,8 @@ var mainPage=function()
         $("#userName_lbl").html(correntUser[0].firstName);
 
         $("#homePage").click(function(){
-        $('.Nav').collapse('hide');
+            $('.Nav').collapse('hide');
+            loadGeneralMessages();
         });
         
 		$("#addUser_btn").click(usersManagement.addUser);
@@ -94,12 +95,12 @@ var mainPage=function()
     
     var loadGeneralMessages = function()
     {
+        $("#body").html("");
         var curClubKey = login.correntUser[0].clubhouseKey;
         firebase.database().ref("clubhouse/" + curClubKey + "/generalMessages").once("value")
         .then(function(data)
         {
             var messages = data.val();
-            console.log(messages);
             if (messages !== null)
             {
                 var keys = Object.keys(messages);

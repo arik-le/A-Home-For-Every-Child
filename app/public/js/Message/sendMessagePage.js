@@ -200,8 +200,14 @@ var sendMessagePage = function()
 			return;
 		}
 
+		//upload image to  firebase storage
+		var file = uploadImage.myFileImg[0];
+		//firebase.storage().ref('images').put(file);
+
+
+/*
 		var message = pickMesByPermision(toTeachers,toParents,from,subject,content,null);
-		firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
+		firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);*/
 		clearValue();
 	}
 

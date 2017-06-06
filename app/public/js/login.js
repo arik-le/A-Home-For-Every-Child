@@ -17,12 +17,14 @@ var login=function()
 		inputSection:
 			"<div class = '+deviceType+'>"+
 			"<div class='login-page'>"+
+
 				"<div class='form'>"+
 					"<div class='login-form'>"+
 						"<img src ='images/pictureLogo.jpg' width='200' height='110'/>"+
 						"<input id='username' type='text' placeholder='הכנס שם משתמש'/>"+
 						"<input id='password' type='password' placeholder='הכנס סיסמה'/>"+
-						"<button id = 'cmdLogin' >התחבר</button>"+
+						"<button id = 'cmdLogin' >התחבר</button></br>"+
+						"<img id='loader' src='images/homepreloader.gif'/ width ='40%'>"+
 					"</div>"+
 				"</div>"+
 			"</div>"+
@@ -86,7 +88,12 @@ var login=function()
 				{
 					correntUser[1]=k; 
 					correntUser[0] = allUsers[k];
-					mainPage.openMainPage(correntUser[0]);
+					$("#loader").css("display", "inline-block");
+					setTimeout(function()
+					{ 
+						mainPage.openMainPage(correntUser[0]); 
+					}, 500);
+					
 					return;
 				}
 			}

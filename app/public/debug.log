@@ -1,1 +1,4 @@
 [0529/130418.297:ERROR:settings.cc(261)] Settings magic is not 1129342067
+[0605/235740.418:ERROR:process_info.cc(625)] range at 0x3912b7400000000, size 0x223 fully unreadable
+[0605/235740.430:ERROR:process_info.cc(625)] range at 0x3912b9400000000, size 0x223 fully unreadable
+[0605/235740.430:ERROR:process_info.cc(625)] range at 0x0, size 0x223 fully unreadable
