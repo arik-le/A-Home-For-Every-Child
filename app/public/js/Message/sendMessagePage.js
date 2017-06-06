@@ -201,13 +201,14 @@ var sendMessagePage = function()
 		}
 
 		//upload image to  firebase storage
-		var file = uploadImage.input.file[0];
-		firebase.storage().ref('images').put(sourceImg);
+		var file = uploadImage.myFileImg;
+		console.log(file);
+		//firebase.storage().ref('images').put(file);
 
 
-
+/*
 		var message = pickMesByPermision(toTeachers,toParents,from,subject,content,null);
-		firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
+		firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);*/
 		clearValue();
 	}
 

@@ -1,5 +1,8 @@
 var uploadImage=function()
 {
+        var myFileImg;
+
+
         $(document).on('change', '.btn-file :file', function() 
         {
             var input = $(this),
@@ -30,7 +33,9 @@ var uploadImage=function()
                     $('#img-upload').attr('src', e.target.result);
                 }
                 reader.readAsDataURL(input.files[0]);
-                console.log(input.files[0]);
+                myFileImg = input;
+                console.log(myFileImg);
+
             }
         }
         var init=function()
@@ -40,5 +45,5 @@ var uploadImage=function()
             }); 	
         }
         
-    return{init:init,input:input}
+    return{init:init,myFileImg:myFileImg};
 }();
