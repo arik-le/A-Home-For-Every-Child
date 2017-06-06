@@ -219,6 +219,7 @@ var clubhouseManagement = function()
 		cref.child(clubhousesInfo[edit_clubIndex].key).update(obj);
 	}
 
+
 	var CHsellection = function(e)
 	{
 		edit_clubname = e.target.innerText;
@@ -229,14 +230,46 @@ var clubhouseManagement = function()
 	{
 		if(!edit_clubname)
 			alert('לא נבחרה מועדונית');
-		firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key).remove()
-		.then(function(res)
-		{
-			clubhousesInfo = [];
-			editClubhouse();
-		});
+		if(!confirm('כאשר תימחק המועדונית ימחקו משתמשים המשויכים לה, האם ברצונך להמשיך?')) 
+            return;
+        else 
+        {
 		
+			var clubRef = firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key);
+			clubRef.once("value").then(function(data)
+			{
+				var clubHouseObj = data.val();
+				var key = clubHouseObj.ClubhouseDBkey;
+				var userRef = firebase.database().ref('users/');
+					userRef.once("value").then(function(data)
+					{
+						var users = data.val();
+						var userskeys = Object.keys(users);
+						for(var i=0;i<userskeys.length;i++)
+						{	
+							var userObj =firebase.database().ref('users/'+userskeys[i])
+							userObj.once("value").then(function(data)
+							{
+								var userData = data.val();
+								if(key == userData.clubhouseKey)
+								{
+									firebase.database().ref('users/'+userData.userKey).remove();
+								}
+							})
+						}
+		 				firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key).remove()
+		  				.then(function(res)
+		  				{
+		 					clubhousesInfo = [];
+		 					editClubhouse();
+		 				});
+
+					})		
+			});	
+		}
 	}
+
+	
 
 
 	// loads only strings of names for now.
