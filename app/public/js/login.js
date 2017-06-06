@@ -24,7 +24,7 @@ var login=function()
 						"<input id='username' type='text' placeholder='הכנס שם משתמש'/>"+
 						"<input id='password' type='password' placeholder='הכנס סיסמה'/>"+
 						"<button id = 'cmdLogin' >התחבר</button></br>"+
-						"<img id='loader' src='images/homepreloader.gif'/>"+
+						"<img id='loader' src='images/homepreloader.gif'/ width ='40%'>"+
 					"</div>"+
 				"</div>"+
 			"</div>"+
@@ -88,7 +88,6 @@ var login=function()
 				{
 					correntUser[1]=k; 
 					correntUser[0] = allUsers[k];
-					catchSize();	//for design loader currectly
 					$("#loader").css("display", "inline-block");
 					setTimeout(function()
 					{ 
@@ -125,29 +124,7 @@ var login=function()
 		
 	}
 //---------------------------------------------------------------------------------------------------//	
-   	var catchSize = function()		// loader design by screen high
-	{
-		var curHeigth = screen.height;
-		if(curHeigth < 500)
-		{
-			$(".login-form").css("max-height","70%");
-			return;
-		}
-		if(curHeigth < 600)
-		{
-			$(".login-form").css("max-height","60%");
-			return;
-		}
-		if(curHeigth < 750)
-		{
-			$(".login-form").css("max-height","50%");
-			return;
-		}
-		else
-			$(".login-form").css("max-height","35%");
-
-
-	}
+   	
 return { initModule : initModule,
 		 usersAndKeys:usersAndKeys,
 		 correntUser:correntUser,
