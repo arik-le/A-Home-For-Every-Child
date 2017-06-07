@@ -34,7 +34,7 @@
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #4CAF50;
+  background: #1dc328;
   width: 50%;
   border: 0;
   padding: 15px;
@@ -79,9 +79,9 @@
   color: #EF3B3A;
 }
 body {
-background: #00d2ff;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to bottom, #3a7bd5, #00d2ff);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to bottom, #3a7bd5, #00d2ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: #2BC0E4;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to top, #EAECC6, #2BC0E4);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to top, #EAECC6, #2BC0E4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;

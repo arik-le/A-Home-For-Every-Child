@@ -6,6 +6,8 @@ var sendMessagePage = function()
 	var ONLY_TEACHERS = 1;
 	var EVERYBODY = 2;
 
+	var obj=0;
+
 	var msgPage={
 	inputSection:
 	
@@ -184,6 +186,11 @@ var sendMessagePage = function()
 		var subject=document.getElementById("subjectGM").value;
 		var content=document.getElementById("contentGM").value;
 
+		if(!toTeachers && !toParents)
+		{
+			alert("אנה בחר יעד לשליחה");
+			return;
+		}
 		if(toClubHouse == "nan" || toClubHouse == null || toClubHouse == undefined)
 		{
 			alert("אנה בחר/י מועדונית");
@@ -202,12 +209,33 @@ var sendMessagePage = function()
 
 		//upload image to  firebase storage
 		var file = uploadImage.myFileImg[0];
-		//firebase.storage().ref('images').put(file);
+		if(file === undefined)
+		{
+			var message = pickMesByPermision(toTeachers,toParents,from,subject,content,-1);
+			firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
+		}
+		else
+		{
+			var storageRef = firebase.storage().ref('/generalMessagesImages/' + toClubHouse + '/' + file.name);
+			var uploadTask = storageRef.put(file);
 
-
-/*
-		var message = pickMesByPermision(toTeachers,toParents,from,subject,content,null);
-		firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);*/
+			// Register three observers:
+			// 1. 'state_changed' observer, called any time the state changes
+			// 2. Error observer, called on failure
+			// 3. Completion observer, called on successful completion
+			uploadTask.on('state_changed', function(snapshot){
+			// Observe state change events such as progress, pause, and resume
+			// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+			}, function(error) {
+				alert("לא ניתן לשלוח הודעה כעת.. אנה נסו שוב מאוחר יותר");
+			}, function() {
+			// Handle successful uploads on complete
+			// For instance, get the download URL: https://firebasestorage.googleapis.com/...
+			var downloadURL = uploadTask.snapshot.downloadURL;
+			var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL);
+			firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
+			});
+		}
 		clearValue();
 	}
 
@@ -218,10 +246,11 @@ var sendMessagePage = function()
 		$("#chooseUserSM").val("בחר משתמש");
 		$("#subjectGM").val("");
 		$("#contentGM").val("");
+		//$("#img-upload").removeAttr('src');
 	}
 
 	var pickMesByPermision = function(toTeachers,toParents,from,subject,content,imageURL)
-	{
+	{	
 		if(toTeachers && toParents)
 			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,EVERYBODY,imageURL);
 		else if(!toTeachers && toParents)

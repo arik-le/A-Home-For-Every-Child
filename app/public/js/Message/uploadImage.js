@@ -2,7 +2,6 @@ var uploadImage=function()
 {
         var myFileImg = [];
 
-
         $(document).on('change', '.btn-file :file', function() 
         {
             var input = $(this),
@@ -34,27 +33,7 @@ var uploadImage=function()
                     $('#img-upload').attr('src', e.target.result);
                 }
                 reader.readAsDataURL(input.files[0]);
-                myFileImg[0] = input.files[0];
-                console.log(  myFileImg[0]);
-                /*
-                    var storageRef = firebase.storage().ref('/images/' + myFileImg[0].name);
-                    var uploadTask = storageRef.put( myFileImg[0]);
-
-                    // Register three observers:
-                    // 1. 'state_changed' observer, called any time the state changes
-                    // 2. Error observer, called on failure
-                    // 3. Completion observer, called on successful completion
-                    uploadTask.on('state_changed', function(snapshot){
-                    // Observe state change events such as progress, pause, and resume
-                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                    }, function(error) {
-                    // Handle unsuccessful uploads
-                    }, function() {
-                    // Handle successful uploads on complete
-                    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-                    var downloadURL = uploadTask.snapshot.downloadURL;
-                });
-                */
+                myFileImg[0] = input.files[0];                
             }
         }
         var init=function()
@@ -66,3 +45,6 @@ var uploadImage=function()
         
     return{init:init,myFileImg:myFileImg};
 }();
+
+// storage rules line 
+//: if request.auth != null

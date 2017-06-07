@@ -12,7 +12,10 @@
 }
 #logout{
   margin-top:-2%;
-  background-color: #f4e0e0;
+  color:white;
+  background: #e52d27; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #e52d27, #b31217); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #e52d27, #b31217); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 #nameInTop
 {
@@ -94,23 +97,35 @@ nav{
 /**********************************************/
 
 .title{
-	padding:3%;
+	padding-right:3%;
+  padding-left:3%;
 	text-align:right;
 	border-bottom:1.2px solid #456879;
-	background: #FDFC47;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #24FE41, #FDFC47);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to right,#fcfdaa, #e2e32a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+
+  background: #1dc328;
+
+  /*color:white;*/
+border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
+.title h6 
+{
+  padding-top:2%;
+}
 
 #textAreaGM{
 	text-align:right;
-	font-size:20px;
-	background: #1FA2FF;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to bottom, #A6FFCB, #12D8FA, #1FA2FF);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to bottom, #A6FFCB, #12D8FA, #1FA2FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	font-size:18px;
+  padding:3%;
+	background: #ece9e6; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #ece9e6, #ffffff); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #ece9e6, #ffffff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+
+#imgGM
+{
+  max-width: 90%;;
 }
 
 .messageFooter
@@ -122,8 +137,8 @@ nav{
 	background: #E0EAFC;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to top, #CFDEF3, #E0EAFC);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to top, #CFDEF3, #E0EAFC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  /*border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;*/
 }
 .deleteMessage{
 	text-align:right;
@@ -133,8 +148,4 @@ nav{
 	margin: auto;
 	float:left;
   margin-left:2%;
-}
-.generalMessageBox{
-	border:1px double  #456879;
-  border-radius: 10px;
 }
