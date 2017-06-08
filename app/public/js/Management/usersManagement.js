@@ -120,7 +120,7 @@ var usersManagement = function()
 			'<div class="container">'+
 				'<label for="clubBottunGroup" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
 				'<br>'+
-				'<div  id ="clubBottunGroup" class = "col-md-4">'+
+				'<div id ="clubBottunGroup" class="span1">'+
 				'</div>'+
 				'<br>'+
 				'<label for="clubHouseUsers" class="col-sm-2 controlLabel">:בחר משתמש</label>'+
@@ -518,9 +518,16 @@ var usersManagement = function()
 				if (page == EDITPAGE)
 				{
 					var tempBtnID = 'btn'+i;
-					var btnInput = '<button id = '+tempBtnID+' type="button" class="btn btn-default">'+
-									'<span class="glyphicon glyphicon-home"></span> '+tempName+
-								'</button>';
+					// var btnInput = '<button id = '+tempBtnID+' type="button" class="btn btn-default">'+
+					// 				'<span class="glyphicon glyphicon-home"></span> '+tempName+
+					// 			'</button>';
+
+					var btnInput = 
+					'<a href="#" class="btn btn-primary">'+
+						'<i class="icon-pencil icon-white"></i>'+
+						'<span><strong>'+tempName+'</strong></span>'+        
+					'</a>'+
+				'</div>'
 					$('#clubBottunGroup').append(btnInput);
 					$('#'+tempBtnID).click(EditClubselectValue);
 				}
