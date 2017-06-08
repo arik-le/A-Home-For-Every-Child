@@ -24,53 +24,50 @@ var clubhouseManagement = function()
 			'<div class="row main">'+
 						'<div class="panel-heading">'+
 							'<div class="panel-title text-center">'+
-								'<h1 id="titleCH" class="title">הוספת מועדונית</h1>'+
-								'<hr />'+
+								'<h1 id="titleCH" class="titleCH">הוספת מועדונית</h1>'+
 							'</div>'+
 						'</div> '+
 
-						'<div class="main-login main-center">'+
-							'<form class="form-horizontal" method="post" action="#">'+
-						
-								'<div class="form-group">'+
-									'<label for="clubhouseName" class="col-sm-2 controlLabel" >:שם מועדונית</label>'+
-									'<div class="col-sm-10">'+
-										'<div class="input-group">'+
-											'<span class="input-group-addon"><i class="fa fa-home fa" aria-hidden="true"></i></span>'+
-											'<input type="text" class="form-control" name="clubhouseName" id="clubhouseNameID"  placeholder="הכנס שם מועדונית"/>'+
-										'</div>'+
-									'</div>'+
-								'</div>'+
-
-								'<div class="form-group">'+
-									'<label for="clubhouseAddress" class="col-sm-2 controlLabel" id="formTxts">:כתובת המועדונית</label>'+
-									'<div class="col-sm-10">'+
-										'<div class="input-group">'+
-											'<span class="input-group-addon"><i class="fa fa-map-marker fa" aria-hidden="true"></i></span>'+
-											'<input type="text" class="form-control" name="clubhouseAddress" id="clubhouseAddrID"  placeholder="הכנס כתובת מועדונית"/>'+
-										'</div>'+
-									'</div>'+
-								'</div>'+
-							
-								'<div id = "buttonSection" class="form-group">'+
-									
-								'</div>'+
-							'</form>'+
+			'<div class="main-login main-center">'+
+				'<form class="form-horizontal" method="post" action="#">'+
+			
+					'<div class="form-group">'+
+						'<label for="clubhouseName" class="col-sm-2 controlLabel" >:שם מועדונית</label>'+
+						'<div class="col-sm-10">'+
+							'<div class="input-group">'+
+								'<span class="input-group-addon"><i class="fa fa-home fa" aria-hidden="true"></i></span>'+
+								'<input type="text" class="form-control" name="clubhouseName" id="clubhouseNameID"  placeholder="הכנס שם מועדונית" dir="rtl"/>'+
+							'</div>'+
 						'</div>'+
+					'</div>'+
 
-				'</div>'
-			}
+					'<div class="form-group">'+
+						'<label for="clubhouseAddress" class="col-sm-2 controlLabel" id="formTxts">:כתובת המועדונית</label>'+
+						'<div class="col-sm-10">'+
+							'<div class="input-group">'+
+								'<span class="input-group-addon"><i class="fa fa-map-marker fa" aria-hidden="true"></i></span>'+
+								'<input type="text" class="form-control" name="clubhouseAddress" id="clubhouseAddrID"  placeholder="הכנס כתובת מועדונית" dir="rtl"/>'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+				
+					'<div id = "buttonSection" class="form-group">'+
+						
+					'</div>'+
+				'</form>'+
+			'</div>'+
 
+	'</div>'
+	}
 
-			var addClubhouseBtn={
-       		 inputSection:'<button type="button" id="addClubhouseBtn" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" >הוספה</button>'+
-									'</br>'
-			}
+	var addClubhouseBtn={
+		inputSection:'<button type="button" id="addClubhouseBtn" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" >הוספה</button></br>'
+	}
 
-			var editClubhouseBtn={
-       		 inputSection:'<button type="button" id="editClubhouseBtn" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" >עריכה</button>'+
-									'</br>'
-			}
+	var editClubhouseBtn={
+		inputSection:'<button type="button" id="editClubhouseBtn" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" >עריכה</button>'+
+							'</br>'
+	}
        //-------------------------------------------------------------------------------------------------
        //       INJECTION FOR EDIT OPTION - clubhouse and user choosing
         var EditClubhousePage={

@@ -33,7 +33,7 @@ var Message=function()
     var addGenMes=function(message)        //draw general messages in home page
     {
         var url = message.imageURL;
-        if(url != -1)
+        if(url != -1)       //  with image
         {
             var message=
                 '<div class = "generalMessageBox">'+
@@ -43,6 +43,7 @@ var Message=function()
                     '</div>'+
                     '<div id = "textAreaGM" dir="rtl">'+ message.content + '</br>'+
                     '<img id = imgGM src=' + url +'/>'+
+                    '<div id="downloadImage">שמור תמונה <span class="glyphicon glyphicon-download-alt"></span></div>'+
                     '</div>'+
                 '<div class="messageFooter">'+
                         '<h4 id = "dateMessage">'+getDateMes(message.date)+'</h4>'+
@@ -53,7 +54,7 @@ var Message=function()
                     '</div>'+
                 '</div></p>';
         }
-        else{
+        else{           //  'without image
             var message=
                 '<div class = "generalMessageBox">'+
                     '<div class = "title">'+

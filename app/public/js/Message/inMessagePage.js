@@ -77,18 +77,19 @@ var inMassagePage=function()
     }
 
 //-------------------------------------------------------------------------------------------------
+   
     var readMessage=function(id)
     {
         var me = login.correntUser[1];
         firebase.database().ref("users/" + me + "/inboxMessages").once("value")
         .then(function(data)
-            {
-                var messages = data.val();
-                var keys = Object.keys(messages);
-                var i=keys[id];
-                firebase.database().ref("users/" + me + "/inboxMessages/"+i+"/isRead").set(true);
-              
-            })
+        {
+            var messages = data.val();
+            var keys = Object.keys(messages);
+            var i=keys[id];
+            firebase.database().ref("users/" + me + "/inboxMessages/"+i+"/isRead").set(true);
+            
+        })
         $("#enve"+id).removeClass("envelopeN");
         $("#enve"+id).addClass("envelopeR");
     }
@@ -124,7 +125,6 @@ var inMassagePage=function()
                 var me = login.correntUser[1];
                 var delMsg = firebase.database().ref("users/" + me + inOrOut+key);
                 delMsg.remove();
-               
          }
      }
 
@@ -185,6 +185,7 @@ var inMassagePage=function()
         });
     }
   
+//-------------------------------------------------------------------------------------------------
 
      return{addMessage:addMessage,
             initPage:initPage,
