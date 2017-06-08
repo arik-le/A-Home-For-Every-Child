@@ -1,9 +1,10 @@
 
 
 .btn-sq-sm {
-  width: 80px !important;
+width: 32% !important;
   height: 60px !important;
-  font-size: 14px;
+  margin-right: 1.25%;
+  font-size: 85%;
 }
 
 .btn-sq-xs {
@@ -107,7 +108,7 @@
   font-weight: normal;
   font-size: 40px;
   border-radius: 6px;
-  text-shadow: 1px 3px 5px #000000 ;
+text-shadow: 2px 3px 9px #0f2629;
 }
 
 #selectCHLabel
