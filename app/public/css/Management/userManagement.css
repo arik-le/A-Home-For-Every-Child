@@ -109,3 +109,17 @@
   border-radius: 6px;
   text-shadow: 1px 3px 5px #000000 ;
 }
+
+#selectCHLabel
+{
+  font-size: 20px;
+  color:rgba(255, 255, 255, 0.89);
+  text-shadow: 2px 3px 9px #000000 ;
+}
+
+#userSelEdit
+{
+  font-size: 20px;
+  color:rgba(255, 255, 255, 0.89);
+  text-shadow: 2px 3px 9px #000000 ;
+}

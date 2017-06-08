@@ -117,9 +117,8 @@ var usersManagement = function()
         var EditUserOp={
         inputSection:
 			'<div class="container">'+
-				'<label for="clubBottunGroup" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
+				'<label id="selectCHLabel" for="clubBottunGroup" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
 				'<br>'+
-				//'<div id ="clubBottunGroup">'+
 
 			'<div class="row">'+
 				'<div id = "clubBottunGroup" class="col-md-4 text-center">'+
@@ -128,7 +127,8 @@ var usersManagement = function()
 			'</div>'+
 				'</div>'+
 				'<br>'+
-				'<label for="clubHouseUsers" class="col-sm-2 controlLabel">:בחר משתמש</label>'+
+				'<label id="userSelEdit" for="clubHouseUsers" class="col-sm-2 controlLabel">:בחר משתמש</label>'+
+				'</br>'+
 				'<div class="input-group">'+
 						'<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>'+
 						'<select type="text" id="usersInCH" class="form-control" >'+
@@ -308,12 +308,12 @@ var usersManagement = function()
 	var editUserListener= function()
 	{
 		var e = document.getElementById("usersInCH");
-		var userName = e.options[e.selectedIndex].text;
-		 if(!userName)
+		 if(e.selectedIndex<0)
 		 {
 			 alert('לא נבחר שם משתמש');
 			 return;
 		 }
+		var userName = e.options[e.selectedIndex].text;
 		var user = loadUserDetails(userName);
 
 	};
