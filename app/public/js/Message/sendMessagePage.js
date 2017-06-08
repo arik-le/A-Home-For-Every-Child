@@ -99,6 +99,8 @@ var sendMessagePage = function()
 	'</div>'
 	}
 
+//-------------------------------------------------------------------------------------------------
+
 	var updateClubList=function()				//update the list of clubHouses
 	{
 		firebase.database().ref("clubhouse/").once("value")
@@ -116,6 +118,8 @@ var sendMessagePage = function()
 			}
 		});
 	}
+
+//-------------------------------------------------------------------------------------------------
 
 	var updateUserList = function()			//update the list of users according the clubHouses
 	{
@@ -145,6 +149,8 @@ var sendMessagePage = function()
 		});
 	}
 
+//-------------------------------------------------------------------------------------------------
+
 	var sendPriMessage=function()
 	{
 		var from=login.correntUser[1];
@@ -173,8 +179,10 @@ var sendMessagePage = function()
 		firebase.database().ref('users/'+ to+ '/inboxMessages').push(message);
 		firebase.database().ref('users/'+ from+ '/outboxMessages').push(message);
 		clearValue();
+		alert("ההודעה נשלחה בהצלחה");
 	}
 
+//-------------------------------------------------------------------------------------------------
 
 	var sendGenMessage=function()
 	{
@@ -237,7 +245,10 @@ var sendMessagePage = function()
 			});
 		}
 		clearValue();
+		alert("ההודעה נשלחה בהצלחה");
 	}
+
+//-------------------------------------------------------------------------------------------------
 
 	var clearValue=function()
 	{
@@ -246,8 +257,9 @@ var sendMessagePage = function()
 		$("#chooseUserSM").val("בחר משתמש");
 		$("#subjectGM").val("");
 		$("#contentGM").val("");
-		//$("#img-upload").removeAttr('src');
 	}
+
+//-------------------------------------------------------------------------------------------------
 
 	var pickMesByPermision = function(toTeachers,toParents,from,subject,content,imageURL)
 	{	
@@ -258,6 +270,8 @@ var sendMessagePage = function()
 		else
 			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_TEACHERS,imageURL);
 	}
+
+//-------------------------------------------------------------------------------------------------
 
 	return{msgPage:msgPage,
 		updateUserList:updateUserList,

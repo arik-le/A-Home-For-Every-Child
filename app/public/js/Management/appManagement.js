@@ -1,6 +1,5 @@
 var appManagement = function ()
 {
-    //-------------------------------------------------------------------------------------------------
      // inside manu for management page 
     var headLine={
         inputSection:
@@ -13,12 +12,8 @@ var appManagement = function ()
             '</div>'+
             '<div id="ManagementList" class="container"></div>'
     }
-    //-------------------------------------------------------------------------------------------------
-   
-
-
-
 //-------------------------------------------------------------------------------------------------
+   
 // Initial page for injecting the html components
 
      var initPage=function()

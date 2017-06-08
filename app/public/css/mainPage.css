@@ -21,6 +21,9 @@
 {
   text-align:right;
 }
+#userName_lbl{
+  margin-right:1%;
+}
 nav{
 	text-align: right;
   margin-top: 3%;
@@ -148,4 +151,14 @@ border-top-left-radius: 5px;
 	margin: auto;
 	float:left;
   margin-left:2%;
+}
+
+#downloadImage{
+	color:cornflowerblue;
+	text-align: center;
+	font-size: 15px;
+}
+#downloadImage:hover
+{
+	color:lightblue;
 }

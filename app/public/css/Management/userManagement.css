@@ -2,6 +2,16 @@
     padding-inline-start: 10px
 }
 
+#registerTitle
+{
+    margin:-5%;
+}
+
+#titleCH
+{
+    margin:-5%;
+    margin-bottom:3%;
+}
 #btn0
 {
     width:70PX;
@@ -75,4 +85,10 @@ width:100px;
     /*margin-left: 30px;
     margin-top : 10px;
 }
+
 */
+
+#addUser{
+    margin:5%;
+    text-align: center; 
+}

@@ -9,7 +9,7 @@ var mainPage=function()
                 '<span class="glyphicon glyphicon-log-out"></span> התנתק/י'+
                 '</button>'+
                 '<div id = "nameInTop">'+
-                    '<label id="userName_lbl"></label>'+
+                    '<label id= "userName_lbl" ></label>'+
                     '<span class="glyphicon glyphicon-user"></span>'+ 
                 '<div>'+ 
             '</div>'
@@ -87,6 +87,7 @@ var mainPage=function()
         $("#writeMessage_btn").click(inMassagePage.openSendMassage);
         $("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
         $("#outMessage_btn").click(outMessagePage.open);
+        //$("#downloadImage").click(downloadImg);
 
         $("#logout").click(logout);
         $("#logout1").click(logout);
@@ -111,6 +112,8 @@ var mainPage=function()
             }
         });
     }
+
+    
     
     var logout = function()
     {
