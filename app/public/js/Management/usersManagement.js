@@ -35,7 +35,7 @@ var usersManagement = function()
 						'<div class="col-sm-10">'+
 							'<div class="input-group">'+
 								'<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>'+
-								'<input type="text" class="form-control" name="name" id="UserPName" placeholder="הכנס שם פרטי dir="rtl" />'+
+								'<input type="text" class="form-control" name="name" id="UserPName" placeholder="הכנס שם פרטי" dir="rtl" />'+
 							'</div>'+
 						'</div>'+
 					'</div>'+
@@ -119,7 +119,13 @@ var usersManagement = function()
 			'<div class="container">'+
 				'<label for="clubBottunGroup" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
 				'<br>'+
-				'<div id ="clubBottunGroup" class="span1">'+
+				//'<div id ="clubBottunGroup">'+
+
+			'<div class="row">'+
+				'<div id = "clubBottunGroup" class="col-md-4 text-center">'+
+				
+				'</div>'+
+			'</div>'+
 				'</div>'+
 				'<br>'+
 				'<label for="clubHouseUsers" class="col-sm-2 controlLabel">:בחר משתמש</label>'+
@@ -128,18 +134,21 @@ var usersManagement = function()
 						'<select type="text" id="usersInCH" class="form-control" >'+
 						'</select>'+
 				'</div>'+
-
-				'<button type="button" id="openUserEditBtn" class=" col-xs-offset-4 btn btn-default"  >לחץ כאן לערוך</button>'+
+				'</br>'+
+				'<div class="col-md-4 text-center">'+
+					'<button type="button" id="openUserEditBtn" class="btn btn-warning btn3d">לחץ כאן לערוך</button>'+
+				'</div>'+
 			'</div>'
         }
 		var EditUserButtons={
         inputSection:
-		
+			'</br>'+
 			'<button id ="change-button" type="button" class="btn btn-primary btn-block btn-lg edit-button"  >עריכה</button>'+
 			'<button id ="delete-button" type="button" class="btn-danger btn-danger btn-block btn-lg  delete-button"  >מחיקת משתמש</button>'
 	}
 	var addUserButton={
         inputSection:
+	'</br>'+
 	'<button type="button" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" id="addUser" >הרשמה</button>'
 	}
 
@@ -355,7 +364,7 @@ var usersManagement = function()
 	var injectEditPage = function (user)
 	{
 		$('#body').html(UserPage.inputSection);
-		document.getElementById('title').innerHTML ="עריכת/מחיקת משתמש";
+		document.getElementById('registerTitle').innerHTML ="עריכת/מחיקת משתמש";
 		$('#UserPName').val(user.firstName);
 		$('#UserLName').val(user.lastName);
 		$('#username').val(user.username);
@@ -486,6 +495,11 @@ var usersManagement = function()
 	var EditClubselectValue = function(e)
 	{
 		EditSectionClubName = e.target.innerText;
+		if(e.target.innerText == "")
+		{
+			alert("לא נבחר משתמש");
+			return;
+		}
 		clubIndex_Edit = getClubKeyIndex(e.target.innerText.trim());
 		showUsersPerCH(e.target.innerText);
 	}
@@ -520,13 +534,14 @@ var usersManagement = function()
 					// var btnInput = '<button id = '+tempBtnID+' type="button" class="btn btn-default">'+
 					// 				'<span class="glyphicon glyphicon-home"></span> '+tempName+
 					// 			'</button>';
-
+					
 					var btnInput = 
-					'<a href="#" class="btn btn-primary">'+
-						'<i class="icon-pencil icon-white"></i>'+
-						'<span><strong>'+tempName+'</strong></span>'+        
-					'</a>'+
-				'</div>'
+					'<a href="#" id="'+tempBtnID+'" class="btn btn-sq-sm btn-success">'+
+					'<i class="fa fa-home fa-2x"></i><br/> '
+					+tempName+
+					'</a>';
+					if ( i%3 == 2 && i>1 )
+						btnInput += '</p>';
 					$('#clubBottunGroup').append(btnInput);
 					$('#'+tempBtnID).click(EditClubselectValue);
 				}
