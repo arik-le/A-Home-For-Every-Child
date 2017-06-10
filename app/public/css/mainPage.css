@@ -153,12 +153,12 @@ border-top-left-radius: 5px;
   margin-left:2%;
 }
 
-#downloadImage{
+.downloadImage{
 	color:cornflowerblue;
 	text-align: center;
 	font-size: 15px;
 }
-#downloadImage:hover
+.downloadImage:hover
 {
 	color:lightblue;
 }
