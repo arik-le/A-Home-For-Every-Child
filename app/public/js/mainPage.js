@@ -107,7 +107,24 @@ var mainPage=function()
                 var keys = Object.keys(messages);
                 for(var i=keys.length-1;i>=0;i--)
                 {
-                    Message.addGenMes(messages[keys[i]]);
+                    Message.addGenMes(messages[keys[i]],i);
+                    $("#deleteMessage_"+i).click(function(i)
+                    {
+                        var index=i.currentTarget.id;
+                        index=index.substring(14,index.length);
+                        $("#generalMessageBox_"+index).remove();
+                        Message.deleteGenMessage(index);
+                      
+                    });
+                    $("#downloadImage_"+i).click(function(i)
+                    {
+                        var index=i.currentTarget.id;
+                        index=index.substring(14,index.length);
+                        /*
+                            index is the num of the message (not tht key)
+                            0 is the last in the list  message and N-1 is the first in the list
+                        */
+                    });
                 }
             }
         });
