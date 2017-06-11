@@ -152,13 +152,3 @@ border-top-left-radius: 5px;
 	float:left;
   margin-left:2%;
 }
-
-.downloadImage{
-	color:cornflowerblue;
-	text-align: center;
-	font-size: 15px;
-}
-.downloadImage:hover
-{
-	color:lightblue;
-}

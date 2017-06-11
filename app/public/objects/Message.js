@@ -44,8 +44,7 @@ var Message=function()
 
                 if(url != -1)       //  with image
                 {
-                    message+='<img id = imgGM src=' + url +'/>'+
-                    '</br></br><div class="downloadImage" id="downloadImage_'+index+'">שמור תמונה <span class="glyphicon glyphicon-download-alt"></span></div>'+
+                    message+='<img id = imgGM src=' + url +'/></br>'+
                     '</div>'+
                     '<div class="messageFooter">'+
                         '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>'+

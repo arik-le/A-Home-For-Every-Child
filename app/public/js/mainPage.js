@@ -135,13 +135,6 @@ var mainPage=function()
                         index=index.substring(14,index.length);
                         $("#generalMessageBox_"+index).remove();
                         Message.deleteGenMessage(index);
-                      
-                    });
-                    $("#downloadImage_"+i).click(function(i)
-                    {
-                        var index=i.currentTarget.id;
-                        index=index.substring(14,index.length);
-                        alert("אנא לחצ/י לחיצה ארוכה על התמונה ואז הורד/שמור תמונה");
                     });
                 }
             }
