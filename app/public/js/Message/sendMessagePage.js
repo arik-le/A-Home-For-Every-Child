@@ -219,7 +219,7 @@ var sendMessagePage = function()
 		var file = uploadImage.myFileImg[0];
 		if(file === undefined)
 		{
-			var message = pickMesByPermision(toTeachers,toParents,from,subject,content,-1);
+			var message = pickMesByPermision(toTeachers,toParents,from,subject,content,-1,-1);
 			firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
 		}
 		else
@@ -240,7 +240,7 @@ var sendMessagePage = function()
 			// Handle successful uploads on complete
 			// For instance, get the download URL: https://firebasestorage.googleapis.com/...
 			var downloadURL = uploadTask.snapshot.downloadURL;
-			var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL);
+			var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,file.name);
 			firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
 			});
 		}
@@ -261,14 +261,14 @@ var sendMessagePage = function()
 
 //-------------------------------------------------------------------------------------------------
 
-	var pickMesByPermision = function(toTeachers,toParents,from,subject,content,imageURL)
+	var pickMesByPermision = function(toTeachers,toParents,from,subject,content,imageURL,imageName)
 	{	
 		if(toTeachers && toParents)
-			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,EVERYBODY,imageURL);
+			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,EVERYBODY,imageURL,imageName);
 		else if(!toTeachers && toParents)
-			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_PARENTS,imageURL);
+			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_PARENTS,imageURL,imageName);
 		else
-			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_TEACHERS,imageURL);
+			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_TEACHERS,imageURL,imageName);
 	}
 
 //-------------------------------------------------------------------------------------------------

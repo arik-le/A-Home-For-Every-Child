@@ -40,6 +40,7 @@ var uploadImage=function()
         {
             $("#imgInp").change(function(){
                 readURL(this);
+                $('#img-upload').css("display", "inline-block");
             }); 	
         }
         

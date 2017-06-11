@@ -34,7 +34,7 @@ var mainPage=function()
 					'<ul class="nav navbar-nav">'+
 						'<li><a id="homePage">מסך הבית<span class="sr-only">(current)</span></a></li>'+
 						'<li class="dropdown" id="1">'+
-							'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">הודעות <span class="caret"></span></a>'+
+							'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="MessNav">הודעות <span class="caret"></span></a>'+
 							'<ul class="dropdown-menu">   '+
 								'<li><a id="writeMessage_btn">כתיבת הודעה</a></li>'+
 								'<li><a id="incomingMessage_btn">דואר נכנס</a></li>'+
@@ -83,7 +83,7 @@ var mainPage=function()
 
         $("#addClubhouse_btn").click(clubhouseManagement.addClubhouse);
         $("#editClubhouse_btn").click(clubhouseManagement.editClubhouse);
-
+        $("#MessNav").click(unReadMess);
         $("#writeMessage_btn").click(inMassagePage.openSendMassage);
         $("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
         $("#outMessage_btn").click(outMessagePage.open);
@@ -93,7 +93,28 @@ var mainPage=function()
         $("#logout1").click(logout);
         loadGeneralMessages();
     }
-    
+    var unReadMess=function()
+    {
+        var me = login.correntUser[1];        
+        firebase.database().ref("users/" + me + "/inboxMessages").once("value")
+        .then(function(data)
+        {
+            var messages = data.val();
+            if (messages !== null)
+            {
+                var count=0;
+                var keys = Object.keys(messages);
+                for(var i=keys.length-1;i>=0;i--)
+                    if(!messages[keys[i]].isRead)
+                        count++;
+                if(count>0)
+                     $("#incomingMessage_btn").html("("+count+")"+"דואר נכנס");
+                else
+                     $("#incomingMessage_btn").html("דואר נכנס");
+			}
+        });
+       
+    }
     var loadGeneralMessages = function()
     {
         $("#body").html("");
@@ -107,14 +128,19 @@ var mainPage=function()
                 var keys = Object.keys(messages);
                 for(var i=keys.length-1;i>=0;i--)
                 {
-                    Message.addGenMes(messages[keys[i]]);
+                    Message.addGenMes(messages[keys[i]],i);
+                    $("#deleteMessage_"+i).click(function(i)
+                    {
+                        var index=i.currentTarget.id;
+                        index=index.substring(14,index.length);
+                        $("#generalMessageBox_"+index).remove();
+                        Message.deleteGenMessage(index);
+                    });
                 }
             }
         });
     }
 
-    
-    
     var logout = function()
     {
         if(confirm('בטוח שברצונך להתנתק מהמערכת?')) 
