@@ -141,19 +141,13 @@ var mainPage=function()
                     {
                         var index=i.currentTarget.id;
                         index=index.substring(14,index.length);
-                        alert("you press to download message no: " + i);
-                        /*
-                            index is the num of the message (not tht key)
-                            0 is the last in the list  message and N-1 is the first in the list
-                        */
+                        alert("אנא לחצ/י לחיצה ארוכה על התמונה ואז הורד/שמור תמונה");
                     });
                 }
             }
         });
     }
 
-    
-    
     var logout = function()
     {
         if(confirm('בטוח שברצונך להתנתק מהמערכת?')) 
