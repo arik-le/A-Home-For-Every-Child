@@ -136,9 +136,8 @@ uploud image button
 #img-upload{
 	margin-top:4%;
 	background-color:lightcyan; 
-    width: 60%;
+    width: 100%;
 	height: 25%;
-	border: 1px dotted darkred;
-	border-radius: 100%;
 	text-align: center;
+	display:none;
 }
