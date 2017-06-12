@@ -53,7 +53,7 @@ var inMassagePage=function()
                              '<label>'+getDate(obj)+'</label>'+
                         '</div>'+
                         '<div class="modal-footer">'+
-                            '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'+
+                            '<button type="button" class="btn btn-default" data-dismiss="modal">סגור</button>'+
                         '</div>'+
                     '</div>'+
                 '</div>'+
