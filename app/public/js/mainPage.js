@@ -33,14 +33,6 @@ var mainPage=function()
 				'<div class="collapse navbar-collapse NAV" id="bs-example-navbar-collapse-1">'+
 					'<ul class="nav navbar-nav">'+
 						'<li><a id="homePage">מסך הבית<span class="sr-only">(current)</span></a></li>'+
-						
-                        '<li class="dropdown">'+
-							'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">בחר מועדונית<span class="caret"></span></a>'+
-							'<ul class="dropdown-menu">'+
-								'<li role="separator" class="divider"></li>'+
-							'</ul>'+
-						'</li>'+
-                        '<li role="separator" class="divider"></li>'+
                         
                         '<li class="dropdown" id="1">'+
 							'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="MessNav">הודעות <span class="caret"></span></a>'+
@@ -124,20 +116,45 @@ var mainPage=function()
         });
        
     }
+
+    var updateClubList=function()
+    {
+        firebase.database().ref("clubhouse/").once("value")
+		.then(function(data)
+        {
+            var clubs=data.val();
+            var keys=Object.keys(clubs);
+             $("#clubHouseHP").html('<option value="nan" disabled selected>בחר מועדונית </option>');
+            for(var i=0;i<keys.length;i++)
+                $("#clubHouseHP").append('<option value="'+keys[i]+'">'+clubs[keys[i]].name+'</option>'); 
+        });
+    }
+
     var loadGeneralMessages = function()
     {
-        $("#body").html("");
-        var curClubKey = login.correntUser[0].clubhouseKey;
+        var sel='<select id = "clubHouseHP" required onchange="mainPage.loadHomePage()" >'+
+        '<option value="nan" disabled selected>בחר מועדונית </option>'+
+            '</select></br>';
+        $("#body").html(sel);
+        updateClubList();
+    }
+
+    var loadHomePage = function()
+    {
+        var curClubKey=document.getElementById("clubHouseHP").value;
+
+      
+        $("#body").append('<div id="mesBody"></div>');
         firebase.database().ref("clubhouse/" + curClubKey + "/generalMessages").once("value")
         .then(function(data)
         {
             var messages = data.val();
             if (messages !== null)
             {
+                  $("#mesBody").html("");
                 var keys = Object.keys(messages);
                 for(var i=keys.length-1;i>=0;i--)
                 {    
-                    
                     Message.addGenMes(messages[keys[i]],i);
                     $("#deleteMessage_"+i).click(function(i)
                     {
@@ -158,5 +175,6 @@ var mainPage=function()
         else 
             return;
      }
-    return {openMainPage:openMainPage, correntUser:correntUser}
+    return {openMainPage:openMainPage, correntUser:correntUser,
+    loadHomePage:loadHomePage}
 }();

@@ -67,7 +67,7 @@ var Message=function()
                     '</div>'+
                 '</div></p>'
                 }
-        $("#body").append(message);
+        $("#mesBody").append(message);
 
     }
 
