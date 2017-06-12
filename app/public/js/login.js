@@ -1,4 +1,3 @@
-
 var login=function()
 {
 	const PUSER = 0;
@@ -102,6 +101,7 @@ var login=function()
 	}
 
 //-------------------------------------------------------------------------------------------
+	
 	var rejectUser = function(data)			// in case password or username are not exist
 	{
 		alert("שם משתמש או סיסמה אינם נכונים");
@@ -117,12 +117,14 @@ var login=function()
 		document.getElementById("username").value = "";
 		document.getElementById("password").value = "";
 	};
+
 //---------------------------------------------------------------------------------------------------
+	
 	var getObj=function(key)
 	{
-		return usersAndKeys[0][key];
-		
+		return usersAndKeys[0][key];	
 	}
+
 //---------------------------------------------------------------------------------------------------//	
    	
 return { initModule : initModule,

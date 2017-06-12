@@ -35,6 +35,7 @@ var Message=function()
     var addGenMes=function(m,index)        //draw general messages in home page
     {
         var url = m.imageURL;
+        var myType = login.correntUser[0].userType;
             var message=
                 '<div class = "generalMessageBox" id="generalMessageBox_'+index+'">'+
                     '<div class = "title">'+
@@ -48,25 +49,31 @@ var Message=function()
                     message+='<img id = imgGM src=' + url +'/></br>'+
                     '</div>'+
                     '<div class="messageFooter">'+
-                        '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>'+
-                        '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
+                        '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>';
+                    if(myType == User.ADMIN || myType == User.GUIDE)
+                        {
+                            message+= '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
                             '<label id="subjectGMS">מחק הודעה <label>'+
-                            '<span class="glyphicon glyphicon-trash"></span> '+
-                        '</div>'+
-                    '</div>'+
-                '</div></p>'
+                                '<span class="glyphicon glyphicon-trash"></span> ';
+                        }
+                        message+= '</div>'+
+                            '</div>'+
+                    '</div></p>'
                 }
                 else{
                      message+='</div>'+
                      '<div class="messageFooter">'+
-                        '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>'+
-                        '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
-                            '<label id="subjectGMS">מחק הודעה <label>'+
-                            '<span class="glyphicon glyphicon-trash"></span> '+
+                        '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>';
+                    if(myType == User.ADMIN || myType == User.GUIDE)
+                    {
+                        message+= '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
+                         '<label id="subjectGMS">מחק הודעה <label>'+
+                            '<span class="glyphicon glyphicon-trash"></span> ';
+                    }
+                    message+= '</div>'+
                         '</div>'+
-                    '</div>'+
                 '</div></p>'
-                }
+                }   
         $("#mesBody").append(message);
 
     }

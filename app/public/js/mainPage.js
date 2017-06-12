@@ -88,7 +88,6 @@ var mainPage=function()
         $("#writeMessage_btn").click(inMassagePage.openSendMassage);
         $("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
         $("#outMessage_btn").click(outMessagePage.open);
-        //$("#downloadImage").click(downloadImg);
 
         $("#logout").click(logout);
         $("#logout1").click(logout);
@@ -132,18 +131,29 @@ var mainPage=function()
 
     var loadGeneralMessages = function()
     {
-        var sel='<select id = "clubHouseHP" required onchange="mainPage.loadHomePage()" >'+
-        '<option value="nan" disabled selected>בחר מועדונית </option>'+
-            '</select></br>';
-        $("#body").html(sel);
-        updateClubList();
+        var myType = login.correntUser[0].userType;
+        if(myType == User.ADMIN || myType == User.SOCIAL)
+        {
+            var sel='<select id = "clubHouseHP" required onchange="mainPage.loadHomePage()" >'+
+            '<option value="nan" disabled selected>בחר מועדונית </option>'+
+                '</select></br>';
+            $("#body").html(sel);
+            updateClubList();
+
+        }
+        else
+            loadHomePage();
     }
 
     var loadHomePage = function()
     {
-        var curClubKey=document.getElementById("clubHouseHP").value;
+        var curClubKey;
+        var myType = login.correntUser[0].userType;
 
-      
+        if(myType == User.ADMIN || myType == User.SOCIAL)
+            curClubKey=document.getElementById("clubHouseHP").value;
+        else
+            curClubKey = login.correntUser[0].clubhouseKey;
         $("#body").append('<div id="mesBody"></div>');
         firebase.database().ref("clubhouse/" + curClubKey + "/generalMessages").once("value")
         .then(function(data)
@@ -151,7 +161,7 @@ var mainPage=function()
             var messages = data.val();
             if (messages !== null)
             {
-                  $("#mesBody").html("");
+                $("#mesBody").html("");
                 var keys = Object.keys(messages);
                 for(var i=keys.length-1;i>=0;i--)
                 {    

@@ -133,6 +133,7 @@ nav{
 .messageFooter
 {
 	padding:1%;
+  height: 45px;
 	padding-top:3.5%;
 	padding-right:4%;
 	border-top:1px solid #456879;
