@@ -12,7 +12,7 @@ var sendMessagePage = function()
 	'<div class="container">'+
 		'<h2 id = "royh2">כתיבת הודעה חדשה</h2>'+
 	
-		'<div class="container" >	'+
+		'<div class="container">'+
 			'<div class = "mytabs">'+
 				'<ul class="nav nav-pills center-pills">'+
 					'<li class="active">'+
@@ -49,10 +49,9 @@ var sendMessagePage = function()
 					'</div>'+
 				'</div>'+
 				
-			'<div class="tab-pane " id="generalMessage">'+
+			'<div class="tab-pane " id="generalMessage" >'+
 				'<select id = "clubHouseGM" required >'+
 				'</select></br>'+
-	
 				'<label id="royLabel">:שלח אל</label></br></br>'+
 				'<label for="teachers" class="chkbox">מורים</label>'+
 				'<input id="selTeachers" type="checkbox" name="teachers" id="teachers" class="custom" />'+
@@ -65,7 +64,7 @@ var sendMessagePage = function()
 				'<label id="royLabel">:תוכן ההודעה</label></br>'+
 				'<textarea id = "contentGM" class="form-control" rows="10" name="message" placeholder="תוכן ההודעה" dir="rtl"></textarea></br>'+
 				
-					'<div class="container">'+
+				'<div class="container">'+
 					'<div class="col-md-6">'+
 						'<div class="form-group">'+
 							'<label>הוסף תמונה</label>'+
@@ -96,29 +95,54 @@ var sendMessagePage = function()
 
 	var updateClubList=function()				//update the list of clubHouses
 	{
-		firebase.database().ref("clubhouse/").once("value")
-		.then(function(data)
-		{
-			var clubs=data.val();
-			var keys=Object.keys(clubs);
-			$("#clubHouseSM").html('<option value="nan" disabled selected>בחר מועדונית</option>');
-			$("#clubHouseGM").html('<option value="nan" disabled selected>בחר מועדונית</option>');
-
-			for(var i=0;i<keys.length;i++)
+		var myType = login.correntUser[0].userType;
+    
+	    if(myType == User.ADMIN || myType == User.SOCIAL)
+		{		
+			firebase.database().ref("clubhouse/").once("value")
+			.then(function(data)
 			{
-				$("#clubHouseSM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
-				$("#clubHouseGM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
-			}
-			$("#clubHouseGM").append('<option value="allClubs">כל המועדוניות</option>');
-			$("#clubHouseSM").append('<option value="allAdmin">מנהלים</option>');
-		});
+				var clubs=data.val();
+				var keys=Object.keys(clubs);
+				$("#clubHouseSM").html('<option value="nan" disabled selected>בחר מועדונית</option>');
+				$("#clubHouseGM").html('<option value="nan" disabled selected>בחר מועדונית</option>');
+
+				for(var i=0;i<keys.length;i++)
+				{
+					$("#clubHouseSM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
+					$("#clubHouseGM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
+				}
+				$("#clubHouseGM").append('<option value="allClubs">כל המועדוניות</option>');
+				$("#clubHouseSM").append('<option value="allAdmin">מנהלים</option>');
+			});
+		}
+		else
+		{
+			select ='<option value="nan" disabled selected>סוג משתמש</option>'+
+				'<option class="ptUser" value="0">הורה</option>'+
+				'<option class="TtUser" value="1">מורה</option>'+
+				'<option class="GuUser" value="2">מדריך</option>'+
+				'<option class="SWUser" value="3">עו"ס</option>'+
+				'<option class="admin" value="4">מנהל</option>'
+
+			$("#TypeUserSM").html(select);
+			updateUserList();
+		}
+
 	}
 
 //-------------------------------------------------------------------------------------------------
 
 	var updateUserType = function()
 	{
-		var club=document.getElementById("clubHouseSM").value;
+		var myType = login.correntUser[0].userType;
+		var club;
+    
+	    if(myType == User.ADMIN || myType == User.SOCIAL)
+			club = document.getElementById("clubHouseSM").value;
+		else
+			club = login.correntUser[0].clubhouseKey;
+		
 		var select;
 		if(club!= "allAdmin")
 		{
@@ -129,7 +153,7 @@ var sendMessagePage = function()
 						'<option class="SWUser" value="3">עו"ס</option>';
 		}
 		else
-			select = '<option value="admin" selected>מנהל</option>';
+			select = '<option value="4" selected>מנהל</option>';
 		
 		$("#TypeUserSM").html(select);
 		updateUserList();
@@ -143,9 +167,15 @@ var sendMessagePage = function()
 		var list=login.usersAndKeys;
 		var myIndex=login.correntUser[1];
 		var type=document.getElementById("TypeUserSM").value;
-		var club=document.getElementById("clubHouseSM").value;
 		
-		if(club != "allAdmin")
+		var myType = login.correntUser[0].userType;
+		var club;
+       
+	    if(myType == User.ADMIN || myType == User.SOCIAL)
+			club = document.getElementById("clubHouseSM").value;
+		else
+			club = login.correntUser[0].clubhouseKey;
+		if(type!=User.ADMIN && type != "nan")
 		{
 			firebase.database().ref("clubhouse/").once("value")
 			.then(function(data)
@@ -168,17 +198,14 @@ var sendMessagePage = function()
 		}
 		else
 		{
-			var ADMIN = 4;
 			firebase.database().ref("users/").once("value")
 			.then(function(data)
 			{
 				var users = data.val();
 				var mykeys=Object.keys(users);
 				for(var i=0;i<mykeys.length;i++)
-				{
-					if(users[mykeys[i]].userType == ADMIN && users[mykeys[i]].username !=login.correntUser[0].username)
-						$("#chooseUserSM").append('<option value='+users[mykeys[i]].userkey+'>'+users[mykeys[i]].username+'</option>');
-				}
+					if(users[mykeys[i]].userType == User.ADMIN && users[mykeys[i]].username !=login.correntUser[0].username)
+						$("#chooseUserSM").append('<option value='+users[mykeys[i]].userKey+'>'+users[mykeys[i]].username+'</option>');														
 			});
 		}
 	}
@@ -221,7 +248,14 @@ var sendMessagePage = function()
 	var sendGenMessage=function()
 	{
 		var from=login.correntUser[1];
-		var toClubHouse = document.getElementById("clubHouseGM").value;
+		var meType = login.correntUser[0].userType;
+		var toClubHouse;
+       
+	    if(meType != User.GUIDE)
+			toClubHouse = document.getElementById("clubHouseGM").value;
+		else
+			toClubHouse = login.correntUser[0].clubhouseKey;
+
 		var toTeachers = document.getElementById("selTeachers").checked; 
 		var toParents = document.getElementById("selParents").checked;
 

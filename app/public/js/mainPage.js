@@ -142,14 +142,17 @@ var mainPage=function()
 
         }
         else
+        {
+            $("#body").html("");
             loadHomePage();
+        }
     }
 
     var loadHomePage = function()
     {
         var curClubKey;
         var myType = login.correntUser[0].userType;
-
+        
         if(myType == User.ADMIN || myType == User.SOCIAL)
             curClubKey=document.getElementById("clubHouseHP").value;
         else
@@ -158,6 +161,7 @@ var mainPage=function()
         firebase.database().ref("clubhouse/" + curClubKey + "/generalMessages").once("value")
         .then(function(data)
         {
+            var EVERYONE = 2;
             var messages = data.val();
             if (messages !== null)
             {
@@ -165,14 +169,17 @@ var mainPage=function()
                 var keys = Object.keys(messages);
                 for(var i=keys.length-1;i>=0;i--)
                 {    
-                    Message.addGenMes(messages[keys[i]],i);
-                    $("#deleteMessage_"+i).click(function(i)
+                    if(myType > 1 || myType == messages[keys[i]].permision || messages[keys[i]].permision == EVERYONE)
                     {
-                        var index=i.currentTarget.id;
-                        index=index.substring(14,index.length);
-                        $("#generalMessageBox_"+index).remove();
-                        Message.deleteGenMessage(index);
-                    });
+                        Message.addGenMes(messages[keys[i]],i);
+                        $("#deleteMessage_"+i).click(function(i)
+                        {
+                            var index=i.currentTarget.id;
+                            index=index.substring(14,index.length);
+                            $("#generalMessageBox_"+index).remove();
+                            Message.deleteGenMessage(index);
+                        });
+                    }
                 }
             }
         });

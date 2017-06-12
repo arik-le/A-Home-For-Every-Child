@@ -132,8 +132,20 @@ var inMassagePage=function()
 
      var openSendMassage=function()
      {
+        var myType = login.correntUser[0].userType;
         $('.NAV').collapse('hide');
         $("#body").html(sendMessagePage.msgPage.inputSection);
+        if(myType==User.GUIDE)
+        {
+            $("#clubHouseGM").remove();
+            $("#clubHouseSM").remove();
+        }
+        if(myType == User.PARENT || myType == User.TEACHER)
+        {
+            $("#clubHouseSM").remove();
+            $(".mytabs").remove();
+            $("#generalMessage").remove();
+        }
         uploadImage.init();
         sendMessagePage.updateUserList();   //check if needed
         sendMessagePage.updateClubList();
