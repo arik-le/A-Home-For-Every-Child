@@ -12,6 +12,7 @@ var usersManagement = function()
 	var clubhousesInfo = []; // key and name
 
 	var page;
+	var addPrevType;
 	var AddSectionClubName;
 	var EditSectionClubName;
 	var clubIndex_Edit;
@@ -96,7 +97,7 @@ var usersManagement = function()
 						'</div>'+
 					'</div>'+
 
-							'<div class="form-group">'+
+						'<div id="selectCHSection" class="form-group">'+
 						'<label for="clubHouseName" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
 						'<div class="col-sm-10">'+
 							'<div class="input-group">'+
@@ -105,7 +106,7 @@ var usersManagement = function()
 								'</select>'+
 							'</div>'+
 						'</div>'+
-				
+						'</div>'+
 					'<div class="form-group" id="buttons_area">'+
 						
 					'</div>'+
@@ -165,6 +166,8 @@ var usersManagement = function()
         $("#body").html(UserPage.inputSection);
 		$('#buttons_area').html(addUserButton.inputSection);
         $("#addUser").click(createUser);
+		addPrevType=0;
+		$('#userType').click(updateType);
     }
 
     //-------------------------------------------------------------------------------------------------
@@ -173,6 +176,7 @@ var usersManagement = function()
         var firstName=document.getElementById("UserPName").value;
         var lastName=document.getElementById("UserLName").value;
         var username=document.getElementById("username").value;
+		console.log(username);
 		if (firstName == "" || lastName == "" || username == "")
 		{
 			alert("אנא מלא את כל השדות הנדרשים");
@@ -217,14 +221,41 @@ var usersManagement = function()
 		}
 		
         var database = firebase.database();	
+		if(isUserExist(username) == true)
+		{
+			alert('שם המשתמש שהוזן כבר קיים');
+			// clear all fields
+			return;
+		}
         var usersRef = database.ref('users');
         var newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
         var key = usersRef.push(newUser);
-        firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
-		updateClubhouse(Uclubhouse,type,key.key,username);
+        // firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
+		// updateClubhouse(Uclubhouse,type,key.key,username);
         alert("הוזן בהצלחה");
 		addUser();
     }
+
+	var isUserExist = function(usernameArg)
+	{
+		var res = false;
+		firebase.database().ref('users').once('value')
+		.then(function(data)
+		{
+			var allusers = data.val();
+			var keys = Object.keys(allusers);
+			for(var i =0 ; i< keys.length ; i++)
+			{
+				var k = keys[i];
+				console.log(allusers[k].username  + '  ' + usernameArg);
+				if(allusers[k].username == usernameArg)
+					res=true;
+			}
+		});
+		console.log(res);
+		return res;
+		
+	}
 
 	var updateClubhouse = function(clubName,typeArg,keyArg,usernameArg)
 	{
@@ -239,7 +270,39 @@ var usersManagement = function()
 		.push({userkey:keyArg,username:usernameArg,type:typeArg});
 	};
 
-	
+	/////////////////////////////////////////////////////////////////
+	// addPrevType holds the last value on selectbox
+	var updateType = function(e)
+	{
+		var type = e.target.value;
+		var input;
+		if(addPrevType !=type && type == ADMIN)
+		{
+			// inject for admin 
+			$('#selectCHSection').html("");
+		}
+		else if(addPrevType !=type && type == SWUSER)
+		{
+			// inject for social worker
+		}
+		else
+		{
+			// inject for regualar users , guide parent teacer
+			input ='<label for="clubHouseName" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
+						'<div class="col-sm-10">'+
+							'<div class="input-group">'+
+								'<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
+								'<select type="text" id="clubhouse_select_Add" class="form-control clubHouseName"  placeholder="בחר מועדונית מתוך הרשימה">'+
+								'</select>'+
+							'</div>'+
+						'</div>';
+			$('#selectCHSection').html(input);
+
+			for(var i =0; i<clubhousesInfo.length;i++)
+				$('#clubhouse_select_Add').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
+		}
+		addPrevType = type;
+	}
 
 	
 
@@ -551,6 +614,8 @@ var usersManagement = function()
 		});
 	}
 
+
+
 	/////////////////////////////////////////////////////////////////////
 	//			GENERAL METHODS										   //
 	/////////////////////////////////////////////////////////////////////
@@ -571,7 +636,7 @@ var usersManagement = function()
 	}
 
 
-	var getClubKeyIndex = function (clubName)
+	var getClubKeyIndex = function(clubName)
 	{
 		for (var i = 0; i < clubhousesInfo.length; i++) 
 		{
@@ -594,3 +659,7 @@ var usersManagement = function()
 
      return{addUser:addUser,editUser:editUser};
 }();
+
+
+
+
