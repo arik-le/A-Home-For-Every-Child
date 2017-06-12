@@ -176,7 +176,6 @@ var usersManagement = function()
         var firstName=document.getElementById("UserPName").value;
         var lastName=document.getElementById("UserLName").value;
         var username=document.getElementById("username").value;
-		console.log(username);
 		if (firstName == "" || lastName == "" || username == "")
 		{
 			alert("אנא מלא את כל השדות הנדרשים");
@@ -196,14 +195,6 @@ var usersManagement = function()
         var Uclubhouse = e.options[e.selectedIndex].text;
 		var clubKey = getClubKeyByName(Uclubhouse);
 
-        for(var i=0;i<login.usersAndKeys[0].length;i++)
-        {
-            if(login.usersAndKeys[0][i].username==username )
-            {
-                alert("שם משתמש כבר קיים");
-                return;
-            }
-        }
         var fPassword=document.getElementById("password").value;
         var sPassword=document.getElementById("confirm").value;
         if( sPassword!=fPassword && fPassword != "" )//&& fPassword < 4)
@@ -219,44 +210,58 @@ var usersManagement = function()
 			alert("אנא מלא את כל השדות הנדרשים");
 			return;
 		}
-		
-        var database = firebase.database();	
-		if(isUserExist(username) == true)
-		{
-			alert('שם המשתמש שהוזן כבר קיים');
-			// clear all fields
-			return;
-		}
-        var usersRef = database.ref('users');
-        var newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
-        var key = usersRef.push(newUser);
-        // firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
-		// updateClubhouse(Uclubhouse,type,key.key,username);
-        alert("הוזן בהצלחה");
-		addUser();
+		checkAndPush(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse);
     }
-
-	var isUserExist = function(usernameArg)
-	{
-		var res = false;
-		firebase.database().ref('users').once('value')
-		.then(function(data)
+	var checkAndPush = function(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse)
+	{	//check if the username exist - if not push to DB
+		var ref = firebase.database().ref("users");
+		ref.once("value")
+		.then(function(data)		// 		when value recieved
 		{
-			var allusers = data.val();
-			var keys = Object.keys(allusers);
-			for(var i =0 ; i< keys.length ; i++)
+			// in case the root is empty  ->  name is not exist
+			if (data.val() == null)
+				return false;
+
+			var allUsers = data.val();   // get the whole tree of users
+			var keys = Object.keys(allUsers);	// get all keys
+			
+			// loop on the answere array to find user name.
+			for(var i =0; i<keys.length;i++)
 			{
 				var k = keys[i];
-				console.log(allusers[k].username  + '  ' + usernameArg);
-				if(allusers[k].username == usernameArg)
-					res=true;
-			}
-		});
-		console.log(res);
-		return res;
-		
-	}
+				var tempName = allUsers[k].username;
 
+				if( tempName == username )
+					return true;
+			}
+			return false;
+
+		}).then(function(res) 
+		{
+			if(res)		// name is already exist in DB
+			{
+                alert("שם משתמש כבר קיים");
+				return false;
+			}	
+			// else - push user to DB
+			var database = firebase.database();
+        	var usersRef = database.ref('users');
+        	var newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
+        	var key = usersRef.push(newUser);
+        	firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
+			updateClubhouse(Uclubhouse,type,key.key,username);
+
+			return true;
+
+		}).then(function(result){
+			if(result)
+				{
+					alert("הוזן בהצלחה");
+					addUser();
+				}
+		});
+
+	}
 	var updateClubhouse = function(clubName,typeArg,keyArg,usernameArg)
 	{
 		var index = getClubKeyIndex(clubName);
@@ -360,8 +365,14 @@ var usersManagement = function()
 			for(var i =0; i<keys.length;i++)
 			{
 				var k = keys[i];
-				var name = users[k].username;
-				$('#usersInCH').append('<option value="'+i+'">'+name+'</option>');
+				var uKey=users[k].userkey;
+	
+				var userRef= firebase.database().ref("users/"+uKey);
+				userRef.ref.once("value").then(function(data)
+				{
+					var user=data.val();
+					$('#usersInCH').append('<option value="'+user.userKey+'">'+user.firstName+' '+user.lastName+'</option>');
+				});	
 			}
 		
 		});
@@ -376,52 +387,30 @@ var usersManagement = function()
 			 alert('לא נבחר שם משתמש');
 			 return;
 		 }
-		var userName = e.options[e.selectedIndex].text;
-		var user = loadUserDetails(userName);
+		var userKey = e.options[e.selectedIndex].value;
+		var user = loadUserDetails(userKey);
 
 	};
 
 	// load user data when selected
-	var loadUserDetails = function(username)
+	var loadUserDetails = function(userKey)
 	{
-		var clubKey = clubhousesInfo[clubIndex_Edit].key;
-		firebase.database().ref("clubhouse/"+clubKey+'/usersList').once("value")
-		.then(function (data) // get user key from club users list
+		if(!userKey)
 		{
-			if (data.val() == null)
-			{
-				alert("לא נמצאו משתמשים להציג ");
-				return;
-			}
-			var userList = data.val();   // get the whole tree of clubhouses
-			var keys = Object.keys(userList);	// get all keys
-			for (var i = 0 ; i<keys.length;i++)
-			{
-				if(username == userList[keys[i]].username)
-				{
-					return userList[keys[i]].userkey;
-				}
-			}
-
-		}).then(function (key) // get the user object
+			alert('Keyerr '+userKey);
+			return;
+		}
+		// get the user object
+		firebase.database().ref("users/"+userKey).once("value")
+		.then(function(data)
 		{
-			if(!key)
+			var user = data.val();
+			if(user)
 			{
-				alert('Keyerr '+key);
-				return;
+				userToEdit = user;
+				injectEditPage(user)
 			}
-			// get the user object
-			firebase.database().ref("users/"+key).once("value")
-			.then(function(data)
-			{
-				var user = data.val();
-				if(user)
-				{
-					userToEdit = user;
-					injectEditPage(user)
-				}
-			});
-		});
+		});	
 	}
 
 	var injectEditPage = function (user)
@@ -492,6 +481,9 @@ var usersManagement = function()
 		var e = document.getElementById("clubhouse_select_Add");
 		var userRef = firebase.database().ref('users/');
 		userRef.child(userToEdit.userKey).update(obj);
+		alert("המידע עודכן בהצלחה");
+		editUser();
+
 	}
 
 	var deleteUser = function()
@@ -522,7 +514,11 @@ var usersManagement = function()
 		}).then(function(res)
 		{
 			if(res == "true")
+			{
 				firebase.database().ref("users/"+userToEdit.userKey).remove();
+				alert("המשתמש הוסר בהצלחה");
+				editUser();
+			}
 		});
 	}
 
