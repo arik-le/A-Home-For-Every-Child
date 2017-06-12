@@ -216,70 +216,11 @@ var sendMessagePage = function()
 			return;
 		}
 
-		//upload image to  firebase storage
-		var file = uploadImage.myFileImg[0];
-		if(file === undefined)
-		{
-			
-			if(toClubHouse!="allClubs")
-			{
-				var message = pickMesByPermision(toTeachers,toParents,from,subject,content,-1,-1);
-				firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
-			}
-			else			//	send to all clubs
-			{
-				firebase.database().ref("clubhouse/").once("value")
-				.then(function(data)
-				{
-					var message = pickMesByPermision(toTeachers,toParents,from,subject,content,-1,-1);
-					var clubs = data.val();
-           			var keys = Object.keys(clubs);
-					for(var i=0;i<keys.length;i++)
-						firebase.database().ref('clubhouse/' + keys[i] + '/generalMessages').push(message);
-					
-				});
-			}
-		}
+		if(toClubHouse == "allClubs")
+			sendToAll(from,toTeachers,toParents,subject,content);
 		else
-		{
-			var b = Math.floor(Math.random()*100000000); 			
-			var imageName = b + file.name;
-			var storageRef = firebase.storage().ref('/generalMessagesImages/' + toClubHouse + '/' + imageName);
-			var uploadTask = storageRef.put(file);
-
-			// Register three observers:
-			// 1. 'state_changed' observer, called any time the state changes
-			// 2. Error observer, called on failure
-			// 3. Completion observer, called on successful completion
-			uploadTask.on('state_changed', function(snapshot){
-			// Observe state change events such as progress, pause, and resume
-			// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-			}, function(error) {
-				alert("לא ניתן לשלוח הודעה כעת.. אנה נסו שוב מאוחר יותר");
-			}, function() {
-			// Handle successful uploads on complete
-			// For instance, get the download URL: https://firebasestorage.googleapis.com/...
-			var downloadURL = uploadTask.snapshot.downloadURL;
-			if(toClubHouse!="allClubs")
-			{
-				var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,imageName);
-				firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
-			}
-			else		//	send to all clubs
-			{
-				firebase.database().ref("clubhouse/").once("value")
-				.then(function(data)
-				{
-					var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,imageName);
-					var clubs = data.val();
-           			var keys = Object.keys(clubs);
-					for(var i=0;i<keys.length;i++)
-						firebase.database().ref('clubhouse/' + keys[i] + '/generalMessages').push(message);
-					
-				});
-			}
-		});
-		}
+			sendToClub(from,toTeachers,toParents,subject,content,toClubHouse);
+			
 		uploadImage.myFileImg[0]=undefined;
 		clearValue();
 		alert("ההודעה נשלחה בהצלחה");
@@ -298,17 +239,90 @@ var sendMessagePage = function()
 
 //-------------------------------------------------------------------------------------------------
 
-	var pickMesByPermision = function(toTeachers,toParents,from,subject,content,imageURL,imageName)
+	var pickMesByPermision = function(toTeachers,toParents,from,subject,content,imageURL,imageName,itemKey)
 	{	
 		if(toTeachers && toParents)
-			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,EVERYBODY,imageURL,imageName);
+			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,EVERYBODY,imageURL,imageName,itemKey);
 		else if(!toTeachers && toParents)
-			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_PARENTS,imageURL,imageName);
+			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_PARENTS,imageURL,imageName,itemKey);
 		else
-			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_TEACHERS,imageURL,imageName);
+			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_TEACHERS,imageURL,imageName,itemKey);
 	}
 
 //-------------------------------------------------------------------------------------------------
+
+	var sendToClub = function(from,toTeachers,toParents,subject,content,toClubHouse)
+	{
+		var file = uploadImage.myFileImg[0];
+		if(file === undefined)
+		{
+			var message = pickMesByPermision(toTeachers,toParents,from,subject,content,-1,-1,-1);
+			firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
+		}
+		else
+		{
+			var b = Math.floor(Math.random()*100000000); 			
+			var imageName = b + file.name;
+			var storageRef = firebase.storage().ref('/generalMessagesImages/' + toClubHouse + '/' + imageName);
+			var uploadTask = storageRef.put(file);
+			uploadTask.on('state_changed', function(snapshot){
+			}, function(error) {
+				alert("לא ניתן לשלוח הודעה כעת.. אנה נסו שוב מאוחר יותר");
+			}, function() {
+			var downloadURL = uploadTask.snapshot.downloadURL;
+			var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,imageName,-1);
+			firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
+			});
+		}
+	}
+
+//-------------------------------------------------------------------------------------------------
+	
+	var sendToAll = function(from,toTeachers,toParents,subject,content)
+	{
+		var file = uploadImage.myFileImg[0];
+		if(file === undefined)		//	send without images
+		{
+			firebase.database().ref("clubhouse/").once("value")
+			.then(function(data)
+			{
+				var message = pickMesByPermision(toTeachers,toParents,from,subject,content,-1,-1,-1);
+				var clubs = data.val();
+				var keys = Object.keys(clubs);
+				for(var i=0;i<keys.length;i++)
+					firebase.database().ref('clubhouse/' + keys[i] + '/generalMessages').push(message);
+			});
+		}
+		else
+		{
+			var b = Math.floor(Math.random()*100000000); 			
+			var imageName = b + file.name;
+
+			storageRef= firebase.storage().ref('/generalMessagesImages/allClubs/' + imageName);
+			uploadTask = storageRef.put(file);
+			uploadTask.on('state_changed', function(snapshot){
+			}, function(error) {
+				alert("לא ניתן לשלוח הודעה כעת.. אנה נסו שוב מאוחר יותר");
+			}, function() {
+			var downloadURL = uploadTask.snapshot.downloadURL;
+			
+			firebase.database().ref("clubhouse/").once("value")
+			.then(function(data)
+			{
+				var clubs = data.val();
+				var keys = Object.keys(clubs);
+				var imgNode = Image.create(imageName,keys.length);
+				
+				var item = firebase.database().ref('Images/').push(imgNode);
+				for(var i=0;i<keys.length;i++)
+				{	
+					var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,imageName,item.key);
+					firebase.database().ref('clubhouse/' + keys[i] + '/generalMessages').push(message);
+				}
+				});
+			});
+		}
+	}
 
 	return{msgPage:msgPage,
 		updateUserList:updateUserList,
