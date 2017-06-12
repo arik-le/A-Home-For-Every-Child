@@ -6,8 +6,6 @@ var sendMessagePage = function()
 	var ONLY_TEACHERS = 1;
 	var EVERYBODY = 2;
 
-	var obj=0;
-
 	var msgPage={
 	inputSection:
 	
@@ -27,21 +25,16 @@ var sendMessagePage = function()
 
 			'<div class="tab-content clearfix">'+
 				'<div class="tab-pane active" id="privatreMessage">'+
-						'<select class = "userCkecklist" id = "clubHouseSM" required onchange="sendMessagePage.updateUserList()" >'+
+						'<select class = "userCkecklist" id = "clubHouseSM" required onchange="sendMessagePage.updateUserType()" >'+
 						'</select></br>'+
 				
 			
 						'<label id="royLabel">:שלח אל</label></br></br>'+
 						'<select class = "userCkecklist" id = "chooseUserSM" required >'+
+							'<option value="nan" disabled selected>בחר משתמש</option>'+
 						'</select>'+
-						'<select class = "userCkecklist"  id = "TypeUserSM" required  onchange="sendMessagePage.updateUserList()">'+
+						'<select class = "userCkecklist"  id = "TypeUserSM" required  onchange="sendMessagePage.updateUserList()">'+							
 							'<option value="nan" disabled selected>סוג משתמש</option>'+
-							'<option class="ptUser" value="0">הורה</option>'+
-							'<option class="TtUser" value="1">מורה</option>'+
-							'<option class="GuUser" value="2">מדריך</option>'+
-							'<option class="SWUser" value="3">עו"ס</option>'+
-							'<option class="AdmUser" value="4">מנהל</option>'+
-							
 						'</select>'+
 						
 						'<label id="royLabel">:נושא</label></br>'+
@@ -117,7 +110,29 @@ var sendMessagePage = function()
 				$("#clubHouseGM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
 			}
 			$("#clubHouseGM").append('<option value="allClubs">כל המועדוניות</option>');
+			$("#clubHouseSM").append('<option value="allAdmin">מנהלים</option>');
 		});
+	}
+
+//-------------------------------------------------------------------------------------------------
+
+	var updateUserType = function()
+	{
+		var club=document.getElementById("clubHouseSM").value;
+		var select;
+		if(club!= "allAdmin")
+		{
+			select ='<option value="nan" disabled selected>סוג משתמש</option>'+
+						'<option class="ptUser" value="0">הורה</option>'+
+						'<option class="TtUser" value="1">מורה</option>'+
+						'<option class="GuUser" value="2">מדריך</option>'+
+						'<option class="SWUser" value="3">עו"ס</option>';
+		}
+		else
+			select = '<option value="admin" selected>מנהל</option>';
+		
+		$("#TypeUserSM").html(select);
+		updateUserList();
 	}
 
 //-------------------------------------------------------------------------------------------------
@@ -129,25 +144,43 @@ var sendMessagePage = function()
 		var myIndex=login.correntUser[1];
 		var type=document.getElementById("TypeUserSM").value;
 		var club=document.getElementById("clubHouseSM").value;
-
-		firebase.database().ref("clubhouse/").once("value")
-		.then(function(data)
+		
+		if(club != "allAdmin")
 		{
-			var clubHouses = data.val();
-			var mykeys=Object.keys(clubHouses);
-
-			for(var i=0;i<mykeys.length;i++)
+			firebase.database().ref("clubhouse/").once("value")
+			.then(function(data)
 			{
-				if(clubHouses[mykeys[i]].ClubhouseDBkey == club)
+				var clubHouses = data.val();
+				var mykeys=Object.keys(clubHouses);
+
+				for(var i=0;i<mykeys.length;i++)
 				{
-					var curClub = clubHouses[mykeys[i]].usersList;
-					var allUsersInClub = Object.keys(curClub);
-					for(var j=0;j<allUsersInClub.length;j++)
-						if(curClub[allUsersInClub[j]].type == type && curClub[allUsersInClub[j]].username != login.correntUser[0].username)
-							$("#chooseUserSM").append('<option value='+curClub[allUsersInClub[j]].userkey+'>'+curClub[allUsersInClub[j]].username+'</option>');
+					if(clubHouses[mykeys[i]].ClubhouseDBkey == club)
+					{
+						var curClub = clubHouses[mykeys[i]].usersList;
+						var allUsersInClub = Object.keys(curClub);
+						for(var j=0;j<allUsersInClub.length;j++)
+							if(curClub[allUsersInClub[j]].type == type && curClub[allUsersInClub[j]].username != login.correntUser[0].username)
+								$("#chooseUserSM").append('<option value='+curClub[allUsersInClub[j]].userkey+'>'+curClub[allUsersInClub[j]].username+'</option>');
+					}
 				}
-			}
-		});
+			});
+		}
+		else
+		{
+			var ADMIN = 4;
+			firebase.database().ref("users/").once("value")
+			.then(function(data)
+			{
+				var users = data.val();
+				var mykeys=Object.keys(users);
+				for(var i=0;i<mykeys.length;i++)
+				{
+					if(users[mykeys[i]].userType == ADMIN && users[mykeys[i]].username !=login.correntUser[0].username)
+						$("#chooseUserSM").append('<option value='+users[mykeys[i]].userkey+'>'+users[mykeys[i]].username+'</option>');
+				}
+			});
+		}
 	}
 
 //-------------------------------------------------------------------------------------------------
@@ -235,6 +268,7 @@ var sendMessagePage = function()
 		$("#chooseUserSM").val("בחר משתמש");
 		$("#subjectGM").val("");
 		$("#contentGM").val("");
+		$('#img-upload').css("display", "none");
 	}
 
 //-------------------------------------------------------------------------------------------------
@@ -325,6 +359,7 @@ var sendMessagePage = function()
 	}
 
 	return{msgPage:msgPage,
+		updateUserType:updateUserType,
 		updateUserList:updateUserList,
 		sendPriMessage:sendPriMessage,
 		clearValue:clearValue,
