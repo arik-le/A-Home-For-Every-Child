@@ -226,7 +226,7 @@ var sendMessagePage = function()
 				var message = pickMesByPermision(toTeachers,toParents,from,subject,content,-1,-1);
 				firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
 			}
-			else
+			else			//	send to all clubs
 			{
 				firebase.database().ref("clubhouse/").once("value")
 				.then(function(data)
@@ -242,7 +242,9 @@ var sendMessagePage = function()
 		}
 		else
 		{
-			var storageRef = firebase.storage().ref('/generalMessagesImages/' + toClubHouse + '/' + file.name);
+			var b = Math.floor(Math.random()*100000000); 			
+			var imageName = b + file.name;
+			var storageRef = firebase.storage().ref('/generalMessagesImages/' + toClubHouse + '/' + imageName);
 			var uploadTask = storageRef.put(file);
 
 			// Register three observers:
@@ -260,15 +262,15 @@ var sendMessagePage = function()
 			var downloadURL = uploadTask.snapshot.downloadURL;
 			if(toClubHouse!="allClubs")
 			{
-				var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,file.name);
+				var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,imageName);
 				firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
 			}
-			else
+			else		//	send to all clubs
 			{
 				firebase.database().ref("clubhouse/").once("value")
 				.then(function(data)
 				{
-					var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,file.name);
+					var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,imageName);
 					var clubs = data.val();
            			var keys = Object.keys(clubs);
 					for(var i=0;i<keys.length;i++)
