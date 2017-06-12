@@ -152,10 +152,7 @@ var clubhouseManagement = function()
 				return false;
 			}	
 			// else - push clubhouse to DB
-			var name = 	document.getElementById("clubhouseNameID").value;
-			var address = document.getElementById("clubhouseAddrID").value;
-
-			var newclubhouse = clubHouse.create(name,address);
+			var newclubhouse = clubHouse.create(nameArg,addressAarg);
 			var key = firebase.database().ref('clubhouse').push(newclubhouse);
 			firebase.database().ref('clubhouse/'+key.key+'/ClubhouseDBkey').set(key.key); // set key property
 			return true;

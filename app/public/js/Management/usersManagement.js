@@ -195,15 +195,6 @@ var usersManagement = function()
         var Uclubhouse = e.options[e.selectedIndex].text;
 		var clubKey = getClubKeyByName(Uclubhouse);
 
-        for(var i=0;i<login.usersAndKeys[1].length;i++)
-        {
-			var key=login.usersAndKeys[1][i];
-            if(login.usersAndKeys[0][key].username==username )
-            {
-                alert("שם משתמש כבר קיים");
-                return;
-            }
-        }
         var fPassword=document.getElementById("password").value;
         var sPassword=document.getElementById("confirm").value;
         if( sPassword!=fPassword && fPassword != "" )//&& fPassword < 4)
@@ -219,16 +210,58 @@ var usersManagement = function()
 			alert("אנא מלא את כל השדות הנדרשים");
 			return;
 		}
-		
-		var database = firebase.database();
-        var usersRef = database.ref('users');
-        var newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
-        var key = usersRef.push(newUser);
-        firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
-		updateClubhouse(Uclubhouse,type,key.key,username);
-        alert("הוזן בהצלחה");
-		addUser();
+		checkAndPush(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse);
     }
+	var checkAndPush = function(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse)
+	{	//check if the username exist - if not push to DB
+		var ref = firebase.database().ref("users");
+		ref.once("value")
+		.then(function(data)		// 		when value recieved
+		{
+			// in case the root is empty  ->  name is not exist
+			if (data.val() == null)
+				return false;
+
+			var allUsers = data.val();   // get the whole tree of users
+			var keys = Object.keys(allUsers);	// get all keys
+			
+			// loop on the answere array to find user name.
+			for(var i =0; i<keys.length;i++)
+			{
+				var k = keys[i];
+				var tempName = allUsers[k].username;
+
+				if( tempName == username )
+					return true;
+			}
+			return false;
+
+		}).then(function(res) 
+		{
+			if(res)		// name is already exist in DB
+			{
+                alert("שם משתמש כבר קיים");
+				return false;
+			}	
+			// else - push user to DB
+			var database = firebase.database();
+        	var usersRef = database.ref('users');
+        	var newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
+        	var key = usersRef.push(newUser);
+        	firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
+			updateClubhouse(Uclubhouse,type,key.key,username);
+
+			return true;
+
+		}).then(function(result){
+			if(result)
+				{
+					alert("הוזן בהצלחה");
+					addUser();
+				}
+		});
+
+	}
 	var updateClubhouse = function(clubName,typeArg,keyArg,usernameArg)
 	{
 		var index = getClubKeyIndex(clubName);
