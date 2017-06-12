@@ -173,7 +173,7 @@ var usersManagement = function()
     //-------------------------------------------------------------------------------------------------
     var createUser=function()
     {
-        var firstName=document.getElementById("UserPName").value;
+    	var firstName=document.getElementById("UserPName").value;
         var lastName=document.getElementById("UserLName").value;
         var username=document.getElementById("username").value;
 		if (firstName == "" || lastName == "" || username == "")
@@ -202,6 +202,7 @@ var usersManagement = function()
             alert(" הסיסמאות שהוזנו אינן תואמות");
             return;
         }
+		
         e=document.getElementById("userType");
 		var type = e.selectedIndex;
 	
@@ -212,6 +213,7 @@ var usersManagement = function()
 		}
 		checkAndPush(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse);
     }
+
 	var checkAndPush = function(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse)
 	{	//check if the username exist - if not push to DB
 		var ref = firebase.database().ref("users");

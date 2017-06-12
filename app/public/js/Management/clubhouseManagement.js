@@ -241,22 +241,25 @@ var clubhouseManagement = function()
 		
 	}
 
-//	 not working yet need to do!
+//	 not working yet need to do!!!!!!!!
+// MICHAELLLLLL
 	var removeAllUsersFromCh = function(clubKey)
 	{
-		console.log(clubKey);
+		
 		firebase.database().ref('clubhouse/'+clubKey+"/usersList").once("value")
 		.then(function(data)
 		{
 			if(data.val() == null)
 				return;
 			var allUsers = data.val();   // get the whole tree of clubhouses
-			var keys = Object.keys(allUsers);	// get all keys
-			return keys;
-		}).then(function(keys)
-		{
-			for (var i = 0; i < keys.length; i++) {
-				firebase.database().ref("users/"+keys[i]).remove();
+			var keys=Object.keys(allUsers);
+			
+			console.log(keys);
+			for (var i = 0; i < keys.length; i++) 
+			{
+				var uRefKey= keys[i];
+				console.log(allUsers[uRefKey].userkey);
+				firebase.database().ref("users/"+allUsers[uRefKey].userkey).remove();
 				
 			}
 			
