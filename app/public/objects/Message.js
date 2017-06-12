@@ -1,6 +1,6 @@
 var Message=function()
 {
-    var create=function(source,destination,subject,content,type,permision,imageURL,imageName)
+    var create=function(source,destination,subject,content,type,permision,imageURL,imageName,imageKey)
     {
         var private = 1;
         var general = 0;
@@ -27,7 +27,8 @@ var Message=function()
             imageURL:imageURL,
             imageName:imageName,
             date:date.toDateString(),
-            permision:permision
+            permision:permision,
+            imageKey:imageKey
             }
             
     }
@@ -67,6 +68,7 @@ var Message=function()
                 '</div></p>'
                 }
         $("#body").append(message);
+
     }
 
     var deleteGenMessage=function(i)
@@ -87,8 +89,34 @@ var Message=function()
             {
                 var storage = firebase.storage();
                 var storageRef = storage.ref();
-                var desertRef  = storageRef.child('/generalMessagesImages/' + club + '/' + curMessage.imageName);
-                desertRef.delete().then(function(){}).catch(function(error){});
+                var desertRef;
+
+                if(curMessage.imageKey == -1)  // delete image to specific club          
+                {
+                    desertRef  = storageRef.child('/generalMessagesImages/' + club + '/' + curMessage.imageName);
+                    desertRef.delete().then(function(){}).catch(function(error){});
+                }
+                else
+                {
+                 firebase.database().ref("Images/" + curMessage.imageKey).once("value")
+                 .then(function(data)
+                 {
+                    var details = data.val();
+                    if(details.capacity == 1)
+                    {
+                        desertRef  = storageRef.child('/generalMessagesImages/allClubs/' + curMessage.imageName);
+                        desertRef.delete().then(function(){}).catch(function(error){});
+                        firebase.database().ref("Images/" + curMessage.imageKey).remove();
+                    }
+                    else
+                    {
+                        var obj = {capacity:details.capacity-1};
+                        var imageRef = firebase.database().ref('Images/');
+		                imageRef.child(curMessage.imageKey).update(obj);
+                    }
+                 });
+
+                }   
             }
             var deleteMsg = firebase.database().ref("clubhouse/" + club + "/generalMessages/" +keys[i]);
             deleteMsg.remove();

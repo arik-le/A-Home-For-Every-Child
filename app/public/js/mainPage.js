@@ -127,7 +127,8 @@ var mainPage=function()
             {
                 var keys = Object.keys(messages);
                 for(var i=keys.length-1;i>=0;i--)
-                {
+                {    
+                    
                     Message.addGenMes(messages[keys[i]],i);
                     $("#deleteMessage_"+i).click(function(i)
                     {
