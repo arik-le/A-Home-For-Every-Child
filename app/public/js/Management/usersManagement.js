@@ -1,5 +1,6 @@
 var usersManagement = function()
 {
+	
 	const PUSER = 0;
 	const TUSER = 1;
 	const GSUSER = 2;
@@ -173,14 +174,20 @@ var usersManagement = function()
     //-------------------------------------------------------------------------------------------------
     var createUser=function()
     {
-        var firstName=document.getElementById("UserPName").value;
+    	var firstName=document.getElementById("UserPName").value;
         var lastName=document.getElementById("UserLName").value;
         var username=document.getElementById("username").value;
-		if (firstName == "" || lastName == "" || username == "")
-		{
-			alert("אנא מלא את כל השדות הנדרשים");
+        var fPassword=document.getElementById("password").value;
+        var sPassword=document.getElementById("confirm").value;
+        if( sPassword!=fPassword && fPassword != "" )//&& fPassword < 4)
+        {
+            alert(" הסיסמאות שהוזנו אינן תואמות");
+            return;
+        }
+
+		var res = inputsValidation({firstName:firstName,lastName:lastName,username:username,password:sPassword});
+		if (!res)
 			return;
-		}
         // selecting the clubhouse
 		var e;
 		if (page == ADDPAGE)
@@ -195,13 +202,7 @@ var usersManagement = function()
         var Uclubhouse = e.options[e.selectedIndex].text;
 		var clubKey = getClubKeyByName(Uclubhouse);
 
-        var fPassword=document.getElementById("password").value;
-        var sPassword=document.getElementById("confirm").value;
-        if( sPassword!=fPassword && fPassword != "" )//&& fPassword < 4)
-        {
-            alert(" הסיסמאות שהוזנו אינן תואמות");
-            return;
-        }
+		
         e=document.getElementById("userType");
 		var type = e.selectedIndex;
 	
@@ -212,6 +213,43 @@ var usersManagement = function()
 		}
 		checkAndPush(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse);
     }
+
+
+	var inputsValidation = function(args)
+	{
+		var usernameRegex  = /^\w+(\-+(\w)*)*$/;
+		var namesRegex = /^[[(א-ת)]+$/|/^[(a-zA-Z)]]+$/;
+		var spacesRegex = /\s/;
+
+		if (args.firstName == "" || args.lastName == "" || args.username == "")
+		{
+			alert("אנא מלא את כל השדות הנדרשים");
+			return false;
+		}
+		if(!usernameRegex.test(args.username))
+		{
+			alert("שם המשתמש שהוזן אינו חוקי");
+			return false;
+		}
+		
+		if(namesRegex.test(args.firstName) == false || spacesRegex.test(args.firstName) == true)
+		{
+			alert("שם פרטי שהוזן אינו חוקי");
+			return false;
+		}
+		if(namesRegex.test(args.lastName)== false || spacesRegex.test(args.lastName) == true)
+		{
+			alert("שם משפחה שהוזן אינו חוקי");
+			return false;
+		}
+		if(args.password.length<4 || args.password.length>10)
+		{
+			alert("נא להזין סיסמא באורך בין 4-10 תווים");
+			return false;
+		}
+		return true;
+	}
+
 	var checkAndPush = function(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse)
 	{	//check if the username exist - if not push to DB
 		var ref = firebase.database().ref("users");
