@@ -95,6 +95,7 @@ var sendMessagePage = function()
 
 	var updateClubList=function()				//update the list of clubHouses
 	{
+		var clubhouses = login.correntUser[0].clubhouseKey;
 		var myType = login.correntUser[0].userType;
     
 	    if(myType == User.ADMIN || myType == User.SOCIAL)
@@ -109,8 +110,22 @@ var sendMessagePage = function()
 
 				for(var i=0;i<keys.length;i++)
 				{
-					$("#clubHouseSM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
-					$("#clubHouseGM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
+					if(myType == User.SOCIAL)
+					{
+						for(var j=0;j<clubhouses.length;j++)
+						{
+							if(clubhouses[j]==keys[i])
+							{
+								$("#clubHouseSM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
+								$("#clubHouseGM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');	
+							}
+						}
+					}
+					else
+					{
+						$("#clubHouseSM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
+						$("#clubHouseGM").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
+					}
 				}
 				$("#clubHouseGM").append('<option value="allClubs">כל המועדוניות</option>');
 				$("#clubHouseSM").append('<option value="allAdmin">מנהלים</option>');

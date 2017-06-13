@@ -44,7 +44,7 @@ var mainPage=function()
 							'</ul>'+
 						'</li'+
 						'<li role="separator" class="divider"></li>'+
-
+                        
 						'<li class="dropdown">'+
 							'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ניהול משתמשים <span class="caret"></span></a>'+
 							'<ul class="dropdown-menu">'+
@@ -56,8 +56,9 @@ var mainPage=function()
 							'</ul>'+
 						'</li>'+
                         '<li role="separator" class="divider"></li>'+
-
-					'</ul>'+
+                    '<li><a id="userManual">מדריך עזרה למשתמש<span class="sr-only">(current)</span></a></li>'+
+					'<li><a id="aboutUs">אודות<span class="sr-only">(current)</span></a></li>'+
+                    '</ul>'+
 					'<ul class="nav navbar-nav navbar-right">'+
 						'<li><a id="logout1">התנתק מהמערכת</a></li>'+
 					'</ul>'+
@@ -66,6 +67,8 @@ var mainPage=function()
 		'</nav>'+
         '<div id="body"></div>'
     }
+
+/***********************************************************************************/
 
     var openMainPage=function(user) // user is a copy of the original user 
     {
@@ -78,21 +81,23 @@ var mainPage=function()
             $('.Nav').collapse('hide');
             loadGeneralMessages();
         });
-        
+        loadGeneralMessages();
+
+        //listeners
 		$("#addUser_btn").click(usersManagement.addUser);
         $("#btnEditUser").click(usersManagement.editUser);
-
         $("#addClubhouse_btn").click(clubhouseManagement.addClubhouse);
         $("#editClubhouse_btn").click(clubhouseManagement.editClubhouse);
         $("#MessNav").click(unReadMess);
         $("#writeMessage_btn").click(inMassagePage.openSendMassage);
         $("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
         $("#outMessage_btn").click(outMessagePage.open);
-
         $("#logout").click(logout);
         $("#logout1").click(logout);
-        loadGeneralMessages();
     }
+
+/***********************************************************************************/
+
     var unReadMess=function()
     {
         var me = login.correntUser[1];        
@@ -116,32 +121,13 @@ var mainPage=function()
        
     }
 
-    var updateClubList=function()
-    {
-        firebase.database().ref("clubhouse/").once("value")
-		.then(function(data)
-        {
-            var clubs=data.val();
-            var keys=Object.keys(clubs);
-             $("#clubHouseHP").html('<option value="nan" disabled selected>בחר מועדונית </option>');
-            for(var i=0;i<keys.length;i++)
-                $("#clubHouseHP").append('<option value="'+keys[i]+'">'+clubs[keys[i]].name+'</option>'); 
-        });
-    }
+/***********************************************************************************/
 
     var loadGeneralMessages = function()
     {
         var myType = login.correntUser[0].userType;
         if(myType == User.ADMIN || myType == User.SOCIAL)
-        {
-            /*var sel='<select id = "clubHouseHP" required onchange="mainPage.loadHomePage()" >'+
-            '<option value="nan" disabled selected>בחר מועדונית </option>'+
-                '</select></br>';
-            $("#body").html(sel);*/
             loadAllClubs();
-            updateClubList();
-
-        }
         else
         {
             $("#body").html("");
@@ -149,8 +135,13 @@ var mainPage=function()
         }
     }
 
+/***********************************************************************************/
+
     var loadAllClubs = function()
     {
+        var clubhouses = login.correntUser[0].clubhouseKey;
+        var myType = login.correntUser[0].userType;
+
         firebase.database().ref("clubhouse/").once("value")
         .then(function(data)
         {
@@ -159,57 +150,54 @@ var mainPage=function()
             var keys = Object.keys(clubs);
             for(var i=0;i<keys.length;i++)
             {
-                var tempBtnID = 'btn_'+i;
-                var btnInput = 
-                '<a id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
-                '<i class="fa fa-home fa-2x"></i><br/> ' +clubs[keys[i]].name + '</a>';
-                $("#body").append(btnInput);
-                paintButton(i);
-
-                $("#"+tempBtnID).click(function(e)
+                if(myType == User.SOCIAL)
+                { 
+                for(var j=0;j<clubhouses.length;j++) 
+                    if(clubhouses[j]==keys[i])
+                        addToHomePage(i,clubs,keys,j);
+                }
+                else
                 {
-                    var id=e.target.id;
-                    id=id.substring(4,id.length);  
-                        firebase.database().ref("clubhouse/").once("value")
-                        .then(function(data)
-                        { 
-                            var clubs = data.val();
-                            var keys = Object.keys(clubs); 
-                            $("#body").html("");
-                            login.correntClub[0]=keys[id];
-                            loadHomePage(keys[id]); 
-                        });
-                });
+                    var j=i;
+                    addToHomePage(i,clubs,keys,j);
+                }
             }
         });
     }
 
-    var paintButton = function(i)
-    {        
-        var tempBtnID = 'btn_'+i;
-        if(i%5==0)
+/***********************************************************************************/
+
+    var addToHomePage = function(i,c,k,j)
+    {
+        var tempBtnID = 'btn_'+j;
+        var btnInput = 
+        '<a id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
+        '<i class="fa fa-home fa-2x"></i><br/> ' +c[k[i]].name + '</a>';
+        $("#body").append(btnInput);
+        paintButton(j);
+
+        $("#"+tempBtnID).click(function(e)
         {
-            $("#"+tempBtnID).css("background", "#D31027");
-            $("#"+tempBtnID).css("background", " -webkit-linear-gradient(to top, #EA384D, #D31027)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to top, #EA384D, #D31027)");     
-        }
-        if(i%5==1)  /*green*/ 
-           $("#"+tempBtnID).css("background-image","url(images/green.png)");
-        if(i%5==2)  /*blue*/ 
-        {
-            $("#"+tempBtnID).css("background", "#396afc");
-            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #2948ff, #396afc)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #2948ff, #396afc)");
-        } 
-        if(i%5==3)  /*pink*/
-        {
-            $("#"+tempBtnID).css("background", "#834d9b");
-            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #d04ed6, #834d9b)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #d04ed6, #834d9b)"); 
-        }
-        if(i%5==4)  /*orange*/  
-            $("#"+tempBtnID).css("background-image","url(images/yellow.jpg)");
+            $("#loader").css("display", "inline-block");
+            setTimeout(function()
+            { 
+            var id=e.target.id;
+            id=id.substring(4,id.length);  
+                firebase.database().ref("clubhouse/").once("value")
+                .then(function(data)
+                { 
+                    var clubs = data.val();
+                    var keys = Object.keys(clubs); 
+                    $("#body").html("");
+
+                    login.correntClub[0]=keys[id];
+                    loadHomePage(keys[id]); 
+                });
+            }, 1000);
+        });
     }
+
+/***********************************************************************************/
 
     var loadHomePage = function(clubKey)
     {
@@ -248,6 +236,37 @@ var mainPage=function()
             }
         });
     }
+
+/***********************************************************************************/
+
+    var paintButton = function(i)
+    {        
+        var tempBtnID = 'btn_'+i;
+        if(i%5==0) /*red*/
+        {
+            $("#"+tempBtnID).css("background", "#D31027");
+            $("#"+tempBtnID).css("background", " -webkit-linear-gradient(to top, #EA384D, #D31027)");
+            $("#"+tempBtnID).css("background", "linear-gradient(to top, #EA384D, #D31027)");     
+        }
+        if(i%5==1)  /*green*/ 
+           $("#"+tempBtnID).css("background-image","url(images/green.png)");
+        if(i%5==2)  /*blue*/ 
+        {
+            $("#"+tempBtnID).css("background", "#396afc");
+            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #2948ff, #396afc)");
+            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #2948ff, #396afc)");
+        } 
+        if(i%5==3)  /*pink*/
+        {
+            $("#"+tempBtnID).css("background", "#834d9b");
+            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #d04ed6, #834d9b)");
+            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #d04ed6, #834d9b)"); 
+        }
+        if(i%5==4)  /*orange*/  
+            $("#"+tempBtnID).css("background-image","url(images/yellow.jpg)");
+    }
+
+/***********************************************************************************/
 
     var logout = function()
     {

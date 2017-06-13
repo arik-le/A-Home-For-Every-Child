@@ -50,7 +50,7 @@ var Message=function()
                     '</div>'+
                     '<div class="messageFooter">'+
                         '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>';
-                    if(myType == User.ADMIN || myType == User.GUIDE)
+                    if(myType>=User.GUIDE)      //admin ,social ,guide
                         {
                             message+= '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
                             '<label id="subjectGMS">מחק הודעה <label>'+
@@ -103,9 +103,9 @@ var Message=function()
                 }
                 else
                 {
-                 firebase.database().ref("Images/" + curMessage.imageKey).once("value")
-                 .then(function(data)
-                 {
+                    firebase.database().ref("Images/" + curMessage.imageKey).once("value")
+                    .then(function(data)
+                    {
                     var details = data.val();
                     if(details.capacity == 1)
                     {
@@ -117,9 +117,9 @@ var Message=function()
                     {
                         var obj = {capacity:details.capacity-1};
                         var imageRef = firebase.database().ref('Images/');
-		                imageRef.child(curMessage.imageKey).update(obj);
+                        imageRef.child(curMessage.imageKey).update(obj);
                     }
-                 });
+                });
 
                 }   
             }
@@ -128,13 +128,6 @@ var Message=function()
            });
         });
     }
-
-      /*-----------------------------------------------*/
-    var p=function(s)
-    {
-        console.log(s);
-    }
-    /*-----------------------------------------------*/
 
     var getDateMes=function(dareMes)
     {

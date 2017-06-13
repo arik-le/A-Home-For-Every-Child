@@ -8,5 +8,4 @@ var Image = function()
 			}
 		}
 		return {create:create}
-		
 }();

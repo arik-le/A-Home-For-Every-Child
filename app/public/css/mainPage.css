@@ -3,6 +3,7 @@
     max-height: 70%;
     max-width: 100%;
     padding: 2%;
+    text-align: center;
 }
 
 .topHeader
@@ -166,8 +167,9 @@ nav{
 .clubSquare
 {
   width:30%;
-  height: 12%;
   margin:0.5%;
   margin-top:2%;
   margin-right: 2%;
+  padding:5%;
+
 }
