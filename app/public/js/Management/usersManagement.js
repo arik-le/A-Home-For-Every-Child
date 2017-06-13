@@ -217,22 +217,22 @@ var usersManagement = function()
 		{
 			var clubhousesSw=[];
 			var childs = $('#swMultiSelect')[0].childNodes;
-			for (var i = 0; i < childs.length; i++) {
+			for (var i = 0; i < childs.length; i++) 
+			{
 				var element = childs[i];
 				if (element.className == 'list-group-item active')
 				{
 					var temp = getClubKeyByName(childs[i].textContent);
 					clubhousesSw.push(temp);
 				}
-			if (clubhousesSw.length <= 0)
-			{
-				alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
-				return;
+				if (clubhousesSw.length <= 0)
+				{
+					alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
+					return;
+				}
 			}
 			checkAndPush(username,fPassword,firstName,lastName,type,clubhousesSw);
-		}
 		
-			console.log(clubhousesSw);
 		}
 		else if (type == ADMIN)
 		{
@@ -247,7 +247,7 @@ var usersManagement = function()
 	var inputsValidation = function(args)
 	{
 		var usernameRegex  = /^\w+(\-+(\w)*)*$/;
-		var namesRegex = /^[[(א-ת)]+$/|/^[(a-zA-Z)]]+$/;
+		// var namesRegex = /^[[(א-ת)]+$/|/^[(a-zA-Z)]]+$/;
 		var spacesRegex = /\s/;
 
 		if (args.firstName == "" || args.lastName == "" || args.username == "")
@@ -261,12 +261,12 @@ var usersManagement = function()
 			return false;
 		}
 		
-		if(namesRegex.test(args.firstName) == false || spacesRegex.test(args.firstName) == true)
+		if( spacesRegex.test(args.firstName) == true)
 		{
 			alert("שם פרטי שהוזן אינו חוקי");
 			return false;
 		}
-		if(namesRegex.test(args.lastName)== false || spacesRegex.test(args.lastName) == true)
+		if( spacesRegex.test(args.lastName) == true)
 		{
 			alert("שם משפחה שהוזן אינו חוקי");
 			return false;
@@ -293,33 +293,32 @@ var usersManagement = function()
 			var keys = Object.keys(allUsers);	// get all keys
 			
 			// loop on the answere array to find user name.
+			var temp = false;
 			for(var i =0; i<keys.length;i++)
 			{
 				var k = keys[i];
 				var tempName = allUsers[k].username;
 
 				if( tempName == username )
-					return true;
+					temp =  true;
 			}
-			return false;
-
+			return temp;
 		}).then(function(res) 
 		{
 			if(res)		// name is already exist in DB
 			{
                 alert("שם משתמש כבר קיים");
-				return false;
+				return;
 			}	
 			// else - push user to DB
-			var database = firebase.database();
-        	var usersRef = database.ref('users');
+			var usersRef = firebase.database().ref('users');
         	var newUser;
 			if(type == ADMIN)
 			{
 				newUser = User.create(username,fPassword,firstName,lastName,type,null);
 				var key = usersRef.push(newUser);
 				firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
-				return true;
+				addUser();
 			}
 			else if(type == SWUSER)
 			{
@@ -327,46 +326,25 @@ var usersManagement = function()
 				var key = usersRef.push(newUser);
 				firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
 				for (var i = 0; i < clubKey.length; i++) {
-					var element = clubKey[i];
-					updateClubhouseSW(element,type,key.key,username);
+					firebase.database().ref('clubhouse/'+clubKey[i]+'/usersList')
+					.push({userkey:key.key,username:username,type:type});
 				}
-				return true;
+				addUser();
 			} 
 			else
 			{
 				newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
 				var key = usersRef.push(newUser);
 				firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
-				updateClubhouse(Uclubhouse,type,key.key,username);
-				return true;
+				firebase.database().ref('clubhouse/'+clubKey+'/usersList')
+				.push({userkey:key.key,username:username,type:type});
+				addUser();
 			}
-		}).then(function(result){
-			if(result)
-				{
-					alert("הוזן בהצלחה");
-					addUser();
-				}
+			alert("הוזן בהצלחה");
 		});
 
 	}
-	var updateClubhouse = function(clubName,typeArg,keyArg,usernameArg)
-	{
-		var index = getClubKeyIndex(clubName);
-		if(index == FAIL)
-		{
-			alert("לא נמצאה מועדונית תואמת");
-			return;
-		}
-		var key = clubhousesInfo[index].key;
-		firebase.database().ref('clubhouse/'+key+'/usersList')
-		.push({userkey:keyArg,username:usernameArg,type:typeArg});
-	};
-
-	var updateClubhouseSW = function(clubName,typeArg,keyArg,usernameArg)
-	{
-		firebase.database().ref('clubhouse/'+key+'/usersList')
-		.push({userkey:keyArg,username:usernameArg,type:typeArg});
-	}
+	
 	/////////////////////////////////////////////////////////////////
 	// addPrevType holds the last value on selectbox
 	var updateType = function(e)
@@ -482,7 +460,7 @@ var usersManagement = function()
 				userRef.ref.once("value").then(function(data)
 				{
 					var user=data.val();
-					$('#usersInCH').append('<option value="'+user.userKey+'">'+user.firstName+' '+user.lastName+'</option>');
+					$('#usersInCH').append('<option value="'+uKey+'">'+user.firstName+' '+user.lastName+'</option>');
 				});	
 			}
 		
