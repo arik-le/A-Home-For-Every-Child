@@ -1,6 +1,5 @@
 var usersManagement = function()
 {
-	
 	const PUSER = 0;
 	const TUSER = 1;
 	const GSUSER = 2;
@@ -19,15 +18,16 @@ var usersManagement = function()
 	var clubIndex_Edit;
 	var userToEdit;
      //-------------------------------------------------------------------------------------------------
-     var UserPage={
-        inputSection:
-        '<div class="container">'+
-            	'<div class="row main">'+
+	var UserPage=
+	{
+		inputSection:
+		'<div class="container">'+
+				'<div class="row main">'+
 				'<div class="panel-heading">'+
-	               '<div  class="panel-title text-center">'+
-	               		'<h2 id="registerTitle" class="registerTitle">רישום משתמש</h2>'+
-	                '</div>'+
-	            '</div> '+
+					'<div  class="panel-title text-center">'+
+						'<h2 id="registerTitle" class="registerTitle">רישום משתמש</h2>'+
+					'</div>'+
+				'</div> '+
 
 			'<div class="main-login main-center">'+
 				'<form class="form-horizontal" method="post" action="#">'+
@@ -113,51 +113,57 @@ var usersManagement = function()
 					'</div>'+
 				'</form>'+
 			'</div>'+
-	'</div>'
-     }
-       //-------------------------------------------------------------------------------------------------
-        var EditUserOp={
-        inputSection:
-			'<div class="container">'+
-				'<label id="selectCHLabel" for="clubBottunGroup" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
-				'<br>'+
-
-			'<div class="row">'+
-				'<div id = "clubBottunGroup" class="col-md-4 text-center">'+
-				
-				'</div>'+
-			'</div>'+
-				'</div>'+
-				'<br>'+
-				'<label id="userSelEdit" for="clubHouseUsers" class="col-sm-2 controlLabel">:בחר משתמש</label>'+
-				'</br>'+
-				'<div class="input-group">'+
-						'<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>'+
-						'<select type="text" id="usersInCH" class="form-control" >'+
-						'</select>'+
-				'</div>'+
-				'</br>'+
-				'<div class="col-md-4 text-center">'+
-					'<button type="button" id="openUserEditBtn" class="btn btn-warning btn3d">לחץ כאן לערוך</button>'+
-				'</div>'+
-			'</div>'
-        }
-		var EditUserButtons={
-        inputSection:
-			'</br>'+
-			'<button id ="change-button" type="button" class="btn btn-primary btn-block btn-lg edit-button"  >עריכה</button>'+
-			'<button id ="delete-button" type="button" class="btn-danger btn-danger btn-block btn-lg  delete-button"  >מחיקת משתמש</button>'
+		'</div>'
 	}
-	var addUserButton={
+	//-------------------------------------------------------------------------------------------------
+	var EditUserOp={
+	inputSection:
+		'<div class="container">'+
+			'<label id="selectCHLabel" for="clubBottunGroup" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
+			'<br>'+
+
+		'<div class="row">'+
+			'<div id = "clubBottunGroup" class="col-md-4 text-center">'+
+			
+			'</div>'+
+		'</div>'+
+			'</div>'+
+			'<br>'+
+			'<label id="userSelEdit" for="clubHouseUsers" class="col-sm-2 controlLabel">:בחר משתמש</label>'+
+			'</br>'+
+			'<div class="input-group">'+
+					'<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>'+
+					'<select type="text" id="usersInCH" class="form-control" >'+
+					'</select>'+
+			'</div>'+
+			'</br>'+
+			'<div class="col-md-4 text-center">'+
+				'<button type="button" id="openUserEditBtn" class="btn btn-warning btn3d">לחץ כאן לערוך</button>'+
+			'</div>'+
+		'</div>'
+	}
+	//-------------------------------------------------------------------------------------------------
+	var EditUserButtons=
+	{	inputSection:
+		'</br>'+
+		'<button id ="change-button" type="button" class="btn btn-primary btn-block btn-lg edit-button"  >עריכה</button>'+
+		'<button id ="delete-button" type="button" class="btn-danger btn-danger btn-block btn-lg  delete-button"  >מחיקת משתמש</button>'
+	}
+	//-------------------------------------------------------------------------------------------------
+	var addUserButton=
+	{
         inputSection:
-	'</br>'+
-	'<button type="button" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" id="addUser" >הרשמה</button>'
-}
-	var swMultiselect = {
+		'</br>'+
+		'<button type="button" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" id="addUser" >הרשמה</button>'
+	}
+	//-------------------------------------------------------------------------------------------------
+	var swMultiselect = 
+	{
 		inputSection:
 		'<ul id = "swMultiSelect" class="list-group">'+
 		'</ul>'
 	}
+	//-------------------------------------------------------------------------------------------------
 
 	/////////////////////////////////////////////////////////////////////
 	//			ADD USER											   //
