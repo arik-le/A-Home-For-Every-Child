@@ -466,7 +466,8 @@ var usersManagement = function()
 				userRef.ref.once("value").then(function(data)
 				{
 					var user=data.val();
-					$('#usersInCH').append('<option value="'+uKey+'">'+user.firstName+' '+user.lastName+'</option>');
+					$('#usersInCH').append('<option value="'+user.userKey+'">'+user.firstName+' '+user.lastName+'</option>');
+					
 				});	
 			}
 		

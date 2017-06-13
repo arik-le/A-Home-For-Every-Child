@@ -230,7 +230,7 @@ var clubhouseManagement = function()
 		if(!edit_clubname)
 			alert('לא נבחרה מועדונית');
 		else
-			alert('האם אתה בטוח ?פעולה זו תמחק את כל המשתמשים');
+			alert('האם אתה בטוח ? פעולה זו תמחק את כל המשתמשים המשויכים למועדונית זו');
 		removeAllUsersFromCh(clubhousesInfo[edit_clubIndex].key);
 
 		// var genRef=firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key+'/generalMessages');
@@ -245,7 +245,7 @@ var clubhouseManagement = function()
 		// 	{
 		// 		removeAllMsgs(clubhousesInfo[edit_clubIndex].key,i);
 		// 	}
-			removeCH(clubhousesInfo[edit_clubIndex].key);
+			
 		//});
 		
 		
@@ -330,10 +330,11 @@ var clubhouseManagement = function()
 	
 			for (var i = 0; i < keys.length; i++) 
 			{
-				var uRefKey= keys[i];	
+				var uRefKey= keys[i];
+				console.log(allUsers[uRefKey].userkey);	
 				firebase.database().ref("users/"+allUsers[uRefKey].userkey).remove();
 			}
-			
+			removeCH(clubhousesInfo[edit_clubIndex].key);
 		});
 	
 	}
