@@ -232,17 +232,91 @@ var clubhouseManagement = function()
 		else
 			alert('האם אתה בטוח ?פעולה זו תמחק את כל המשתמשים');
 		removeAllUsersFromCh(clubhousesInfo[edit_clubIndex].key);
-		firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key).remove()
+
+		// var genRef=firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key+'/generalMessages');
+		// genRef.once("value").then(function(data)
+		// {
+		// 	if(data.val() == null)
+		// 		return;
+		// 	var msgs = data.val();
+		// 	var mKeys = Object.keys(msgs);
+
+		// 	for(var i=0;i<mKeys.length;i++)
+		// 	{
+		// 		removeAllMsgs(clubhousesInfo[edit_clubIndex].key,i);
+		// 	}
+			removeCH(clubhousesInfo[edit_clubIndex].key);
+		//});
+		
+		
+		
+	}
+	var removeCH = function(clubKey)
+	{
+		firebase.database().ref('clubhouse/'+clubKey).remove()
 		.then(function(res)
 		{
 			clubhousesInfo = [];
 			editClubhouse();
 		});
-		
+
 	}
 
-//	 not working yet need to do!!!!!!!!
-// MICHAELLLLLL
+	var removeAllMsgs = function(clubKey,i)
+	{
+		var club = clubKey;
+        var delMsg = firebase.database().ref("clubhouse/" + club + "/generalMessages").once("value")
+        .then(function(data)
+        {
+            var messages = data.val();
+            var keys = Object.keys(messages);
+            
+            firebase.database().ref("clubhouse/" + club + "/generalMessages/" + keys[i]).once("value")
+			.then(function(data)
+			{
+            	var curMessage = data.val();        //  take the message object
+
+            	if(curMessage.imageURL != -1)      // delete an image from storage
+            	{
+                	var storage = firebase.storage();
+                	var storageRef = storage.ref();
+                	var desertRef;
+				
+					if(curMessage.imageKey == -1)  // delete image to specific club          
+					{
+					desertRef  = storageRef.child('/generalMessagesImages/' + club + '/' + curMessage.imageName);
+					desertRef.delete().then(function(){}).catch(function(error){});
+					}
+					else
+					{
+						firebase.database().ref("Images/" + curMessage.imageKey).once("value")
+						.then(function(data)
+						{
+							var details = data.val();
+							if(details.capacity == 1)
+							{
+								desertRef  = storageRef.child('/generalMessagesImages/allClubs/' + curMessage.imageName);
+								desertRef.delete().then(function(){}).catch(function(error){});
+								firebase.database().ref("Images/" + curMessage.imageKey).remove();
+							}
+							else
+							{
+								var obj = {capacity:details.capacity-1};
+								var imageRef = firebase.database().ref('Images/');
+								imageRef.child(curMessage.imageKey).update(obj);
+							}
+						});
+
+                	}   
+            	}
+            	var deleteMsg = firebase.database().ref("clubhouse/" + club + "/generalMessages/" +keys[i]);
+            	deleteMsg.remove();
+			
+           });
+        });
+
+	}
+
 	var removeAllUsersFromCh = function(clubKey)
 	{
 		
@@ -253,14 +327,11 @@ var clubhouseManagement = function()
 				return;
 			var allUsers = data.val();   // get the whole tree of clubhouses
 			var keys=Object.keys(allUsers);
-			
-			console.log(keys);
+	
 			for (var i = 0; i < keys.length; i++) 
 			{
-				var uRefKey= keys[i];
-				console.log(allUsers[uRefKey].userkey);
+				var uRefKey= keys[i];	
 				firebase.database().ref("users/"+allUsers[uRefKey].userkey).remove();
-				
 			}
 			
 		});
