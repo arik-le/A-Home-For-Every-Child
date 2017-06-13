@@ -44,7 +44,7 @@ var mainPage=function()
 							'</ul>'+
 						'</li'+
 						'<li role="separator" class="divider"></li>'+
-
+                        
 						'<li class="dropdown">'+
 							'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ניהול משתמשים <span class="caret"></span></a>'+
 							'<ul class="dropdown-menu">'+
@@ -56,8 +56,9 @@ var mainPage=function()
 							'</ul>'+
 						'</li>'+
                         '<li role="separator" class="divider"></li>'+
-
-					'</ul>'+
+                    '<li><a id="userManual">מדריך עזרה למשתמש<span class="sr-only">(current)</span></a></li>'+
+					'<li><a id="aboutUs">אודות<span class="sr-only">(current)</span></a></li>'+
+                    '</ul>'+
 					'<ul class="nav navbar-nav navbar-right">'+
 						'<li><a id="logout1">התנתק מהמערכת</a></li>'+
 					'</ul>'+
@@ -80,20 +81,19 @@ var mainPage=function()
             $('.Nav').collapse('hide');
             loadGeneralMessages();
         });
-        
+        loadGeneralMessages();
+
+        //listeners
 		$("#addUser_btn").click(usersManagement.addUser);
         $("#btnEditUser").click(usersManagement.editUser);
-
         $("#addClubhouse_btn").click(clubhouseManagement.addClubhouse);
         $("#editClubhouse_btn").click(clubhouseManagement.editClubhouse);
         $("#MessNav").click(unReadMess);
         $("#writeMessage_btn").click(inMassagePage.openSendMassage);
         $("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
         $("#outMessage_btn").click(outMessagePage.open);
-
         $("#logout").click(logout);
         $("#logout1").click(logout);
-        loadGeneralMessages();
     }
 
 /***********************************************************************************/
