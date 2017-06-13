@@ -157,26 +157,29 @@ var mainPage=function()
                 { 
                 for(var j=0;j<clubhouses.length;j++) 
                     if(clubhouses[j]==keys[i])
-                        addToHomePage(j,clubs,keys);
+                        addToHomePage(i,clubs,keys,j);
                 }
                 else
-                    addToHomePage(i,clubs,keys);
+                {
+                    var j=i;
+                    addToHomePage(i,clubs,keys,j);
+                }
             }
         });
     }
 
 /***********************************************************************************/
 
-    var addToHomePage = function(i,c,k)
+    var addToHomePage = function(i,c,k,j)
     {
         console.log("addToHomePage");
 
-        var tempBtnID = 'btn_'+i;
+        var tempBtnID = 'btn_'+j;
         var btnInput = 
         '<a id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
         '<i class="fa fa-home fa-2x"></i><br/> ' +c[k[i]].name + '</a>';
         $("#body").append(btnInput);
-        paintButton(i);
+        paintButton(j);
 
         $("#"+tempBtnID).click(function(e)
         {
