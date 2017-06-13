@@ -37,7 +37,7 @@ var usersManagement = function()
 						'<div class="col-sm-10">'+
 							'<div class="input-group">'+
 								'<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>'+
-								'<input type="text" class="form-control" name="name" id="UserPName" placeholder="הכנס שם פרטי" dir="rtl" />'+
+								'<input type="text" class="form-control" name="name" id="UserPName" maxlength="20" placeholder="הכנס שם פרטי" dir="rtl" />'+
 							'</div>'+
 						'</div>'+
 					'</div>'+
@@ -47,7 +47,7 @@ var usersManagement = function()
 						'<div class="col-sm-10">'+
 							'<div class="input-group">'+
 								'<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>'+
-								'<input type="text" class="form-control" name="UserLastName" id="UserLName" placeholder="הכנס שם משפחה" dir="rtl"/>'+
+								'<input type="text" class="form-control" name="UserLastName" id="UserLName" maxlength="20" placeholder="הכנס שם משפחה" dir="rtl"/>'+
 							'</div>'+
 						'</div>'+
 					'</div>'+
@@ -57,7 +57,7 @@ var usersManagement = function()
 						'<div class="col-sm-10">'+
 							'<div class="input-group">'+
 								'<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>'+
-								'<input type="text" class="form-control" name="username" id="username"  placeholder="הכנס שם משתמש" dir="rtl"/>'+
+								'<input type="text" class="form-control" name="username" id="username"  maxlength="20" placeholder="הכנס שם משתמש" dir="rtl"/>'+
 							'</div>'+
 						'</div>'+
 					'</div>'+
@@ -83,7 +83,7 @@ var usersManagement = function()
 						'<div class="col-sm-10">'+
 							'<div class="input-group">'+
 								'<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>'+
-								'<input type="password" class="form-control" name="password" id="password" placeholder="הכנס סיסמה"/>'+
+								'<input type="password" class="form-control" name="password" id="password" maxlength="10" placeholder="הכנס סיסמה"/>'+
 							'</div>'+
 						'</div>'+
 					'</div>'+
@@ -93,7 +93,7 @@ var usersManagement = function()
 						'<div class="col-sm-10">'+
 							'<div class="input-group">'+
 								'<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>'+
-								'<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="אמת בשנית סיסמה"/>'+
+								'<input type="password" class="form-control" name="confirm" id="confirm" maxlength="10" placeholder="אמת בשנית סיסמה"/>'+
 							'</div>'+
 						'</div>'+
 					'</div>'+
@@ -152,6 +152,11 @@ var usersManagement = function()
         inputSection:
 	'</br>'+
 	'<button type="button" class="btn btn-primary btn-lg btn-block register-button" data-toggle="modal" data-target="#myModal" id="addUser" >הרשמה</button>'
+}
+	var swMultiselect = {
+		inputSection:
+		'<ul id = "swMultiSelect" class="list-group">'+
+		'</ul>'
 	}
 
 	/////////////////////////////////////////////////////////////////////
@@ -179,39 +184,63 @@ var usersManagement = function()
         var username=document.getElementById("username").value;
         var fPassword=document.getElementById("password").value;
         var sPassword=document.getElementById("confirm").value;
+		var Uclubhouse;
         if( sPassword!=fPassword && fPassword != "" )//&& fPassword < 4)
         {
             alert(" הסיסמאות שהוזנו אינן תואמות");
             return;
         }
 
-		var res = inputsValidation({firstName:firstName,lastName:lastName,username:username,password:sPassword});
-		if (!res)
-			return;
+		// var res = inputsValidation({firstName:firstName,lastName:lastName,username:username,password:sPassword});
+		// if (!res)
+		// 	return;
         // selecting the clubhouse
 		var e;
-		if (page == ADDPAGE)
-        	e = document.getElementById("clubhouse_select_Add");
-
-		if(e.selectedIndex == -1)// when there are no clubhouses at DB
-		{
-			alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
-			return;
-		}
-
-        var Uclubhouse = e.options[e.selectedIndex].text;
-		var clubKey = getClubKeyByName(Uclubhouse);
-
-		
         e=document.getElementById("userType");
 		var type = e.selectedIndex;
 	
-		if(type < 0 )
+		if(type >= 0 && type < SWUSER )
 		{
-			alert("אנא מלא את כל השדות הנדרשים");
-			return;
+			if (page == ADDPAGE)
+				e = document.getElementById("clubhouse_select_Add");
+
+			if(e.selectedIndex == -1)// when there are no clubhouses at DB
+			{
+				alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
+				return;
+			}
+			Uclubhouse= e.options[e.selectedIndex].text;
+			var clubKey = getClubKeyByName(Uclubhouse);
+			checkAndPush(username,fPassword,firstName,lastName,type,clubKey);
 		}
-		checkAndPush(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse);
+		else if (type == SWUSER)
+		{
+			var clubhousesSw=[];
+			var childs = $('#swMultiSelect')[0].childNodes;
+			for (var i = 0; i < childs.length; i++) {
+				var element = childs[i];
+				if (element.className == 'list-group-item active')
+				{
+					var temp = getClubKeyByName(childs[i].textContent);
+					clubhousesSw.push(temp);
+				}
+			if (clubhousesSw.length <= 0)
+			{
+				alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
+				return;
+			}
+			checkAndPush(username,fPassword,firstName,lastName,type,clubhousesSw);
+		}
+		
+			console.log(clubhousesSw);
+		}
+		else if (type == ADMIN)
+		{
+			checkAndPush(username,fPassword,firstName,lastName,type,clubhousesSw);
+		}
+		
+		// checkAndPush(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse);
+
     }
 
 
@@ -250,7 +279,7 @@ var usersManagement = function()
 		return true;
 	}
 
-	var checkAndPush = function(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse)
+	var checkAndPush = function(username,fPassword,firstName,lastName,type,clubKey)
 	{	//check if the username exist - if not push to DB
 		var ref = firebase.database().ref("users");
 		ref.once("value")
@@ -284,13 +313,33 @@ var usersManagement = function()
 			// else - push user to DB
 			var database = firebase.database();
         	var usersRef = database.ref('users');
-        	var newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
-        	var key = usersRef.push(newUser);
-        	firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
-			updateClubhouse(Uclubhouse,type,key.key,username);
-
-			return true;
-
+        	var newUser;
+			if(type == ADMIN)
+			{
+				newUser = User.create(username,fPassword,firstName,lastName,type,null);
+				var key = usersRef.push(newUser);
+				firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
+				return true;
+			}
+			else if(type == SWUSER)
+			{
+				newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
+				var key = usersRef.push(newUser);
+				firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
+				for (var i = 0; i < clubKey.length; i++) {
+					var element = clubKey[i];
+					updateClubhouseSW(element,type,key.key,username);
+				}
+				return true;
+			} 
+			else
+			{
+				newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
+				var key = usersRef.push(newUser);
+				firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
+				updateClubhouse(Uclubhouse,type,key.key,username);
+				return true;
+			}
 		}).then(function(result){
 			if(result)
 				{
@@ -313,6 +362,11 @@ var usersManagement = function()
 		.push({userkey:keyArg,username:usernameArg,type:typeArg});
 	};
 
+	var updateClubhouseSW = function(clubName,typeArg,keyArg,usernameArg)
+	{
+		firebase.database().ref('clubhouse/'+key+'/usersList')
+		.push({userkey:keyArg,username:usernameArg,type:typeArg});
+	}
 	/////////////////////////////////////////////////////////////////
 	// addPrevType holds the last value on selectbox
 	var updateType = function(e)
@@ -327,6 +381,16 @@ var usersManagement = function()
 		else if(addPrevType !=type && type == SWUSER)
 		{
 			// inject for social worker
+			input = swMultiselect.inputSection;
+			$('#selectCHSection').html(input);
+
+			for (var i = 0; i < clubhousesInfo.length; i++) {
+				var id='swClubhouseSelect'+i;
+				var line = '<li id="'+id+'" class="list-group-item">'+clubhousesInfo[i].name+'</li>'
+				$('#swMultiSelect').append(line)
+				$('#'+id).click(SwClubListener);
+			}
+
 		}
 		else
 		{
@@ -358,6 +422,15 @@ var usersManagement = function()
 			return;
 		AddSectionClubName = clubhousesInfo[index].name;
 		return AddSectionClubName;
+	}
+	// sw multiselect listener
+	var SwClubListener = function(e)
+	{	
+		var targetClass = e.currentTarget.className;
+		if(targetClass == 'list-group-item')
+			e.currentTarget.className = 'list-group-item active';
+		if(targetClass == 'list-group-item active')
+			e.currentTarget.className = 'list-group-item';
 	}
 
 
