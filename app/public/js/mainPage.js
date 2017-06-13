@@ -125,7 +125,6 @@ var mainPage=function()
 
     var loadGeneralMessages = function()
     {
-        console.log("loadgeneralmessages");
         var myType = login.correntUser[0].userType;
         if(myType == User.ADMIN || myType == User.SOCIAL)
             loadAllClubs();
@@ -140,8 +139,6 @@ var mainPage=function()
 
     var loadAllClubs = function()
     {
-        console.log("loadAllClubs");
-
         var clubhouses = login.correntUser[0].clubhouseKey;
         var myType = login.correntUser[0].userType;
 
@@ -172,8 +169,6 @@ var mainPage=function()
 
     var addToHomePage = function(i,c,k,j)
     {
-        console.log("addToHomePage");
-
         var tempBtnID = 'btn_'+j;
         var btnInput = 
         '<a id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
@@ -206,8 +201,6 @@ var mainPage=function()
 
     var loadHomePage = function(clubKey)
     {
-        console.log("loadHomePage");
-
         var curClubKey;
         var myType = login.correntUser[0].userType;
         
