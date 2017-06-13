@@ -67,6 +67,8 @@ var mainPage=function()
         '<div id="body"></div>'
     }
 
+/***********************************************************************************/
+
     var openMainPage=function(user) // user is a copy of the original user 
     {
         correntUser[0] = user;
@@ -93,6 +95,9 @@ var mainPage=function()
         $("#logout1").click(logout);
         loadGeneralMessages();
     }
+
+/***********************************************************************************/
+
     var unReadMess=function()
     {
         var me = login.correntUser[1];        
@@ -116,32 +121,14 @@ var mainPage=function()
        
     }
 
-    var updateClubList=function()
-    {
-        firebase.database().ref("clubhouse/").once("value")
-		.then(function(data)
-        {
-            var clubs=data.val();
-            var keys=Object.keys(clubs);
-             $("#clubHouseHP").html('<option value="nan" disabled selected>בחר מועדונית </option>');
-            for(var i=0;i<keys.length;i++)
-                $("#clubHouseHP").append('<option value="'+keys[i]+'">'+clubs[keys[i]].name+'</option>'); 
-        });
-    }
+/***********************************************************************************/
 
     var loadGeneralMessages = function()
     {
+        console.log("loadgeneralmessages");
         var myType = login.correntUser[0].userType;
         if(myType == User.ADMIN || myType == User.SOCIAL)
-        {
-            /*var sel='<select id = "clubHouseHP" required onchange="mainPage.loadHomePage()" >'+
-            '<option value="nan" disabled selected>בחר מועדונית </option>'+
-                '</select></br>';
-            $("#body").html(sel);*/
             loadAllClubs();
-            updateClubList();
-
-        }
         else
         {
             $("#body").html("");
@@ -149,8 +136,15 @@ var mainPage=function()
         }
     }
 
+/***********************************************************************************/
+
     var loadAllClubs = function()
     {
+        console.log("loadAllClubs");
+
+        var clubhouses = login.correntUser[0].clubhouseKey;
+        var myType = login.correntUser[0].userType;
+
         firebase.database().ref("clubhouse/").once("value")
         .then(function(data)
         {
@@ -159,60 +153,58 @@ var mainPage=function()
             var keys = Object.keys(clubs);
             for(var i=0;i<keys.length;i++)
             {
-                var tempBtnID = 'btn_'+i;
-                var btnInput = 
-                '<a id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
-                '<i class="fa fa-home fa-2x"></i><br/> ' +clubs[keys[i]].name + '</a>';
-                $("#body").append(btnInput);
-                paintButton(i);
-
-                $("#"+tempBtnID).click(function(e)
-                {
-                    var id=e.target.id;
-                    id=id.substring(4,id.length);  
-                        firebase.database().ref("clubhouse/").once("value")
-                        .then(function(data)
-                        { 
-                            var clubs = data.val();
-                            var keys = Object.keys(clubs); 
-                            $("#body").html("");
-                            login.correntClub[0]=keys[id];
-                            loadHomePage(keys[id]); 
-                        });
-                });
+                if(myType == User.SOCIAL)
+                { 
+                for(var j=0;j<clubhouses.length;j++) 
+                    if(clubhouses[j]==keys[i])
+                        addToHomePage(j,clubs,keys);
+                }
+                else
+                    addToHomePage(i,clubs,keys);
             }
         });
     }
 
-    var paintButton = function(i)
-    {        
+/***********************************************************************************/
+
+    var addToHomePage = function(i,c,k)
+    {
+        console.log("addToHomePage");
+
         var tempBtnID = 'btn_'+i;
-        if(i%5==0)
+        var btnInput = 
+        '<a id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
+        '<i class="fa fa-home fa-2x"></i><br/> ' +c[k[i]].name + '</a>';
+        $("#body").append(btnInput);
+        paintButton(i);
+
+        $("#"+tempBtnID).click(function(e)
         {
-            $("#"+tempBtnID).css("background", "#D31027");
-            $("#"+tempBtnID).css("background", " -webkit-linear-gradient(to top, #EA384D, #D31027)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to top, #EA384D, #D31027)");     
-        }
-        if(i%5==1)  /*green*/ 
-           $("#"+tempBtnID).css("background-image","url(images/green.png)");
-        if(i%5==2)  /*blue*/ 
-        {
-            $("#"+tempBtnID).css("background", "#396afc");
-            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #2948ff, #396afc)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #2948ff, #396afc)");
-        } 
-        if(i%5==3)  /*pink*/
-        {
-            $("#"+tempBtnID).css("background", "#834d9b");
-            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #d04ed6, #834d9b)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #d04ed6, #834d9b)"); 
-        }
-        if(i%5==4)  /*orange*/  
-            $("#"+tempBtnID).css("background-image","url(images/yellow.jpg)");
+            $("#loader").css("display", "inline-block");
+            setTimeout(function()
+            { 
+            var id=e.target.id;
+            id=id.substring(4,id.length);  
+                firebase.database().ref("clubhouse/").once("value")
+                .then(function(data)
+                { 
+                    var clubs = data.val();
+                    var keys = Object.keys(clubs); 
+                    $("#body").html("");
+
+                    login.correntClub[0]=keys[id];
+                    loadHomePage(keys[id]); 
+                });
+            }, 1000);
+        });
     }
+
+/***********************************************************************************/
 
     var loadHomePage = function(clubKey)
     {
+        console.log("loadHomePage");
+
         var curClubKey;
         var myType = login.correntUser[0].userType;
         
@@ -248,6 +240,37 @@ var mainPage=function()
             }
         });
     }
+
+/***********************************************************************************/
+
+    var paintButton = function(i)
+    {        
+        var tempBtnID = 'btn_'+i;
+        if(i%5==0) /*red*/
+        {
+            $("#"+tempBtnID).css("background", "#D31027");
+            $("#"+tempBtnID).css("background", " -webkit-linear-gradient(to top, #EA384D, #D31027)");
+            $("#"+tempBtnID).css("background", "linear-gradient(to top, #EA384D, #D31027)");     
+        }
+        if(i%5==1)  /*green*/ 
+           $("#"+tempBtnID).css("background-image","url(images/green.png)");
+        if(i%5==2)  /*blue*/ 
+        {
+            $("#"+tempBtnID).css("background", "#396afc");
+            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #2948ff, #396afc)");
+            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #2948ff, #396afc)");
+        } 
+        if(i%5==3)  /*pink*/
+        {
+            $("#"+tempBtnID).css("background", "#834d9b");
+            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #d04ed6, #834d9b)");
+            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #d04ed6, #834d9b)"); 
+        }
+        if(i%5==4)  /*orange*/  
+            $("#"+tempBtnID).css("background-image","url(images/yellow.jpg)");
+    }
+
+/***********************************************************************************/
 
     var logout = function()
     {
