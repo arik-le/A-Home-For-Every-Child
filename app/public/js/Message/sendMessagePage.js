@@ -191,7 +191,7 @@ var sendMessagePage = function()
 						var allUsersInClub = Object.keys(curClub);
 						for(var j=0;j<allUsersInClub.length;j++)
 							if(curClub[allUsersInClub[j]].type == type && curClub[allUsersInClub[j]].username != login.correntUser[0].username)
-								$("#chooseUserSM").append('<option value='+curClub[allUsersInClub[j]].userkey+'>'+curClub[allUsersInClub[j]].username+'</option>');
+								$("#chooseUserSM").append('<option value='+curClub[allUsersInClub[j]].userKey+'>'+curClub[allUsersInClub[j]].username+'</option>');
 					}
 				}
 			});

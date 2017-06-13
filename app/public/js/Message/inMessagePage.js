@@ -30,13 +30,16 @@ var inMassagePage=function()
                             '<h4 class="modal-title" dir="rtl">'+obj.subject+'</h4>'+
                         '</div>'+
                         '<div class="modal-body">';
-                       if(isInBox)
-                       {
-                            str+='<h5"> :מאת</h5>'+
-                                '<div class = "subject">'+
-                                    '<textarea disabled dir="rtl"">'+login.getObj(obj.source).firstName+'</textarea>'+
-                                '</div>';
-                       }
+                        if(isInBox )
+                        {
+                                str+='<h5"> :מאת</h5>'+
+                                    '<div class = "subject">';
+                                        if(login.getObj(obj.source)!=undefined)
+                                            str+='<textarea disabled dir="rtl"">'+login.getObj(obj.source).firstName+'</textarea>'
+                                        else
+                                            str+='<textarea disabled dir="rtl"">אורח:משתמש אינו קיים במערכת</textarea>'
+                                    str+='</div>';
+                        }
                         else
                         {
                             str+='<h5"> :אל</h5>'+
@@ -44,6 +47,7 @@ var inMassagePage=function()
                                     '<textarea disabled " dir="rtl">'+login.getObj(obj.destination).firstName+'</textarea>'+
                                 '</div>';
                         }
+                        
                            str+= '</p>'+
                             '<div class = "content">'+
                                 '<textarea disabled id="content'+messageID+'" dir="rtl">'+obj.content+'</textarea>'+
