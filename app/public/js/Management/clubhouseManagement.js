@@ -334,7 +334,7 @@ var clubhouseManagement = function()
 				console.log(allUsers[uRefKey].userkey);	
 				firebase.database().ref("users/"+allUsers[uRefKey].userkey).remove();
 			}
-			removeCH(clubhousesInfo[edit_clubIndex].key);
+			removeCH(clubhousesInfo[edit_clubIndex].key);  //remove clubhouse
 		});
 	
 	}
