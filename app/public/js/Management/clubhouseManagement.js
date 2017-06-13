@@ -217,6 +217,7 @@ var clubhouseManagement = function()
 
 		var cref = firebase.database().ref('clubhouse/');
 		cref.child(clubhousesInfo[edit_clubIndex].key).update(obj);
+		alert("!עודכן בהצלחה");
 	}
 
 	var CHsellection = function(e)
@@ -324,19 +325,60 @@ var clubhouseManagement = function()
 		.then(function(data)
 		{
 			if(data.val() == null)
-				return;
+				removeCH(clubKey);
 			var allUsers = data.val();   // get the whole tree of clubhouses
 			var keys=Object.keys(allUsers);
 	
 			for (var i = 0; i < keys.length; i++) 
 			{
 				var uRefKey= keys[i];
-				console.log(allUsers[uRefKey].userkey);	
-				firebase.database().ref("users/"+allUsers[uRefKey].userkey).remove();
+				var uRef = firebase.database().ref("users/"+allUsers[uRefKey].userkey)
+				uRef.once("value").then(function(data)
+				{
+					if(data.val() == null)
+							return;	
+					var userObj = data.val();
+					
+					if(userObj.userType == 3)
+						deleteClubRef(userObj.userKey,clubKey);
+					
+					else
+					{
+						firebase.database().ref("users/"+userObj.userKey).remove(); 
+						removeCH(clubKey);
+					}
+				});
 			}
-			removeCH(clubhousesInfo[edit_clubIndex].key);  //remove clubhouse
 		});
 	
+	}
+
+
+	var deleteClubRef = function(keyUser,clubKey)
+	{
+		var clubsRef = firebase.database().ref("users/"+keyUser+'/clubhouseKey');
+			clubsRef.once("value").then(function(data)
+			{
+				if(data.val() == null)
+					return;	
+				var clubsData = data.val();			
+				var cKeys = Object.keys(clubsData);
+				if(cKeys.length > 1)
+				{  
+					for(var i=0;i<cKeys.length;i++)
+					{
+						var clKey = clubsData[cKeys[i]];
+						var k = cKeys[i];
+						if(clKey == clubKey)
+							firebase.database().ref("users/"+keyUser+'/clubhouseKey').child(k).remove();
+					}
+				}
+				else
+					firebase.database().ref("users/"+keyUser).remove(); 
+
+				removeCH(clubKey);
+
+			});
 	}
 
 	// loads only strings of names for now.
