@@ -37,7 +37,7 @@ var inMassagePage=function()
                                         if(login.getObj(obj.source)!=undefined)
                                             str+='<textarea disabled dir="rtl"">'+login.getObj(obj.source).firstName+'</textarea>'
                                         else
-                                            str+='<textarea disabled dir="rtl"">אורח:משתמש אינו קיים במערכת</textarea>'
+                                            str+='<textarea disabled dir="rtl"">אורח - משתמש אינו קיים במערכת</textarea>'
                                     str+='</div>';
                         }
                         else

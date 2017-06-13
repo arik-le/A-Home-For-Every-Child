@@ -8,6 +8,7 @@ var login=function()
 
 	var usersAndKeys = [2]; 
 	var correntUser=[2];	
+	var correntClub=[1];
 
 	var deviceType;
 	var database;
@@ -75,6 +76,7 @@ var login=function()
 			
 			usersAndKeys[0]= allUsers;
 			usersAndKeys[1] = keys;
+			
 
 			// loop on the answere array to find clubhouse name.
 			for(var i =0; i<keys.length;i++)
@@ -87,6 +89,7 @@ var login=function()
 				{
 					correntUser[1]=k; 
 					correntUser[0] = allUsers[k];
+					correntClub[0]=correntUser[0].clubhouseKey;
 					$("#loader").css("display", "inline-block");
 					setTimeout(function()
 					{ 
@@ -130,6 +133,7 @@ var login=function()
 return { initModule : initModule,
 		 usersAndKeys:usersAndKeys,
 		 correntUser:correntUser,
+		 correntClub:correntClub,
 		 getObj:getObj};
 }();
 

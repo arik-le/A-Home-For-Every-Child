@@ -80,18 +80,16 @@ var Message=function()
 
     var deleteGenMessage=function(i)
     {
-        var club = login.correntUser[0].clubhouseKey;
+        var club = login.correntClub[0];//login.correntUser[0].clubhouseKey;
         var delMsg = firebase.database().ref("clubhouse/" + club + "/generalMessages").once("value")
         .then(function(data)
         {
             var messages = data.val();
             var keys = Object.keys(messages);
-            
             firebase.database().ref("clubhouse/" + club + "/generalMessages/" + keys[i]).once("value")
 			.then(function(data)
 			{
             var curMessage = data.val();        //  take the message object
-
             if(curMessage.imageURL != -1)      // delete an image from storage
             {
                 var storage = firebase.storage();
@@ -130,6 +128,13 @@ var Message=function()
            });
         });
     }
+
+      /*-----------------------------------------------*/
+    var p=function(s)
+    {
+        console.log(s);
+    }
+    /*-----------------------------------------------*/
 
     var getDateMes=function(dareMes)
     {
