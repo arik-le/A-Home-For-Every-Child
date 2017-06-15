@@ -1,0 +1,26 @@
+#contactUs{
+	text-align:center;
+	margin-top:-5%;
+}
+
+#footerAllRights{
+	text-align:center;
+}
+#facebookLike
+{
+	text-align:center;
+}
+
+#coverImage
+{
+	width:340px;
+	height:100px;
+	overflow:hidden;	
+	margin: 2%;
+}
+
+#like_btn{
+	text-align:center;
+	width:88px;
+	height:50px;
+}

@@ -1,5 +1,5 @@
 var inMassagePage=function()
-{
+    {
     var flags={sendMassageIsOn:false};
 
         var TypeMassage={

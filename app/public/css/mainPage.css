@@ -40,6 +40,13 @@ nav{
   border-color: #12b44a;
 }
 
+#navLogo
+{
+    height:35px;
+    width:70px;
+    padding-bottom: 7px;
+}
+
 .navbar-default .navbar-text {
   color: #12b44a;
 }

@@ -50,8 +50,8 @@ var login=function()
 	
 		if(username == "" || password == "")
 		{
-				alert("אנא הכנס שם משתמש וסיסמה");
-				return;
+			alert("אנא הכנס שם משתמש וסיסמה");
+			return;
 		}
 		validateAndPushUser(username,password);
 	};

@@ -26,7 +26,7 @@ var mainPage=function()
 						'<span class="icon-bar"></span>'+
 						'<span class="icon-bar"></span>'+
 					'</button>'+
-                    '<a class="navbar-brand" href="#"><img src="images/logo.jpg" width="50" alt="logo" class="nav-img"></a>'+
+                    '<a class="navbar-brand" href="#"><img src="images/logo.png" id="navLogo" alt="logo" class="nav-img"></a>'+
 
 				'</div>'+
 
@@ -56,8 +56,8 @@ var mainPage=function()
 							'</ul>'+
 						'</li>'+
                         '<li role="separator" class="divider"></li>'+
-                    '<li><a id="userManual">מדריך עזרה למשתמש<span class="sr-only">(current)</span></a></li>'+
-					'<li><a id="aboutUs">אודות<span class="sr-only">(current)</span></a></li>'+
+                    '<li><a id="userManual_btn">מדריך עזרה למשתמש<span class="sr-only">(current)</span></a></li>'+
+					'<li><a id="aboutUs_btn">אודות<span class="sr-only">(current)</span></a></li>'+
                     '</ul>'+
 					'<ul class="nav navbar-nav navbar-right">'+
 						'<li><a id="logout1">התנתק מהמערכת</a></li>'+
@@ -92,6 +92,7 @@ var mainPage=function()
         $("#writeMessage_btn").click(inMassagePage.openSendMassage);
         $("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
         $("#outMessage_btn").click(outMessagePage.open);
+        $("#aboutUs_btn").click(aboutUs.openAboutPage);
         $("#logout").click(logout);
         $("#logout1").click(logout);
     }
@@ -249,22 +250,30 @@ var mainPage=function()
             $("#"+tempBtnID).css("background", "linear-gradient(to top, #EA384D, #D31027)");     
         }
         if(i%5==1)  /*green*/ 
-           $("#"+tempBtnID).css("background-image","url(images/green.png)");
+        {
+            $("#"+tempBtnID).css("background", "#33cc00");
+            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #339933  ,#33cc00)");
+            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #339933, #33cc00)"); 
+        }
         if(i%5==2)  /*blue*/ 
         {
             $("#"+tempBtnID).css("background", "#396afc");
-            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #2948ff, #396afc)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #2948ff, #396afc)");
+            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #0033dd, #396afc)");
+            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #0033dd, #396afc)");
         } 
         if(i%5==3)  /*pink*/
         {
             $("#"+tempBtnID).css("background", "#834d9b");
-            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #d04ed6, #834d9b)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #d04ed6, #834d9b)"); 
+            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to top, #d04ed6, #834d9b)");
+            $("#"+tempBtnID).css("background", "linear-gradient(to top, #d04ed6, #834d9b)"); 
         }
         if(i%5==4)  /*orange*/  
-            $("#"+tempBtnID).css("background-image","url(images/yellow.jpg)");
-    }
+        {
+            $("#"+tempBtnID).css("background", "#ffff00");
+            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #ff9900, #ffff00)");
+            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #ff9900, #ffff00)"); 
+        }
+     }
 
 /***********************************************************************************/
 
