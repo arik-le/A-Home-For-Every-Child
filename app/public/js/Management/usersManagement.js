@@ -179,7 +179,7 @@ var usersManagement = function()
 		$('#buttons_area').html(addUserButton.inputSection);
         $("#addUser").click(createUser);
 		addPrevType=0;
-		$('#userType').click(updateType);
+		$('#userType').on('change',updateType);
     }
 
     //-------------------------------------------------------------------------------------------------
