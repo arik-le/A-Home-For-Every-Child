@@ -52,7 +52,7 @@ var usersManagement = function()
 						'<div class="col-sm-10">'+
 							'<div class="input-group">'+
 								'<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>'+
-								'<input type="text" class="form-control" name="username" id="username"  maxlength="20" placeholder="הכנס שם משתמש" dir="rtl"/>'+
+								'<input type="email" class="form-control" name="username" id="username"  maxlength="20" placeholder="הכנס שם משתמש" dir="rtl"/>'+
 							'</div>'+
 						'</div>'+
 					'</div>'+

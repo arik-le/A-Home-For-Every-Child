@@ -243,6 +243,8 @@ var mainPage=function()
             else
             {
                 var keys = Object.keys(messages);
+                $("#mesBody").append("<h1 id='allTitles2' dir='rtl'>"+keys.length+"/30 הודעות<h1>");
+
                 for(var i=keys.length-1;i>=0;i--)
                 {    
                     if(myType > 1 || myType == messages[keys[i]].permision || messages[keys[i]].permision == EVERYONE)

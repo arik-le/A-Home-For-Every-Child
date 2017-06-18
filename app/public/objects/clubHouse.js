@@ -1,12 +1,5 @@
 var clubHouse = function(name,address)
 {
-		
-
-        // all lists will be as an array and every new object adding will be added using push.
-
-        // for Parent/Teacher users only
-        //this.childName;
-
 		this.name = name;
         this.address = address;
         this.ClubhouseDBkey;  
@@ -20,9 +13,6 @@ var clubHouse = function(name,address)
 				
 				name:name,
 				address:address,
-				PTusersList:[],
-				childList:[],
-				guidesList:[],
 				ClubhouseDBkey:""
 			}
 		}
