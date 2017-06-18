@@ -110,12 +110,17 @@ nav{
 .title{
 	padding-right:3%;
   padding-left:3%;
-	text-align:right;
+	text-align:center;
+  color:white;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   background: #00c6ff;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to bottom, #0072ff, #00c6ff);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to bottom, #0072ff, #00c6ff);
+}
+#subjectGMS
+{
+  margin-top: -2%;
 }
 
 .title h6 
