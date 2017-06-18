@@ -73,6 +73,7 @@ var usersManagement = function()
 						'</div>'+
 					'</div>'+
 
+				'<div id = "passwordSection">'+
 					'<div class="form-group">'+
 						'<label for="password" class="col-sm-2 controlLabel">:סיסמא</label>'+
 						'<div class="col-sm-10">'+
@@ -82,7 +83,6 @@ var usersManagement = function()
 							'</div>'+
 						'</div>'+
 					'</div>'+
-
 					'<div class="form-group">'+
 						'<label for="confirm" class="col-sm-2 controlLabel">:אימות סיסמא</label>'+
 						'<div class="col-sm-10">'+
@@ -92,7 +92,7 @@ var usersManagement = function()
 							'</div>'+
 						'</div>'+
 					'</div>'+
-
+				'</div>'+
 						'<div id="selectCHSection" class="form-group">'+
 						'<label for="clubHouseName" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
 						'<div class="col-sm-10">'+
@@ -507,23 +507,41 @@ var usersManagement = function()
 	var injectEditPage = function (user)
 	{
 		$('#body').html(UserPage.inputSection);
+		
 		document.getElementById('allTitles').innerHTML ="עריכת/מחיקת משתמש";
 		$('#UserPName').val(user.firstName);
 		$('#UserLName').val(user.lastName);
 		$('#username').val(user.username);
-		$('#password').val(user.password);
-		$('#confirm').val(user.password);
-		$('#userType').val(user.userType);	
-
-		var tempIndex;
-		for(var i =0; i<clubhousesInfo.length;i++)
-		{
-			if (clubhousesInfo[i].key == user.clubhouseKey)
-				tempIndex = i;
-			$('#clubhouse_select_Add').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
-		}
+		$('#passwordSection').html("");	// prevent change the password if there is oath with email
+		$('#userType').val(user.userType);
 		document.getElementById("userType").disabled = true;  //disable option for changing user-type
-		$('#clubhouse_select_Add').val(tempIndex);
+		/*$('#password').val(user.password);
+		$('#confirm').val(user.password);*/
+		
+		
+		if(user.userType == User.ADMIN)
+		{
+			$('#selectCHSection').html("");
+		}
+
+
+		// if( user.userType == User.SOCIAL)
+		if(user.userType >= User.PARENT && user.userType < User.SOCIAL)
+		{
+			// append element to select and choose the selected index on default.
+			var tempIndex;
+			for(var i =0; i<clubhousesInfo.length;i++)
+			{
+				if (clubhousesInfo[i].key == user.clubhouseKey)
+					tempIndex = i;
+				$('#clubhouse_select_Add').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
+			}
+			$('#clubhouse_select_Add').val(tempIndex);
+			$('#clubhouse_select_Add').on('change',function(e) // update selected index listener
+			{
+				clubIndex_Edit = e.currentTarget.selectedIndex;	
+			});
+		}
 		$('#buttons_area').html(EditUserButtons.inputSection);
 		$('#change-button').click(changeUserInfo);
 		$('#delete-button').click(function(){ deleteUser(user.userType) });
@@ -537,37 +555,42 @@ var usersManagement = function()
 		var Nusername = $('#username').val();
 		var password = $('#password').val();
 		var confirm = $('#confirm').val();
-		var userType = $('#userType').val();
 
-		var currClubIndex = $('#clubhouse_select_Add').val();
 
-		var currClubKey = clubhousesInfo[currClubIndex].key;
-		if (password != confirm)
+		if( userToEdit.userType >= User.PARENT && userToEdit.userType < User.SOCIAL)
+		{
+			// currClubIndex= $('#clubhouse_select_Add').val();
+			console.log(clubhousesInfo[clubIndex_Edit]);
+			currClubKey = clubhousesInfo[clubIndex_Edit].key;
+			if(userToEdit.clubhouseKey != currClubKey) // clubhouse changed
+			{
+				// update new clubhouse
+				firebase.database().ref('clubhouse/'+currClubKey+'/usersList')
+					.push({userkey:userToEdit.userKey,username:Nusername,type:userType});
+				
+				// remove from old clubhouse 
+				removeUserFromClubOnly(userToEdit.clubhouseKey);
+				
+				obj.clubhouseKey = currClubKey; // update user object
+			}
+		}
+
+
+		/*if (password != confirm)
 		{
 			alert('הסיסמאות אינן תואמות');
 			return;
-		}
+		if (userToEdit.password != password)
+			obj.password = password;
+		}*/
 		if (userToEdit.firstName != firstName)
 			obj.firstName = firstName;
 		if (userToEdit.lastName != lastName)
 			obj.lastName = lastName;
 		if (userToEdit.username != Nusername)
 			obj.username = Nusername;
-		if (userToEdit.password != password)
-			obj.password = password;
-		if(userToEdit.userType != userType)
-			obj.userType = userType;
-		if(userToEdit.clubhouseKey != currClubKey) // clubhouse changed
-		{
-			// update new clubhouse
-			firebase.database().ref('clubhouse/'+currClubKey+'/usersList')
-				.push({userkey:userToEdit.userKey,username:Nusername,type:userType});
-			
-			// remove from old clubhouse 
-			removeUserFromClubOnly(userToEdit.clubhouseKey);
-			
-			obj.clubhouseKey = currClubKey; // update user object
-		}
+		
+		
 		
 		var e = document.getElementById("clubhouse_select_Add");
 		var userRef = firebase.database().ref('users/');
