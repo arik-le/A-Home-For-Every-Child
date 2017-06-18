@@ -209,9 +209,42 @@ var clubhouseManagement = function()
 		if(clubToEdit.address != address)
 			obj.address = address;
 
-		var cref = firebase.database().ref('clubhouse/');
-		cref.child(clubhousesInfo[edit_clubIndex].key).update(obj);
-		alert("!עודכן בהצלחה");
+		var ref = firebase.database().ref("clubhouse");
+		ref.once("value")
+		.then(function(data)		// 		when value recieved
+		{
+			// in case the root is empty  ->  name is not exist
+			if (data.val() == null)
+				return false;
+
+			var allClubhouses = data.val();   // get the whole tree of clubhouses
+			var keys = Object.keys(allClubhouses);	// get all keys
+			
+			// loop on the answere array to find clubhouse name.
+			for(var i =0; i<keys.length;i++)
+			{
+				var k = keys[i];
+				var tempName = allClubhouses[k].name;
+					
+				if( tempName == obj.name )
+					return true;
+			}
+			return false;	
+		}).then(function(res)
+		{
+			if(res == false)
+			{
+				var cref = firebase.database().ref('clubhouse/');
+				cref.child(clubhousesInfo[edit_clubIndex].key).update(obj);
+				alert("!עודכן בהצלחה");
+				editClubhouse();
+			}
+			else
+			{
+				alert("!מועדונית בשם זה כבר קיימת");
+			}
+		});
+		
 	}
 
 	var CHsellection = function(e)
