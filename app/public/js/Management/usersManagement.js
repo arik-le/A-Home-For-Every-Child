@@ -204,6 +204,7 @@ var usersManagement = function()
 		{
 			if (page == ADDPAGE)
 				e = document.getElementById("clubhouse_select_Add");
+			
 
 			if(e.selectedIndex == -1)// when there are no clubhouses at DB
 			{
@@ -218,6 +219,7 @@ var usersManagement = function()
 		{
 			var clubhousesSw=[];
 			var childs = $('#swMultiSelect')[0].childNodes;
+			
 			for (var i = 0; i < childs.length; i++) 
 			{
 				var element = childs[i];
@@ -226,11 +228,11 @@ var usersManagement = function()
 					var temp = getClubKeyByName(childs[i].textContent);
 					clubhousesSw.push(temp);
 				}
-				if (clubhousesSw.length <= 0)
-				{
-					alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
-					return;
-				}
+			}
+			if (clubhousesSw.length <= 0)
+			{
+				alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
+				return;
 			}
 			checkAndPush(username,fPassword,firstName,lastName,type,clubhousesSw);
 		
@@ -240,7 +242,6 @@ var usersManagement = function()
 			checkAndPush(username,fPassword,firstName,lastName,type,clubhousesSw);
 		}
 		
-		// checkAndPush(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse);
 
     }
 
@@ -512,18 +513,25 @@ var usersManagement = function()
 		$('#UserPName').val(user.firstName);
 		$('#UserLName').val(user.lastName);
 		$('#username').val(user.username);
-		$('#passwordSection').html("");	// prevent change the password if there is oath with email
 		$('#userType').val(user.userType);
 		document.getElementById("userType").disabled = true;  //disable option for changing user-type
+		$('#passwordSection').html("");	// prevent change the password if there is oath with email
 		/*$('#password').val(user.password);
 		$('#confirm').val(user.password);*/
 		
 		
+		// html inject for each user type//
+		//===============================//
 		if(user.userType == User.ADMIN)
 		{
 			$('#selectCHSection').html("");
 		}
+		// multi select injection for SW
+		if ( user.userType == User.SOCIAL)
+		{
+			$('#selectCHSection').html(swMultiselect.inputSection)
 
+		}
 
 		// if( user.userType == User.SOCIAL)
 		if(user.userType >= User.PARENT && user.userType < User.SOCIAL)
