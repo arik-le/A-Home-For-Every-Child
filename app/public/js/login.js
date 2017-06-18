@@ -1,11 +1,5 @@
 var login=function()
 {
-	const PUSER = 0;
-	const TUSER = 1;
-	const GSUSER = 2;
-	const SWUSER = 3;
-	const ADMIN = 4;
-
 	var usersAndKeys = [2]; 
 	var correntUser=[2];	
 	var correntClub=[1];

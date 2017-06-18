@@ -23,9 +23,7 @@ var clubhouseManagement = function()
 		'<div class="container">'+
 			'<div class="row main">'+
 						'<div class="panel-heading">'+
-							'<div class="panel-title text-center">'+
-								'<h1 id="titleCH" class="title">הוספת מועדונית</h1>'+
-								'<hr />'+
+								'<h1 id="allTitles"">הוספת מועדונית</h1>'+
 							'</div>'+
 						'</div> '+
 
@@ -403,14 +401,10 @@ var clubhouseManagement = function()
 				{
 					clubhousesInfo[i] = {key:keys[i],name:allClubhouses[keys[i]].name};
 					var tempBtnID = 'btn'+i;
-					var btnInput = 
-					'<a href="#" id="'+tempBtnID+'" class="btn btn-sq-sm btn-success">'+
-					'<i class="fa fa-home fa-2x"></i><br/> '
-					+clubhousesInfo[i].name+
-					'</a>';
-					if ( i%3 == 2 && i>1 )
-						btnInput += '</p>';
+					var btnInput = '<a href="#" id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
+					'<i class="fa fa-home fa-2x"></i><br/>'+clubhousesInfo[i].name+'</a>';
 					$('#clubBottunGroup_edcm').append(btnInput);
+					mainPage.paintButton(i,tempBtnID)
 					$('#'+tempBtnID).click(CHsellection);
 				}
 				if(page == ADDPAGE)

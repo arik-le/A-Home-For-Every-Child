@@ -1,11 +1,5 @@
 var usersManagement = function()
 {
-	const PUSER = 0;
-	const TUSER = 1;
-	const GSUSER = 2;
-	const SWUSER = 3;
-	const ADMIN = 4;
-
 	const FAIL = -1;
 	const ADDPAGE = 1;
 	const EDITPAGE = 2;
@@ -25,7 +19,7 @@ var usersManagement = function()
 				'<div class="row main">'+
 				'<div class="panel-heading">'+
 					'<div  class="panel-title text-center">'+
-						'<h2 id="registerTitle" class="registerTitle">רישום משתמש</h2>'+
+						'<h2 id="allTitles" class="registerTitle">רישום משתמש</h2>'+
 					'</div>'+
 				'</div> '+
 
@@ -205,7 +199,7 @@ var usersManagement = function()
         e=document.getElementById("userType");
 		var type = e.selectedIndex;
 	
-		if(type >= 0 && type < SWUSER )
+		if(type >= 0 && type < User.SOCIAL )
 		{
 			if (page == ADDPAGE)
 				e = document.getElementById("clubhouse_select_Add");
@@ -219,7 +213,7 @@ var usersManagement = function()
 			var clubKey = getClubKeyByName(Uclubhouse);
 			checkAndPush(username,fPassword,firstName,lastName,type,clubKey);
 		}
-		else if (type == SWUSER)
+		else if (type == User.SOCIAL)
 		{
 			var clubhousesSw=[];
 			var childs = $('#swMultiSelect')[0].childNodes;
@@ -240,7 +234,7 @@ var usersManagement = function()
 			checkAndPush(username,fPassword,firstName,lastName,type,clubhousesSw);
 		
 		}
-		else if (type == ADMIN)
+		else if (type == User.ADMIN)
 		{
 			checkAndPush(username,fPassword,firstName,lastName,type,clubhousesSw);
 		}
@@ -319,14 +313,14 @@ var usersManagement = function()
 			// else - push user to DB
 			var usersRef = firebase.database().ref('users');
         	var newUser;
-			if(type == ADMIN)
+			if(type == User.ADMIN)
 			{
 				newUser = User.create(username,fPassword,firstName,lastName,type,null);
 				var key = usersRef.push(newUser);
 				firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
 				addUser();
 			}
-			else if(type == SWUSER)
+			else if(type == User.SOCIAL)
 			{
 				newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
 				var key = usersRef.push(newUser);
@@ -357,12 +351,12 @@ var usersManagement = function()
 	{
 		var type = e.target.value;
 		var input;
-		if(addPrevType !=type && type == ADMIN)
+		if(addPrevType !=type && type == User.ADMIN)
 		{
 			// inject for admin 
 			$('#selectCHSection').html("");
 		}
-		else if(addPrevType !=type && type == SWUSER)
+		else if(addPrevType !=type && type == User.SOCIAL)
 		{
 			// inject for social worker
 			input = swMultiselect.inputSection;
@@ -618,7 +612,6 @@ var usersManagement = function()
 		});
 	}
 
-
 	var removeUserFromClubOnly = function(clubKey)
 	{
 		firebase.database().ref("clubhouse/"+clubKey+"/usersList").once("value")
@@ -644,8 +637,6 @@ var usersManagement = function()
 		});
 	}
 
-
-
 	// listener for clubhouse Buttons for user edit
 	var EditClubselectValue = function(e)
 	{
@@ -659,11 +650,11 @@ var usersManagement = function()
 		showUsersPerCH(e.target.innerText);
 	}
 
-
 	/////////////////////////////////////////////////////////////////////
 	//			LOAD DATA											   //
 	/////////////////////////////////////////////////////////////////////
 	// Updates clubhousesInfo array
+
 	var loadClubhousesData = function()
 	{	
 		var ref = firebase.database().ref("clubhouse");
@@ -686,11 +677,8 @@ var usersManagement = function()
 				if (page == EDITPAGE)
 				{
 					var tempBtnID = 'btn'+i;
-					var btnInput = 
-					'<a href="#" id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
-					'<i class="fa fa-home fa-2x"></i><br/> '
-					+tempName+
-					'</a>';
+					var btnInput = '<a href="#" id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
+					'<i class="fa fa-home fa-2x"></i><br/>'+tempName+'</a>';
 
 					$('#clubBottunGroup').append(btnInput);
 					$('#'+tempBtnID).click(EditClubselectValue);
@@ -702,22 +690,20 @@ var usersManagement = function()
 		});
 	}
 
-
-
 	/////////////////////////////////////////////////////////////////////
 	//			GENERAL METHODS										   //
 	/////////////////////////////////////////////////////////////////////
 	var getTypeAsString = function(type)
 	{	
-		if(type == PUSER)
+		if(type == User.PARENT)
 			return "הורה";
-		if(type == TUSER)
+		if(type == User.TEACHER)
 			return "מורה";
-		if(type == GSUSER)
+		if(type == User.GUIDE)
 			return "מדריך";
-		if(type == SWUSER)
+		if(type == User.SOCIAL)
 			return 'עו"ס';
-		if(type == ADMIN)
+		if(type == User.ADMIN)
 			return "מנהל";
 		else
 			return"";

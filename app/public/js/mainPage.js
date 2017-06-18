@@ -169,6 +169,7 @@ var mainPage=function()
         .then(function(data)
         {
             $("#body").html("");
+            $("#body").append("<h2 id='allTitles'>בחר מועדונית</h2></p>")
             var clubs = data.val();
             var keys = Object.keys(clubs);
             for(var i=0;i<keys.length;i++)
