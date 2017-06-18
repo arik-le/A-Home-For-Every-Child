@@ -113,8 +113,8 @@ var usersManagement = function()
 	var EditUserOp={
 	inputSection:
 		'<div class="container">'+
-			'<label id="selectCHLabel" for="clubBottunGroup" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
-			'<br>'+
+			'<label id="allTitles">:בחר מועדונית</label>'+
+			'</br>'+
 
 		'<div class="row">'+
 			'<div id = "clubBottunGroup" class="col-md-4 text-center">'+
@@ -123,8 +123,8 @@ var usersManagement = function()
 		'</div>'+
 			'</div>'+
 			'<br>'+
-			'<label id="userSelEdit" for="clubHouseUsers" class="col-sm-2 controlLabel">:בחר משתמש</label>'+
-			'</br>'+
+			'<label id="allTitles2">:בחר משתמש</label>'+
+			'</br></br>'+
 			'<div class="input-group">'+
 					'<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>'+
 					'<select type="text" id="usersInCH" class="form-control" >'+
