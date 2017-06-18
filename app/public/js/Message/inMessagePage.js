@@ -92,7 +92,6 @@ var inMassagePage=function()
             var keys = Object.keys(messages);
             var i=keys[id];
             firebase.database().ref("users/" + me + "/inboxMessages/"+i+"/isRead").set(true);
-            
         })
         $("#enve"+id).removeClass("envelopeN");
         $("#enve"+id).addClass("envelopeR");

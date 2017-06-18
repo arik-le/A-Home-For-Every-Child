@@ -269,37 +269,37 @@ var mainPage=function()
         if(i%5==0) /*red*/
         {
             //button
-            $("#"+tempBtnID).css("background", "#D31027");
-            $("#"+tempBtnID).css("background", " -webkit-linear-gradient(to top, #EA384D, #D31027)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to top, #EA384D, #D31027)");
+            $("#"+tempBtnID).css("color", "#D31027");
+            $("#"+tempBtnID).css("color", " -webkit-linear-gradient(to top, #EA384D, #D31027)");
+            $("#"+tempBtnID).css("color", "linear-gradient(to top, #EA384D, #D31027)");
         }
         if(i%5==1)  /*green*/ 
         {
             //button
-            $("#"+tempBtnID).css("background", "#33cc00");
-            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #339933  ,#33cc00)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #339933, #33cc00)");
+            $("#"+tempBtnID).css("color", "#33cc00");
+            $("#"+tempBtnID).css("color", "-webkit-linear-gradient(to bottom, #339933  ,#33cc00)");
+            $("#"+tempBtnID).css("color", "linear-gradient(to bottom, #339933, #33cc00)");
         }
         if(i%5==2)  /*blue*/ 
         {
             //button
-            $("#"+tempBtnID).css("background", "#396afc");
-            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #0033dd, #396afc)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #0033dd, #396afc)");
+            $("#"+tempBtnID).css("color", "#396afc");
+            $("#"+tempBtnID).css("color", "-webkit-linear-gradient(to bottom, #0033dd, #396afc)");
+            $("#"+tempBtnID).css("color", "linear-gradient(to bottom, #0033dd, #396afc)");
         } 
         if(i%5==3)  /*pink*/
         {
             //button
-            $("#"+tempBtnID).css("background", "#834d9b");
-            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to top, #d04ed6, #834d9b)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to top, #d04ed6, #834d9b)");
+            $("#"+tempBtnID).css("color", "#834d9b");
+            $("#"+tempBtnID).css("color", "-webkit-linear-gradient(to top, #d04ed6, #834d9b)");
+            $("#"+tempBtnID).css("color", "linear-gradient(to top, #d04ed6, #834d9b)");
         }
         if(i%5==4)  /*orange*/  
         {
             //button
-            $("#"+tempBtnID).css("background", "#ffff00");
-            $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #ff9900, #ffff00)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #ff9900, #ffff00)"); 
+            $("#"+tempBtnID).css("color", "#F7971E");
+            $("#"+tempBtnID).css("color", " -webkit-linear-gradient(to right, #FFD200, #F7971E)");
+            $("#"+tempBtnID).css("color", "linear-gradient(to right, #FFD200, #F7971E)"); 
         }
     }
 

@@ -77,12 +77,10 @@ var clubhouseManagement = function()
 					'<div  class="col-md-4 text-center">'+
 						'<label id="selectCHLabel" for="clubBottunGroup_edcm" class="col-sm-2 controlLabel">בחר מועדונית</label>'+
 					'</div>'+
-					'<br>'+
-						'<div id = "clubBottunGroup_edcm" class="col-md-4 text-center">'+
-						
+						'<div id = "clubBottunGroup_edcm">'+
 						'</div>'+
 					'</p>'+
-					'<div class="form-group " id="buttons_area">'+
+					'<div class="form-group " id="buttons_area"></br>'+
 						'<button id ="editCHbtn" type="button" class="btn btn-primary btn-block btn-lg edit-button"  >ערוך פרטי מועדונית</button>'+
 						'<button id ="deleteCHbtn" type="button" class="btn-danger btn-danger btn-block btn-lg  delete-button"  >הסר מועדונית</button>'+
 					'</div>'+

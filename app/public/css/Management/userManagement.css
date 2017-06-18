@@ -18,13 +18,28 @@ width: 32% !important;
 
 #allTitles
 {
-    font-size: 30px;
-    color:rgba(255, 255, 255, 0.89);
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    font-size: 22px;
+    color: #ECE9E6;  /* fallback for old browsers */
+    color: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
+    color: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     text-shadow: 2px 3px 9px #000001 ;
     padding:0;
     margin:0;
 }
-
+#allTitles2
+{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    color: #ECE9E6;  /* fallback for old browsers */
+    color: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
+    color: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    text-shadow: 2px 3px 9px #000001 ;
+    padding:0;
+    margin:0;
+}
 #selectCHLabel
 {
   font-size: 20px;
