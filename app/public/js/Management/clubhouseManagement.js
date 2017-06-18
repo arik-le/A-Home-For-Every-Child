@@ -197,8 +197,6 @@ var clubhouseManagement = function()
 		});
 	}
 
-
-
 	var changeCHListener = function()
 	{
 		var obj={};
