@@ -507,7 +507,7 @@ var usersManagement = function()
 	var injectEditPage = function (user)
 	{
 		$('#body').html(UserPage.inputSection);
-		document.getElementById('allTitles').innerHTML ="עריכת/מחיקת משתמש";
+		document.getElementById('registerTitle').innerHTML ="עריכת/מחיקת משתמש";
 		$('#UserPName').val(user.firstName);
 		$('#UserLName').val(user.lastName);
 		$('#username').val(user.username);
@@ -630,13 +630,26 @@ var usersManagement = function()
 			}
 			var clubs = data.val();
 			var clubsKeys = Object.keys(clubs);
-
+			var count;
 			for(var i =0;i<clubsKeys.length;i++)
 			{
-				console.log("sdsd" + clubs[i]);
-				console.log("keys" + clubsKeys[i] );
+				var success = removeUserFromClubOnly(clubs[i]);
+				if(success == "true")
+					count++;
 			}
-		});
+			if(count == clubsKeys.length)
+				return "true";
+			else
+				return "false";
+		}).then(function(res)
+			{
+				if(res == "true")
+				{
+					firebase.database().ref("users/"+userToEdit.userKey).remove();
+					alert("המשתמש הוסר בהצלחה");
+					editUser();
+				}
+			});
 
 	}
 
@@ -660,6 +673,7 @@ var usersManagement = function()
 				if(userToEdit.userKey == users[keys[i]].userkey)
 				{
 					firebase.database().ref("clubhouse/"+clubKey+"/usersList").child(k).remove();
+					return "true";
 				}
 			}
 		});
