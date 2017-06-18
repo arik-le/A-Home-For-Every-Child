@@ -174,7 +174,7 @@ var inMassagePage=function()
 
     var incomingMessage={
         topic:'<div class="row">'+
-            '<h2 id = "inboxTitle">הודעות נכנסות</h2>'+
+            '<h2 id = "allTitles">הודעות נכנסות</h2></br>'+
         '</div>'
     }
 

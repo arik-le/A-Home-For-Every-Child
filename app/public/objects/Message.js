@@ -38,7 +38,7 @@ var Message=function()
         var myType = login.correntUser[0].userType;
             var message=
                 '<div class = "generalMessageBox" id="generalMessageBox_'+index+'">'+
-                    '<div class = "title">'+
+                    '<div class = "title" id="genTitle">'+
                         '<h6  dir="rtl">הודעה מאת:' + " " +login.getObj(m.source).username+'</h6>'+
                         '<label id="subjectGMS" dir="rtl">'+m.subject+'<label>'+
                     '</div>'+

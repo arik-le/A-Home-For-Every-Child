@@ -112,9 +112,8 @@ nav{
   padding-left:3%;
 	text-align:right;
 	border-bottom:1.2px solid #456879;
-  background: #1dc328;
-
   /*color:white;*/
+  background: lightgray;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }

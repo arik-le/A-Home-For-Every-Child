@@ -10,7 +10,7 @@ var sendMessagePage = function()
 	inputSection:
 	
 	'<div class="container">'+
-		'<h2 id = "royh2">כתיבת הודעה חדשה</h2>'+
+		'<h2 id = "allTitles">כתיבת הודעה חדשה</h2></br>'+
 	
 		'<div class="container">'+
 			'<div class = "mytabs">'+

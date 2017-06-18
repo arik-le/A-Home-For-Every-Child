@@ -202,23 +202,19 @@ var mainPage=function()
         paintButton(j,tempBtnID);
 
         $("#"+tempBtnID).click(function(e)
-        {
-            $("#loader").css("display", "inline-block");
-            setTimeout(function()
-            { 
+        {  
             var id=e.target.id;
             id=id.substring(4,id.length);  
-                firebase.database().ref("clubhouse/").once("value")
-                .then(function(data)
-                { 
-                    var clubs = data.val();
-                    var keys = Object.keys(clubs); 
-                    $("#body").html("");
+            firebase.database().ref("clubhouse/").once("value")
+            .then(function(data)
+            { 
+                var clubs = data.val();
+                var keys = Object.keys(clubs); 
+                $("#body").html("");
 
-                    login.correntClub[0]=keys[id];
-                    loadHomePage(keys[id]); 
-                });
-            }, 1000);
+                login.correntClub[0]=keys[id];
+                loadHomePage(keys[id]); 
+            });
         });
     }
 
@@ -238,11 +234,14 @@ var mainPage=function()
         firebase.database().ref("clubhouse/" + curClubKey + "/generalMessages").once("value")
         .then(function(data)
         {
+            $("#mesBody").html("");
+
             var EVERYONE = 2;
             var messages = data.val();
-            if (messages !== null)
+            if(messages==null)
+                $("#mesBody").append("<h1 id='allTitles' dir='rtl'>אין הודעות חדשות...<h1>");
+            else
             {
-                $("#mesBody").html("");
                 var keys = Object.keys(messages);
                 for(var i=keys.length-1;i>=0;i--)
                 {    
@@ -259,6 +258,7 @@ var mainPage=function()
                     }
                 }
             }
+            
         });
     }
 
@@ -268,35 +268,40 @@ var mainPage=function()
     {        
         if(i%5==0) /*red*/
         {
+            //button
             $("#"+tempBtnID).css("background", "#D31027");
             $("#"+tempBtnID).css("background", " -webkit-linear-gradient(to top, #EA384D, #D31027)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to top, #EA384D, #D31027)");     
+            $("#"+tempBtnID).css("background", "linear-gradient(to top, #EA384D, #D31027)");
         }
         if(i%5==1)  /*green*/ 
         {
+            //button
             $("#"+tempBtnID).css("background", "#33cc00");
             $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #339933  ,#33cc00)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #339933, #33cc00)"); 
+            $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #339933, #33cc00)");
         }
         if(i%5==2)  /*blue*/ 
         {
+            //button
             $("#"+tempBtnID).css("background", "#396afc");
             $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #0033dd, #396afc)");
             $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #0033dd, #396afc)");
         } 
         if(i%5==3)  /*pink*/
         {
+            //button
             $("#"+tempBtnID).css("background", "#834d9b");
             $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to top, #d04ed6, #834d9b)");
-            $("#"+tempBtnID).css("background", "linear-gradient(to top, #d04ed6, #834d9b)"); 
+            $("#"+tempBtnID).css("background", "linear-gradient(to top, #d04ed6, #834d9b)");
         }
         if(i%5==4)  /*orange*/  
         {
+            //button
             $("#"+tempBtnID).css("background", "#ffff00");
             $("#"+tempBtnID).css("background", "-webkit-linear-gradient(to bottom, #ff9900, #ffff00)");
             $("#"+tempBtnID).css("background", "linear-gradient(to bottom, #ff9900, #ffff00)"); 
         }
-     }
+    }
 
 /***********************************************************************************/
 
