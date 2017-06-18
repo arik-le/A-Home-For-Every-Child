@@ -3,6 +3,7 @@ var usersManagement = function()
 	const FAIL = -1;
 	const ADDPAGE = 1;
 	const EDITPAGE = 2;
+	const OS_TYPE = 3;
 	var clubhousesInfo = []; // key and name
 
 	var page;
@@ -487,7 +488,7 @@ var usersManagement = function()
 	{
 		if(!userKey)
 		{
-			alert('Keyerr '+userKey);
+			alert('key Error: '+userKey);
 			return;
 		}
 		// get the user object
@@ -498,7 +499,7 @@ var usersManagement = function()
 			if(user)
 			{
 				userToEdit = user;
-				injectEditPage(user)
+				injectEditPage(user);
 			}
 		});	
 	}
@@ -525,7 +526,7 @@ var usersManagement = function()
 		$('#clubhouse_select_Add').val(tempIndex);
 		$('#buttons_area').html(EditUserButtons.inputSection);
 		$('#change-button').click(changeUserInfo);
-		$('#delete-button').click(deleteUser);
+		$('#delete-button').click(function(){ deleteUser(user.userType) });
 	}
 
 	var changeUserInfo = function()
@@ -576,40 +577,67 @@ var usersManagement = function()
 
 	}
 
-	var deleteUser = function()
+	var deleteUser = function(uType)
 	{
-		var clubKey = clubhousesInfo[clubIndex_Edit].key; 
-		firebase.database().ref("clubhouse/"+clubKey+"/usersList").once("value")
+		if(uType == OS_TYPE)
+			deleteUserInCH();
+		else
+		{
+			var clubKey = clubhousesInfo[clubIndex_Edit].key; 
+			firebase.database().ref("clubhouse/"+clubKey+"/usersList").once("value")
+			.then(function(data)
+			{
+				if (data.val() == null)
+				{
+					alert("לא נמצאו משתמשים להציג ");
+					return;
+				}
+				var users = data.val();   // get the whole tree of clubhouses
+				var keys = Object.keys(users);	// get all keys
+					
+				for(var i =0; i<keys.length;i++)
+				{
+					var key = users[keys[i]].userkey;
+					var k = keys[i];
+					if(userToEdit.userKey == users[keys[i]].userkey)
+					{
+						firebase.database().ref("clubhouse/"+clubKey+"/usersList").child(k).remove();
+						return "true";
+					}
+				}
+				return ("false")
+			}).then(function(res)
+			{
+				if(res == "true")
+				{
+					firebase.database().ref("users/"+userToEdit.userKey).remove();
+					alert("המשתמש הוסר בהצלחה");
+					editUser();
+				}
+			});
+		}	
+	}
+
+	var deleteUserInCH = function()
+	{
+		firebase.database().ref("users/"+userToEdit.userKey+"/clubhouseKey").once("value")
 		.then(function(data)
 		{
 			if (data.val() == null)
 			{
-				alert("לא נמצאו משתמשים להציג ");
+				alert("לא נמצאו מועדוניות להציג ");
 				return;
 			}
-			var users = data.val();   // get the whole tree of clubhouses
-			var keys = Object.keys(users);	// get all keys
-				
-			for(var i =0; i<keys.length;i++)
+			var clubs = data.val();
+			var clubsKeys = Object.keys(clubs);
+
+			for(var i =0;i<clubsKeys.length;i++)
 			{
-				var key = users[keys[i]].userkey;
-				var k = keys[i];
-				if(userToEdit.userKey == users[keys[i]].userkey)
-				{
-					firebase.database().ref("clubhouse/"+clubKey+"/usersList").child(k).remove();
-					return "true";
-				}
-			}
-			return ("false")
-		}).then(function(res)
-		{
-			if(res == "true")
-			{
-				firebase.database().ref("users/"+userToEdit.userKey).remove();
-				alert("המשתמש הוסר בהצלחה");
-				editUser();
+				console.log("sdsd" + clubs[i]);
+				console.log("keys" + clubsKeys[i] );
 			}
 		});
+
 	}
 
 	var removeUserFromClubOnly = function(clubKey)
