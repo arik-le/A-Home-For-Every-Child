@@ -14,9 +14,10 @@ var mainPage=function()
                 '<div>'+ 
             '</div>'
     }
-    var nav={
+    var createNavbar = function(){
 
-        inputSection:
+        var myType = login.correntUser[0].userType;
+        var str = 
         '<nav class="navbar navbar-default">'+
 			'<div class="container-fluid">'+
 				'<div class="navbar-header">'+
@@ -42,20 +43,27 @@ var mainPage=function()
 								'<li><a id="outMessage_btn">דואר יוצא</a></li>'+
 								'<li role="separator" class="divider"></li>'+
 							'</ul>'+
-						'</li>'+
-						'<li role="separator" class="divider"></li>'+
+						'</li>';
+                        if(myType < User.GUIDE)
+                            str+='<li><a id="temp0">שליחת טפסים</a></li>';
+                        else if(myType >= User.GUIDE && myType !=User.ADMIN)
+                        	str+='<li><a id="temp1">טפסי מועדונית</a></li>';
+                        else
+                        {
+						str+='<li role="separator" class="divider"></li>'+
                         '<li class="dropdown">'+
 							'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">טפסים <span class="caret"></span></a>'+
                             '<ul class="dropdown-menu">'+
-								'<li><a id="temp1">יצירת טופס</a></li>'+
-								'<li><a id="temp2">מילוי טופס</a></li>'+
-								'<li><a id="temp3">קריאת נתונים</a></li>'+
+								'<li><a id="temp2">יצירת טופס</a></li>'+
+								'<li><a id="temp1">טפסי מועדוניות</a></li>'+
 								'<li role="separator" class="divider"></li>'+
 							'</ul>'+
-                        '</li>'+
-                        '<li class="dropdown">'+
+                        '</li>';
+                        }
+                        if(myType == User.ADMIN)
+                        {
+                        str+='<li class="dropdown">'+
 							'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ניהול משתמשים <span class="caret"></span></a>'+
-						
 							'<ul class="dropdown-menu">'+
 								'<li><a id="addUser_btn">הוספת משתמשים</a></li>'+
 								'<li><a id="btnEditUser">עריכת משתמשים</a></li>'+
@@ -64,9 +72,10 @@ var mainPage=function()
 								'<li role="separator" class="divider"></li>'+
 							'</ul>'+
 						'</li>'+
-                        '<li role="separator" class="divider"></li>'+
-                    '<li><a id="userManual_btn">מדריך עזרה למשתמש<span class="sr-only">(current)</span></a></li>'+
-					'<li><a id="aboutUs_btn">אודות<span class="sr-only">(current)</span></a></li>'+
+                        '<li role="separator" class="divider"></li>';
+                        }
+                
+					str +='<li><a id="aboutUs_btn">אודות<span class="sr-only">(current)</span></a></li>'+
                     '</ul>'+
 					'<ul class="nav navbar-nav navbar-right">'+
 						'<li><a id="logout1">התנתק מהמערכת</a></li>'+
@@ -74,7 +83,8 @@ var mainPage=function()
 				'</div>'+
 			'</div>'+
 		'</nav>'+
-        '<div id="body"></div>'
+        '<div id="body"></div>';
+        return str;
     }
 
 /***********************************************************************************/
@@ -82,8 +92,11 @@ var mainPage=function()
     var openMainPage=function(user) // user is a copy of the original user 
     {
         correntUser[0] = user;
-        var context = topHeader.inputSection+nav.inputSection;
-        $("body").html(context);
+        var header = topHeader.inputSection;
+        var addNavbar = createNavbar();
+
+        $("body").html(header+addNavbar);
+
         $("#userName_lbl").html(correntUser[0].firstName);
 
         $("#homePage").click(function(){
@@ -184,7 +197,8 @@ var mainPage=function()
         '<a id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
         '<i class="fa fa-home fa-2x"></i><br/> ' +c[k[i]].name + '</a>';
         $("#body").append(btnInput);
-        paintButton(j);
+        var tempBtnID = 'btn_'+j;
+        paintButton(j,tempBtnID);
 
         $("#"+tempBtnID).click(function(e)
         {
@@ -249,9 +263,8 @@ var mainPage=function()
 
 /***********************************************************************************/
 
-    var paintButton = function(i)
+    var paintButton = function(i,tempBtnID)
     {        
-        var tempBtnID = 'btn_'+i;
         if(i%5==0) /*red*/
         {
             $("#"+tempBtnID).css("background", "#D31027");
@@ -294,5 +307,5 @@ var mainPage=function()
             return;
      }
     return {openMainPage:openMainPage, correntUser:correntUser,
-    loadHomePage:loadHomePage}
+    loadHomePage:loadHomePage,paintButton:paintButton}
 }();

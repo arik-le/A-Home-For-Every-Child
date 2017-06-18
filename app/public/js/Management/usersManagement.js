@@ -686,19 +686,15 @@ var usersManagement = function()
 				if (page == EDITPAGE)
 				{
 					var tempBtnID = 'btn'+i;
-					// var btnInput = '<button id = '+tempBtnID+' type="button" class="btn btn-default">'+
-					// 				'<span class="glyphicon glyphicon-home"></span> '+tempName+
-					// 			'</button>';
-					
 					var btnInput = 
-					'<a href="#" id="'+tempBtnID+'" class="btn btn-sq-sm btn-success">'+
+					'<a href="#" id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
 					'<i class="fa fa-home fa-2x"></i><br/> '
 					+tempName+
 					'</a>';
-					if ( i%3 == 2 && i>1 )
-						btnInput += '</p>';
+
 					$('#clubBottunGroup').append(btnInput);
 					$('#'+tempBtnID).click(EditClubselectValue);
+					mainPage.paintButton(i,tempBtnID);
 				}
 				if (page == ADDPAGE)
 					$('#clubhouse_select_Add').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');

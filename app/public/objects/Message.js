@@ -51,14 +51,14 @@ var Message=function()
                     '<div class="messageFooter">'+
                         '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>';
                     if(myType>=User.GUIDE)      //admin ,social ,guide
-                        {
-                            message+= '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
-                            '<label id="subjectGMS">מחק הודעה <label>'+
-                                '<span class="glyphicon glyphicon-trash"></span> ';
-                        }
-                        message+= '</div>'+
-                            '</div>'+
-                    '</div></p>'
+                    {
+                        message+= '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
+                        '<label id="subjectGMS">מחק הודעה <label>'+
+                            '<span class="glyphicon glyphicon-trash"></span> ';
+                    }
+                    message+= '</div>'+
+                        '</div>'+
+                '</div></p>'
                 }
                 else{
                      message+='</div>'+
