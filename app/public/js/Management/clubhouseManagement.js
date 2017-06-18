@@ -188,7 +188,7 @@ var clubhouseManagement = function()
 			// inject html and set listener for edit page
 			$('.Nav').collapse('hide');
 			$("#body").html(addClubhousePage.inputSection); 
-			document.getElementById('titleCH').innerHTML ="עריכת מועדונית"; // change top title
+			document.getElementById('allTitles').innerHTML ="עריכת מועדונית"; // change top title
 			// set inputs
 			$('#clubhouseAddrID').val(data.val().address);
 			$('#clubhouseNameID').val(data.val().name);

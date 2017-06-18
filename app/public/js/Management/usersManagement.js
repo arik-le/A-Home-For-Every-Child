@@ -507,7 +507,7 @@ var usersManagement = function()
 	var injectEditPage = function (user)
 	{
 		$('#body').html(UserPage.inputSection);
-		document.getElementById('registerTitle').innerHTML ="עריכת/מחיקת משתמש";
+		document.getElementById('allTitles').innerHTML ="עריכת/מחיקת משתמש";
 		$('#UserPName').val(user.firstName);
 		$('#UserLName').val(user.lastName);
 		$('#username').val(user.username);
