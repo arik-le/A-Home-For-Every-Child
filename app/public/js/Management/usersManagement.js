@@ -192,9 +192,9 @@ var usersManagement = function()
             return;
         }
 
-		// var res = inputsValidation({firstName:firstName,lastName:lastName,username:username,password:sPassword});
-		// if (!res)
-		// 	return;
+		 var res = inputsValidation({firstName:firstName,lastName:lastName,username:username,password:sPassword});
+		 if (!res)
+		 	return;
         // selecting the clubhouse
 		var e;
         e=document.getElementById("userType");
@@ -250,7 +250,6 @@ var usersManagement = function()
 		var usernameRegex  = /^\w+(\-+(\w)*)*$/;
 		// var namesRegex = /^[[(א-ת)]+$/|/^[(a-zA-Z)]]+$/;
 		var spacesRegex = /\s/;
-
 		if (args.firstName == "" || args.lastName == "" || args.username == "")
 		{
 			alert("אנא מלא את כל השדות הנדרשים");
@@ -258,7 +257,7 @@ var usersManagement = function()
 		}
 		if(!usernameRegex.test(args.username))
 		{
-			alert("שם המשתמש שהוזן אינו חוקי");
+			alert("יש לבחור שם משתמש המורכב ממספרים ואותיות בלבד");
 			return false;
 		}
 		
@@ -272,6 +271,7 @@ var usersManagement = function()
 			alert("שם משפחה שהוזן אינו חוקי");
 			return false;
 		}
+		
 		if(args.password.length<4 || args.password.length>10)
 		{
 			alert("נא להזין סיסמא באורך בין 4-10 תווים");
@@ -293,7 +293,7 @@ var usersManagement = function()
 			var allUsers = data.val();   // get the whole tree of users
 			var keys = Object.keys(allUsers);	// get all keys
 			
-			// loop on the answere array to find user name.
+			// loop on the answer array to find user name.
 			var temp = false;
 			for(var i =0; i<keys.length;i++)
 			{
@@ -522,7 +522,7 @@ var usersManagement = function()
 				tempIndex = i;
 			$('#clubhouse_select_Add').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
 		}
-
+		document.getElementById("userType").disabled = true;  //disable option for changing user-type
 		$('#clubhouse_select_Add').val(tempIndex);
 		$('#buttons_area').html(EditUserButtons.inputSection);
 		$('#change-button').click(changeUserInfo);
@@ -579,7 +579,7 @@ var usersManagement = function()
 
 	var deleteUser = function(uType)
 	{
-		if(uType == OS_TYPE)
+		if(uType == OS_TYPE)    //if the user is Social worker - then it delete him from several clubhouses
 			deleteUserInCH();
 		else
 		{
@@ -628,19 +628,14 @@ var usersManagement = function()
 				alert("לא נמצאו מועדוניות להציג ");
 				return;
 			}
-			var clubs = data.val();
-			var clubsKeys = Object.keys(clubs);
-			var count;
-			for(var i =0;i<clubsKeys.length;i++)
-			{
-				var success = removeUserFromClubOnly(clubs[i]);
-				if(success == "true")
-					count++;
-			}
-			if(count == clubsKeys.length)
-				return "true";
-			else
-				return "false";
+			var clubs = data.val();   //all clubhouses that the user is in there
+			var clubsKeys = Object.keys(clubs);  //all keys of clubhouses
+
+			for(var i =0;i<clubsKeys.length;i++)  
+				removeUserFromClubOnly(clubs[i]);   //delete user from clubhouse userslist
+
+			return "true";
+			
 		}).then(function(res)
 			{
 				if(res == "true")
@@ -673,7 +668,6 @@ var usersManagement = function()
 				if(userToEdit.userKey == users[keys[i]].userkey)
 				{
 					firebase.database().ref("clubhouse/"+clubKey+"/usersList").child(k).remove();
-					return "true";
 				}
 			}
 		});
