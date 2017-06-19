@@ -1,8 +1,19 @@
 var inMassagePage=function()
+{   
+    //-------------------------------------------------------------------------------------------------
+    var getDate=function(message)
     {
+        var date=new Date(message.date);
+        var d=date.getDate();
+        var m=date.getMonth()+1;
+        var y=date.getFullYear();
+        return d+"/"+m+"/"+y;
+    }
+    //-------------------------------------------------------------------------------------------------
     var flags={sendMassageIsOn:false};
-
-        var TypeMassage={
+    //-------------------------------------------------------------------------------------------------
+        var TypeMassage=
+        {
             inputSection:
                 '<div class="container">'+
                     '<button type="button" id="btnGenMas" class="btn btn-secondry btn-lg +">ודעה כלליתn</button>'+
@@ -10,7 +21,7 @@ var inMassagePage=function()
                 '</div>'
         }
 
-        
+    //-------------------------------------------------------------------------------------------------    
         var createMassage=function(obj,messageID,isInBox)
         {
             var str='<div class="row massage" id="message_'+messageID+'">'+             
@@ -34,7 +45,7 @@ var inMassagePage=function()
                         {
                             str+='<h5"> :מאת</h5>'+
                                 '<div class = "subject">';
-                                    if(login.getObj(obj.source)!=undefined)
+                                    if(login.getObj(obj.source)!==undefined)
                                         str+='<textarea disabled dir="rtl"">'+login.getObj(obj.source).firstName+'</textarea>'
                                     else
                                         str+='<textarea disabled dir="rtl"">אורח - משתמש אינו קיים במערכת</textarea>'
@@ -65,53 +76,37 @@ var inMassagePage=function()
            
             return str;
         }
-    var getDate=function(message)
-    {
-        var date=new Date(message.date);
-        var d=date.getDate();
-        var m=date.getMonth()+1;
-        var y=date.getFullYear();
-        return d+"/"+m+"/"+y;
-    }
+
+
+  
 //-------------------------------------------------------------------------------------------------
 
-    var initPage=function()
-    {
-        $(".sendMsg").click (mesgFunc());
-    }
+     var openSendMassage=function()
+     {
+        var myType = login.correntUser[0].userType;
+        $('.NAV').collapse('hide');
+        $("#body").html(sendMessagePage.msgPage.inputSection);
+        if(myType===User.GUIDE)
+        {
+            $("#clubHouseGM").remove();
+            $("#clubHouseSM").remove();
+        }
+        if(myType === User.PARENT || myType === User.TEACHER)
+        {
+            $("#clubHouseSM").remove();
+            $(".mytabs").remove();
+            $("#generalMessage").remove();
+        }
+        uploadImage.init();
+        sendMessagePage.updateUserList();   //check if needed
+        sendMessagePage.updateClubList();
+        $("#sendButtonPM").click(sendMessagePage.sendPriMessage);
+        $("#cleanButtonPM").click(sendMessagePage.clearValue);
+        $("#sendButtonGM").click(sendMessagePage.sendGenMessage);
+        $("#cleanButtonGM").click(sendMessagePage.clearValue);
 
-//-------------------------------------------------------------------------------------------------
-   
-    var readMessage=function(id)
-    {
-        var me = login.correntUser[1];
-        firebase.database().ref("users/" + me + "/inboxMessages").once("value")
-        .then(function(data)
-        {
-            var messages = data.val();
-            var keys = Object.keys(messages);
-            var i=keys[id];
-            firebase.database().ref("users/" + me + "/inboxMessages/"+i+"/isRead").set(true);
-        });
-        $("#enve"+id).removeClass("envelopeN");
-        $("#enve"+id).addClass("envelopeR");
-    }
-    var addMessage=function(msg,messageID,key,isInBox)
-    {
-        var topic=msg.subject;
-        $("#body").append(createMassage(msg,messageID,isInBox));
-        $("#topic"+messageID).click(function()
-        {
-            readMessage(messageID);
-        });
-        $("#topic"+messageID).append(topic);
-        $("#trash_"+messageID).click(function()
-        {
-            var idName=event.target.id;
-            idName=idName.substring(6,idName.length);
-            removeMassage(idName,key,isInBox);
-        });
-    }
+        $("#userList").val("");
+     }
 
 //-------------------------------------------------------------------------------------------------
 
@@ -131,52 +126,25 @@ var inMassagePage=function()
          }
      }
 
-//-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------    
 
-     var openSendMassage=function()
-     {
-        var myType = login.correntUser[0].userType;
-        $('.NAV').collapse('hide');
-        $("#body").html(sendMessagePage.msgPage.inputSection);
-        if(myType==User.GUIDE)
+    var addMessage=function(msg,messageID,key,isInBox)
+    {
+        var topic=msg.subject;
+        $("#body").append(createMassage(msg,messageID,isInBox));
+        $("#topic"+messageID).click(function()
         {
-            $("#clubHouseGM").remove();
-            $("#clubHouseSM").remove();
-        }
-        if(myType == User.PARENT || myType == User.TEACHER)
+            readMessage(messageID);
+        });
+        $("#topic"+messageID).append(topic);
+        $("#trash_"+messageID).click(function()
         {
-            $("#clubHouseSM").remove();
-            $(".mytabs").remove();
-            $("#generalMessage").remove();
-        }
-        uploadImage.init();
-        sendMessagePage.updateUserList();   //check if needed
-        sendMessagePage.updateClubList();
-        $("#sendButtonPM").click(sendMessagePage.sendPriMessage);
-        $("#cleanButtonPM").click(sendMessagePage.clearValue);
-        $("#sendButtonGM").click(sendMessagePage.sendGenMessage);
-        $("#cleanButtonGM").click(sendMessagePage.clearValue);
-
-        $("#userList").val("");
-     }
-
-//-------------------------------------------------------------------------------------------------
-
-     var mesgFunc = function()
-     {
-         $("#sendMsg").click(openSendMassage);        //open all categories in message
-         $("#incomingMes").click(openInBoxMes);
-         flags.sendMassageIsOn=false;
-     }
-     
-//-------------------------------------------------------------------------------------------------
-
-    var incomingMessage={
-        topic:'<div class="row">'+
-            '<h2 id = "allTitles">הודעות נכנסות</h2></br>'+
-        '</div>'
+            var idName=event.target.id;
+            idName=idName.substring(6,idName.length);
+            removeMassage(idName,key,isInBox);
+        });
     }
-
+     
 //-------------------------------------------------------------------------------------------------
 
     var openInBoxMes=function()
@@ -200,7 +168,53 @@ var inMassagePage=function()
         });
     }
   
+   
+      
 //-------------------------------------------------------------------------------------------------
+
+     var mesgFunc = function()
+     {
+         $("#sendMsg").click(openSendMassage);        //open all categories in message
+         $("#incomingMes").click(openInBoxMes);
+         flags.sendMassageIsOn=false;
+     }
+     
+
+//-------------------------------------------------------------------------------------------------
+
+    var initPage=function()
+    {
+        $(".sendMsg").click (mesgFunc());
+    }
+
+
+//-------------------------------------------------------------------------------------------------
+    var readMessage=function(id)
+    {
+        var me = login.correntUser[1];
+        firebase.database().ref("users/" + me + "/inboxMessages").once("value")
+        .then(function(data)
+        {
+            var messages = data.val();
+            var keys = Object.keys(messages);
+            var i=keys[id];
+            firebase.database().ref("users/" + me + "/inboxMessages/"+i+"/isRead").set(true);
+        });
+        $("#enve"+id).removeClass("envelopeN");
+        $("#enve"+id).addClass("envelopeR");
+    }
+
+
+    //-------------------------------------------------------------------------------------------------
+
+    var incomingMessage=
+    {
+        topic:'<div class="row">'+
+            '<h2 id = "allTitles">הודעות נכנסות</h2></br>'+
+        '</div>'
+    }
+
+    //-------------------------------------------------------------------------------------------------
 
      return{addMessage:addMessage,
             initPage:initPage,

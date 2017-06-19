@@ -88,28 +88,7 @@ var clubhouseManagement = function()
         }
 
     
-    //-------------------------------------------------------------------------------------------------
-    // Initial page for add clubHouse
-	 var addClubhouse = function ()
-	 {
-		page = ADDPAGE;
-		$('.Nav').collapse('hide');
-		$("#body").html(addClubhousePage.inputSection); // opens page 
-		$('#buttonSection').html(addClubhouseBtn.inputSection);
-		$("#addClubhouseBtn").click(addClubhouseListener);
-	 }
-	 //-------------------------------------------------------------------------------------------------
-    // Initial page for edit clubHouse
-	 var editClubhouse = function()
-	 {
-		page = EDITPAGE;
-		loadClubhousesData();
-		$('.Nav').collapse('hide');
-		$("#body").html(EditClubhousePage.inputSection);
-        $("#editCHbtn").click(EditCluhouseListener);
-		$('#deleteCHbtn').click(removeCHlistener);
-	 }
-
+    
 
 	//////////////////////////////////////////////////////////////////////////
 	// 					ADD CLUBHOUSE										//
@@ -135,7 +114,7 @@ var clubhouseManagement = function()
 				var k = keys[i];
 				var tempName = allClubhouses[k].name;
 					
-				if( tempName == nameArg )
+				if( tempName === nameArg )
 					return true;
 			}
 			return false;
@@ -411,6 +390,29 @@ var clubhouseManagement = function()
 	{
 		return{ clubhousesInfo:clubhousesInfo} ;  
 	}
+
+	//-------------------------------------------------------------------------------------------------
+    // Initial page for add clubHouse
+	 var addClubhouse = function ()
+	 {
+		page = ADDPAGE;
+		$('.Nav').collapse('hide');
+		$("#body").html(addClubhousePage.inputSection); // opens page 
+		$('#buttonSection').html(addClubhouseBtn.inputSection);
+		$("#addClubhouseBtn").click(addClubhouseListener);
+	 }
+	 //-------------------------------------------------------------------------------------------------
+    // Initial page for edit clubHouse
+	 var editClubhouse = function()
+	 {
+		page = EDITPAGE;
+		loadClubhousesData();
+		$('.Nav').collapse('hide');
+		$("#body").html(EditClubhousePage.inputSection);
+        $("#editCHbtn").click(EditCluhouseListener);
+		$('#deleteCHbtn').click(removeCHlistener);
+	 }
+	 //-------------------------------------------------------------------------------------------------
 	
 
     return{getClubhousesInfo:getClubhousesInfo  , addClubhouse:addClubhouse , editClubhouse:editClubhouse};
