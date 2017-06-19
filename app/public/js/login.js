@@ -17,8 +17,8 @@ var login=function()
 						"<img src ='images/pictureLogo.jpg' width='200' height='110'/>"+
 						"<input  id='username' type='text' placeholder='הכנס שם משתמש'/>"+
 						"<input  id='password' type='password' placeholder='הכנס סיסמה'/>"+
-						"<label id ='forgotPass'>שכחתי סיסמה</label>"+
-						"<button id = 'cmdLogin' >התחבר</button></br>"+
+						"<button id = 'cmdLogin' >התחבר</button>"+
+						"</p><label id ='forgotPass'>שכחתי סיסמה</label>"+
 						"<img id='loader' src='images/homepreloader.gif'/ width ='40%'>"+
 					"</div>"+
 				"</div>"+
@@ -34,6 +34,7 @@ var login=function()
 		stateMap.$container = $container;
 		$("body").html(connectionPage.inputSection);
 		$("#cmdLogin").click(loginClick);
+		$("#forgotPass").click(sendPassByEmail);
 	};
 		
 //---------------------------------------------------------------------------------------------------//
@@ -123,6 +124,25 @@ var login=function()
 
 //---------------------------------------------------------------------------------------------------//	
    	
+	var sendPassByEmail = function()
+	{
+		var txt;
+		var email = document.getElementById("username").value;
+		var fillEmail = prompt("Please enter your EmailAddress:",email );
+		if (fillEmail == null || fillEmail == "") 
+		{
+			alert("נא להזין כתובת מייל");
+		} else 
+		{
+			var auth = firebase.auth();
+			auth.sendPasswordResetEmail(fillEmail).then(function() {
+				alert("פעולה הושלמה - בעוד מספר דקות ישלח אליך מייל לשחזור הסיסמה");
+			}, function(error) {
+				alert("מייל זה לא נמצא במערכת");
+			});
+		}	
+	}
+
 return { initModule : initModule,
 		 usersAndKeys:usersAndKeys,
 		 correntUser:correntUser,
