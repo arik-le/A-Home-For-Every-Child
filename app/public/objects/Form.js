@@ -8,7 +8,7 @@ var Form=function()
    
     var allQ=function(q)
     {
-        if(q!=undefined)
+        if(q!==undefined)
         {
             $(".listQue").html("");
             for(var i=0;i<q.length;i++)

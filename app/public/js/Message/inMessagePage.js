@@ -1,8 +1,18 @@
 var inMassagePage=function()
+{
+    var getDate=function(message)
     {
+        var date=new Date(message.date);
+        var d=date.getDate();
+        var m=date.getMonth()+1;
+        var y=date.getFullYear();
+        return d+"/"+m+"/"+y;
+    }
+
     var flags={sendMassageIsOn:false};
 
-        var TypeMassage={
+        var TypeMassage=
+        {
             inputSection:
                 '<div class="container">'+
                     '<button type="button" id="btnGenMas" class="btn btn-secondry btn-lg +">ודעה כלליתn</button>'+
@@ -65,14 +75,16 @@ var inMassagePage=function()
            
             return str;
         }
-    var getDate=function(message)
-    {
-        var date=new Date(message.date);
-        var d=date.getDate();
-        var m=date.getMonth()+1;
-        var y=date.getFullYear();
-        return d+"/"+m+"/"+y;
-    }
+ //-------------------------------------------------------------------------------------------------
+
+     var mesgFunc = function()
+     {
+         $("#sendMsg").click(openSendMassage);        //open all categories in message
+         $("#incomingMes").click(openInBoxMes);
+         flags.sendMassageIsOn=false;
+     }
+     
+
 //-------------------------------------------------------------------------------------------------
 
     var initPage=function()
@@ -138,12 +150,12 @@ var inMassagePage=function()
         var myType = login.correntUser[0].userType;
         $('.NAV').collapse('hide');
         $("#body").html(sendMessagePage.msgPage.inputSection);
-        if(myType==User.GUIDE)
+        if(myType===User.GUIDE)
         {
             $("#clubHouseGM").remove();
             $("#clubHouseSM").remove();
         }
-        if(myType == User.PARENT || myType == User.TEACHER)
+        if(myType === User.PARENT || myType === User.TEACHER)
         {
             $("#clubHouseSM").remove();
             $(".mytabs").remove();
@@ -160,15 +172,6 @@ var inMassagePage=function()
         $("#userList").val("");
      }
 
-//-------------------------------------------------------------------------------------------------
-
-     var mesgFunc = function()
-     {
-         $("#sendMsg").click(openSendMassage);        //open all categories in message
-         $("#incomingMes").click(openInBoxMes);
-         flags.sendMassageIsOn=false;
-     }
-     
 //-------------------------------------------------------------------------------------------------
 
     var incomingMessage={

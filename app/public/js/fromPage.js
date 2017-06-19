@@ -6,6 +6,22 @@ var fromPage=function()
                   '<span class="glyphicon glyphicon-plus"></span>'+ 
                 '</a>';
     var finsh_btn='<a href="#" class="btn btn-info btn-lg " id="finsh_btn">סיום</a>';
+//================================================================================================
+    var createForm=function()
+    {
+        var sub=document.getElementById("formSubject").value;
+        var new_form=Form.create(sub);
+        corForm = firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').push(new_form);
+        var str='<h1>'+sub+'</h1>'+
+                '<div class="listQue"></div>'+plus_btn+finsh_btn;
+
+        Form.allQ(corForm.key);
+        $("#body").html(str);
+        $("#plus_btn").click(addQuestionPage);
+        $("#finsh_btn").click(finish);
+        
+    }
+//================================================================================================
     var create=function()
     {
         $('.NAV').collapse('hide');
@@ -22,25 +38,12 @@ var fromPage=function()
         $("#body").html(str);
         $("#createForm_btn").click(createForm);
     }
+//================================================================================================
     var p=function(s)
     {
         console.log(s);
     }
-    var createForm=function()
-    {
-        var sub=document.getElementById("formSubject").value;
-        var new_form=Form.create(sub);
-        corForm = firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').push(new_form);
-        var str='<h1>'+sub+'</h1>'+
-                '<div class="listQue"></div>'+plus_btn+finsh_btn;
-             
-
-        Form.allQ(corForm.key);
-        $("#body").html(str);
-        $("#plus_btn").click(addQuestionPage);
-        $("#finsh_btn").click(finish);
-        
-    }
+//================================================================================================
     var addQuestionPage=function()
     {
         $("#plus_btn").remove();
@@ -57,12 +60,14 @@ var fromPage=function()
         $(".listQue").append(str);
         $("#addQuestion_btn").click(addQuestion);
     }
+//================================================================================================
     var finish=function()
     {
         firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+corForm.key+'/questions').set(questions);
         alert("טופס הוזן בהצלחה");
         create();
     }
+//================================================================================================
     var addQuestion=function()
     {
 
@@ -77,6 +82,8 @@ var fromPage=function()
        $("#plus_btn").click(addQuestionPage);
        // p(corForm.key);
     }
+//================================================================================================
+    
     return {
         create:create
     }

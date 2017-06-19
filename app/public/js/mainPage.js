@@ -89,6 +89,44 @@ var mainPage=function()
 
 /***********************************************************************************/
 
+    var unReadMess=function()
+    {
+        var me = login.correntUser[1];        
+        firebase.database().ref("users/" + me + "/inboxMessages").once("value")
+        .then(function(data)
+        {
+            var messages = data.val();
+            if (messages !== null)
+            {
+                var count=0;
+                var keys = Object.keys(messages);
+                for(var i=keys.length-1;i>=0;i--)
+                    if(!messages[keys[i]].isRead)
+                        count++;
+                if(count>0)
+                     $("#incomingMessage_btn").html("("+count+")"+"דואר נכנס");
+                else
+                     $("#incomingMessage_btn").html("דואר נכנס");
+			}
+        });
+       
+    }
+/***********************************************************************************/
+
+    var loadGeneralMessages = function()
+    {
+        var myType = login.correntUser[0].userType;
+        if(myType == User.ADMIN || myType == User.SOCIAL)
+            loadAllClubs();
+        else
+        {
+            $("#body").html("");
+            loadHomePage();
+        }
+    }
+
+/***********************************************************************************/
+
     var openMainPage=function(user) // user is a copy of the original user 
     {
         correntUser[0] = user;
@@ -120,44 +158,7 @@ var mainPage=function()
         $("#logout1").click(logout);
     }
 
-/***********************************************************************************/
 
-    var unReadMess=function()
-    {
-        var me = login.correntUser[1];        
-        firebase.database().ref("users/" + me + "/inboxMessages").once("value")
-        .then(function(data)
-        {
-            var messages = data.val();
-            if (messages !== null)
-            {
-                var count=0;
-                var keys = Object.keys(messages);
-                for(var i=keys.length-1;i>=0;i--)
-                    if(!messages[keys[i]].isRead)
-                        count++;
-                if(count>0)
-                     $("#incomingMessage_btn").html("("+count+")"+"דואר נכנס");
-                else
-                     $("#incomingMessage_btn").html("דואר נכנס");
-			}
-        });
-       
-    }
-
-/***********************************************************************************/
-
-    var loadGeneralMessages = function()
-    {
-        var myType = login.correntUser[0].userType;
-        if(myType == User.ADMIN || myType == User.SOCIAL)
-            loadAllClubs();
-        else
-        {
-            $("#body").html("");
-            loadHomePage();
-        }
-    }
 
 /***********************************************************************************/
 

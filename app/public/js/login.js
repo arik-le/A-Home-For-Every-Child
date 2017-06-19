@@ -31,14 +31,7 @@ var login=function()
 		
 	var stateMap = {$container : null };
 	
-	var initModule = function($container) 
-	{
-		database = firebase.database();			// A reference for the database
-		stateMap.$container = $container;
-		$("body").html(connectionPage.inputSection);
-		$("#cmdLogin").click(loginClick);
-		$("#forgotPass").click(sendPassByEmail);
-	};
+	
 		
 //---------------------------------------------------------------------------------------------------//
 
@@ -46,12 +39,12 @@ var login=function()
 	{
 		var username = document.getElementById("username").value;
 		var password = document.getElementById("password").value;
-		if(username == "" || password == "")
+		if(username === "" || password === "")
 		{
 			alert("אנא הכנס שם משתמש וסיסמה");
 			return;
 		}
-				// validateAndPushUser(username,password);
+		// validateAndPushUser(username,password);
 
 		var auth = firebase.auth();
 		auth.onAuthStateChanged(function(user) {
@@ -142,6 +135,14 @@ var login=function()
 		});
 			
 	}
+	var initModule = function($container) 
+	{
+		database = firebase.database();			// A reference for the database
+		stateMap.$container = $container;
+		$("body").html(connectionPage.inputSection);
+		$("#cmdLogin").click(loginClick);
+		$("#forgotPass").click(sendPassByEmail);
+	};
 
 return { initModule : initModule,
 		 usersAndKeys:usersAndKeys,
