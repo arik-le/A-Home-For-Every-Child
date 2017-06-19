@@ -128,20 +128,19 @@ var login=function()
 	{
 		var txt;
 		var email = document.getElementById("username").value;
-		var fillEmail = prompt("Please enter your EmailAddress:",email );
-		if (fillEmail == null || fillEmail == "") 
-		{
-			alert("נא להזין כתובת מייל");
-		} else 
-		{
-			var auth = firebase.auth();
-			auth.sendPasswordResetEmail(fillEmail).then(function() {
-				alert("פעולה הושלמה - בעוד מספר דקות ישלח אליך מייל לשחזור הסיסמה");
-			}, function(error) {
-				alert("מייל זה לא נמצא במערכת");
-			});
-		}	
+		var fillEmail = prompt("נא להזין כתובת מייל תקינה:",email );
+
+		var auth = firebase.auth();
+		auth.sendPasswordResetEmail(fillEmail).then(function() {
+			alert("פעולה הושלמה - בעוד מספר דקות ישלח אליך מייל לשחזור הסיסמה");
+		}, function(error) {
+			console.log(error);	
+			alert("מייל זה לא נמצא במערכת");
+		});
+			
 	}
+
+//---------------------------------------------------------------------------------------------------//	
 
 return { initModule : initModule,
 		 usersAndKeys:usersAndKeys,
