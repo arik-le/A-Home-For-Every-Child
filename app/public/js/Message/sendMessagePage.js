@@ -437,5 +437,6 @@ var sendMessagePage = function()
 		sendPriMessage:sendPriMessage,
 		clearValue:clearValue,
 		updateClubList:updateClubList,
-		sendGenMessage:sendGenMessage}
+		sendGenMessage:sendGenMessage,
+		CAPACITY_LIMIT:CAPACITY_LIMIT}
 }();
