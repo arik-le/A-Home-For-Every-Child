@@ -624,8 +624,6 @@ var usersManagement = function()
 			// compare selection with previous values
 			
 			var max = Math.max(socialPrevCH_edit.length, currIndexes.length);
-			console.log(socialPrevCH_edit);
-			console.log(currIndexes);
 			var keyRM;
 			var keyADD; 
 			for (var i = 0 ; i < max ; i++) 
@@ -643,7 +641,7 @@ var usersManagement = function()
 				if (i < currIndexes.length )
 				{
 					keyADD = clubhousesInfo[currIndexes[i]].key;
-					firebase.database().ref('clubhouse/'+keyADD+'/userList').push({userkey:userToEdit.userKey,username:Nusername,type:userType});
+					firebase.database().ref('clubhouse/'+keyADD+'/usersList').push({userkey:userToEdit.userKey,username:Nusername,type:userType});
 				}
 				
 			}
