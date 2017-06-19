@@ -249,32 +249,38 @@ var clubhouseManagement = function()
 
 	var CHsellection = function(e)
 	{
+
 		edit_clubname = e.target.innerText;
 		edit_clubIndex = getClubKeyIndex(e.target.innerText.trim());
+		firebase.database().ref("clubhouse/").once("value")
+		.then(function(data)
+		{
+			var club=data.val();
+			var keys=Object.keys(club);
+			login.correntClub[0]=keys[edit_clubIndex];
+		});
 	}
- 
 	var removeCHlistener = function()
 	{
-		if(!edit_clubname)
-			alert('לא נבחרה מועדונית');
-		else
-			alert('האם אתה בטוח ? פעולה זו תמחק את כל המשתמשים המשויכים למועדונית זו');
-		removeAllUsersFromCh(clubhousesInfo[edit_clubIndex].key);
-
-		// var genRef=firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key+'/generalMessages');
-		// genRef.once("value").then(function(data)
-		// {
-		// 	if(data.val() == null)
-		// 		return;
-		// 	var msgs = data.val();
-		// 	var mKeys = Object.keys(msgs);
-
-		// 	for(var i=0;i<mKeys.length;i++)
-		// 	{
-		// 		removeAllMsgs(clubhousesInfo[edit_clubIndex].key,i);
-		// 	}
+		var club= login.correntClub[0];
+		firebase.database().ref("clubhouse/" +club+ "/generalMessages").once("value")
+		.then(function(data)
+		{
 			
-		//});
+			var mess=data.val();
+			console.log(login.correntClub[0]);
+			var keys=Object.keys(mess);
+			for(var i=0;i<keys.length;i++)
+				Message.deleteGenMessage(i);
+			if(!edit_clubname)
+			alert('לא נבחרה מועדונית');
+			else
+				alert('האם אתה בטוח ? פעולה זו תמחק את כל המשתמשים המשויכים למועדונית זו');
+			setTimeout(function(){removeAllUsersFromCh(clubhousesInfo[edit_clubIndex].key);},1500);
+		});
+		
+	
+		
 		
 	}
 	var removeCH = function(clubKey)
@@ -288,69 +294,17 @@ var clubhouseManagement = function()
 
 	}
 
-	var removeAllMsgs = function(clubKey,i)
-	{
-		var club = clubKey;
-        var delMsg = firebase.database().ref("clubhouse/" + club + "/generalMessages").once("value")
-        .then(function(data)
-        {
-            var messages = data.val();
-            var keys = Object.keys(messages);
-            
-            firebase.database().ref("clubhouse/" + club + "/generalMessages/" + keys[i]).once("value")
-			.then(function(data)
-			{
-            	var curMessage = data.val();        //  take the message object
-
-            	if(curMessage.imageURL != -1)      // delete an image from storage
-            	{
-                	var storage = firebase.storage();
-                	var storageRef = storage.ref();
-                	var desertRef;
-				
-					if(curMessage.imageKey == -1)  // delete image to specific club          
-					{
-					desertRef  = storageRef.child('/generalMessagesImages/' + club + '/' + curMessage.imageName);
-					desertRef.delete().then(function(){}).catch(function(error){});
-					}
-					else
-					{
-						firebase.database().ref("Images/" + curMessage.imageKey).once("value")
-						.then(function(data)
-						{
-							var details = data.val();
-							if(details.capacity == 1)
-							{
-								desertRef  = storageRef.child('/generalMessagesImages/allClubs/' + curMessage.imageName);
-								desertRef.delete().then(function(){}).catch(function(error){});
-								firebase.database().ref("Images/" + curMessage.imageKey).remove();
-							}
-							else
-							{
-								var obj = {capacity:details.capacity-1};
-								var imageRef = firebase.database().ref('Images/');
-								imageRef.child(curMessage.imageKey).update(obj);
-							}
-						});
-
-                	}   
-            	}
-            	var deleteMsg = firebase.database().ref("clubhouse/" + club + "/generalMessages/" +keys[i]);
-            	deleteMsg.remove();
-			
-           });
-        });
-
-	}
-
 	var removeAllUsersFromCh = function(clubKey)
 	{
-		
+	
 		firebase.database().ref('clubhouse/'+clubKey+"/usersList").once("value")
 		.then(function(data)
 		{
 			if(data.val() == null)
+			{
 				removeCH(clubKey);
+				return;
+			}
 			var allUsers = data.val();   // get the whole tree of clubhouses
 			var keys=Object.keys(allUsers);
 	
@@ -421,7 +375,7 @@ var clubhouseManagement = function()
 			allClubhousesObjects = data.val();
 			var allClubhouses = data.val();   // get the whole tree of clubhouses
 			var keys = Object.keys(allClubhouses);	// get all keys
-				
+			
 			for(var i =0; i<keys.length;i++)
 			{
 				if(page == EDITPAGE)

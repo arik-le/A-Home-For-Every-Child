@@ -323,7 +323,6 @@ var usersManagement = function()
 	// addPrevType holds the last value on selectbox
 	var updateType = function(e)
 	{
-		console.log('updateType');
 		var type = e.target.value;
 		var input;
 		if(addPrevType !=type && type == User.ADMIN)
@@ -589,7 +588,7 @@ var usersManagement = function()
 					currIndexes.push(i);
 				}
 			}
-			if(currIndexes.length<=0)
+			if(currIndexes.length <= 0)
 			{
 				alert('אנא הזן מועדוניות ');
 				return;
@@ -597,29 +596,22 @@ var usersManagement = function()
 			//.........................................
 			// compare selection with previous values
 			
-			var max = Math.max(socialPrevCH_edit.length, currIndexes.length);
 			var keyRM;
 			var keyADD; 
-			for (var i = 0 ; i < max ; i++) 
-			{
-				if(socialPrevCH_edit[i]==currIndexes[i])
-					continue;
-				
-				// indexes are not equal - remove from old clubhouse
-				if(i < socialPrevCH_edit.length)
-				{
-					keyRM = clubhousesInfo[socialPrevCH_edit[i]].key;
-					removeUserFromClubOnly(keyRM);
-				}
-				// push new Clubhouse
-				if (i < currIndexes.length )
-				{
-					keyADD = clubhousesInfo[currIndexes[i]].key;
-					firebase.database().ref('clubhouse/'+keyADD+'/usersList').push({userkey:userToEdit.userKey,username:Nusername,type:userType});
-				}
-				
-			}
 
+			for (var i = 0 ; i < socialPrevCH_edit.length ; i++) 
+			{
+				// remove from old clubhouse
+				keyRM = clubhousesInfo[socialPrevCH_edit[i]].key;
+				removeUserFromClubOnly(keyRM);
+			}
+			
+			for (var i = 0 ; i < currIndexes.length ; i++) 
+			{
+				// push new Clubhouse
+				keyADD = clubhousesInfo[currIndexes[i]].key;
+				firebase.database().ref('clubhouse/'+keyADD+'/usersList/').push({userkey:userToEdit.userKey,username:Nusername,type:userToEdit.userType});
+			}
 			// if equal
 			var tempCHARr=[];
 			for(var i = 0 ; i <currIndexes.length ; i++)
@@ -627,17 +619,6 @@ var usersManagement = function()
 			obj.clubhouseKey = tempCHARr;
 		}
 
-
-		/*if (password != confirm)
-		{
-			alert('הסיסמאות אינן תואמות');
-			return;
-		if (userToEdit.password != password)
-			obj.password = password;
-		}*/
-		
-		
-		
 		// var e = document.getElementById("clubhouse_select_Add");
 		var userRef = firebase.database().ref('users/');
 		userRef.child(userToEdit.userKey).update(obj);
@@ -737,6 +718,7 @@ var usersManagement = function()
 				if(userToEdit.userKey == users[keys[i]].userkey)
 				{
 					firebase.database().ref("clubhouse/"+clubKey+"/usersList").child(k).remove();
+					break;
 				}
 			}
 		});

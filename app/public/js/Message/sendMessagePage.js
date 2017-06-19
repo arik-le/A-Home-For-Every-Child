@@ -334,17 +334,20 @@ var sendMessagePage = function()
 
 	var sendToClub = function(from,toTeachers,toParents,subject,content,toClubHouse)
 	{
-		firebase.database().ref("clubhouse/" + toClubHouse + "/generalMessages").once("value")
+		firebase.database().ref("clubhouse/"+ toClubHouse + "/generalMessages").once("value")
 		.then(function(data)
 		{
 			var clubs = data.val();
-			var keys = Object.keys(clubs);
-			if(keys.length > CAPACITY_LIMIT)
+			if(clubs != null)
 			{
-				alert("תיבת הודעות כלליות מלאה - אנא מחק הודעות קודמות");
-				uploadImage.myFileImg[0]=undefined;
-				clearValue();
-				return;
+				var keys = Object.keys(clubs);
+				if(keys.length > CAPACITY_LIMIT)
+				{
+					alert("תיבת הודעות כלליות מלאה - אנא מחק הודעות קודמות");
+					uploadImage.myFileImg[0]=undefined;
+					clearValue();
+					return;
+				}
 			}
 			else
 			{

@@ -82,49 +82,49 @@ var Message=function()
     {
         var limit =[];
 
-        var club = login.correntClub[0];//login.correntUser[0].clubhouseKey;
+        var club = login.correntClub[0];
         var delMsg = firebase.database().ref("clubhouse/" + club + "/generalMessages").once("value")
         .then(function(data)
         {
             var messages = data.val();
+            if(messages==null)
+                return;
             var keys = Object.keys(messages);
             limit[0] = keys.length-1;
-            console.log(limit[0]);
             firebase.database().ref("clubhouse/" + club + "/generalMessages/" + keys[i]).once("value")
 			.then(function(data)
 			{
-            var curMessage = data.val();        //  take the message object
-            if(curMessage.imageURL != -1)      // delete an image from storage
-            {
-                var storage = firebase.storage();
-                var storageRef = storage.ref();
-                var desertRef;
+                var curMessage = data.val();        //  take the message object            console.log(club);
+                if(curMessage.imageURL != -1)      // delete an image from storage
+                {
+                    var storage = firebase.storage();
+                    var storageRef = storage.ref();
+                    var desertRef;
 
-                if(curMessage.imageKey == -1)  // delete image to specific club          
-                {
-                    desertRef  = storageRef.child('/generalMessagesImages/' + club + '/' + curMessage.imageName);
-                    desertRef.delete().then(function(){}).catch(function(error){});
-                }
-                else
-                {
-                    firebase.database().ref("Images/" + curMessage.imageKey).once("value")
-                    .then(function(data)
+                    if(curMessage.imageKey == -1)  // delete image to specific club          
                     {
-                    var details = data.val();
-                    if(details.capacity == 1)
-                    {
-                        desertRef  = storageRef.child('/generalMessagesImages/allClubs/' + curMessage.imageName);
+                        desertRef  = storageRef.child('/generalMessagesImages/' + club + '/' + curMessage.imageName);
                         desertRef.delete().then(function(){}).catch(function(error){});
-                        firebase.database().ref("Images/" + curMessage.imageKey).remove();
                     }
                     else
                     {
-                        var obj = {capacity:details.capacity-1};
-                        var imageRef = firebase.database().ref('Images/');
-                        imageRef.child(curMessage.imageKey).update(obj);
-                    }
-                });
-
+                        firebase.database().ref("Images/" + curMessage.imageKey).once("value")
+                        .then(function(data)
+                        {
+                        var details = data.val();
+                        if(details.capacity == 1)
+                        {
+                            desertRef  = storageRef.child('/generalMessagesImages/allClubs/' + curMessage.imageName);
+                            desertRef.delete().then(function(){}).catch(function(error){});
+                            firebase.database().ref("Images/" + curMessage.imageKey).remove();
+                        }
+                        else
+                        {
+                            var obj = {capacity:details.capacity-1};
+                            var imageRef = firebase.database().ref('Images/');
+                            imageRef.child(curMessage.imageKey).update(obj);
+                        }
+                    });
                 }   
             }
             var deleteMsg = firebase.database().ref("clubhouse/" + club + "/generalMessages/" +keys[i]);

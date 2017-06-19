@@ -15,8 +15,8 @@ var login=function()
 				"<div class='form'>"+
 					"<div class='login-form'>"+
 						"<img src ='images/pictureLogo.jpg' width='200' height='110'/>"+
-						"<input id='username' type='text' placeholder='הכנס שם משתמש'/>"+
-						"<input id='password' type='password' placeholder='הכנס סיסמה'/>"+
+						"<input  id='username' type='text' placeholder='הכנס שם משתמש'/>"+
+						"<input  id='password' type='password' placeholder='הכנס סיסמה'/>"+
 						"<button id = 'cmdLogin' >התחבר</button></br>"+
 						"<img id='loader' src='images/homepreloader.gif'/ width ='40%'>"+
 					"</div>"+
@@ -52,7 +52,6 @@ var login=function()
 		auth.onAuthStateChanged(function(user) {
 			if (user) 
 			{
-				console.log(user);
 				// User is signed in.
 				var ref = firebase.database().ref("users");
 				ref.once("value")
