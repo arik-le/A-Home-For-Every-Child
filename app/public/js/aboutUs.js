@@ -5,7 +5,7 @@ var aboutUs=function()
     {
     inputSection:
     
-            '<h5 dir = "rtl">בית לכל ילד מעניקה מעטפת טיפולית מקיפה לילדים ומשפחות בסיכון. היא מובילה בטיפוללילדים בסיכון גבוה, מהגיל הרך ועד לגיל הנעורים, בזיקה לסביבתם הביתית והחינוכית. העמותה מפתחת מומחיות למניעת התעללות בילדים ורואה בשליחותה את המפתח לחיים בחברה טובה יותר</h5></br>'+
+            '<h5 dir = "rtl">בית לכל ילד מעניקה מעטפת טיפולית מקיפה לילדים ומשפחות בסיכון. היא מובילה בטיפול לילדים בסיכון גבוה, מהגיל הרך ועד לגיל הנעורים, בזיקה לסביבתם הביתית והחינוכית. העמותה מפתחת מומחיות למניעת התעללות בילדים ורואה בשליחותה את המפתח לחיים בחברה טובה יותר</h5></br>'+
 
             '<div id = "contactUs" dir ="rtl">'+
 				'<span style="font-size:12px" dir ="rtl">'+
@@ -26,7 +26,7 @@ var aboutUs=function()
             
             '<div id = "footerAllRights">'+
                 '<span style="font-size:10px">'+
-                '<b class="Bold">© all right reserved to AZRIELI - Collage of Engeneering Jerusalem - As part of a  project of Software engineering in service to the community ,Page created at 15/06/17</b>'+
+                '<b class="Bold">© all right reserved to AZRIELI - Collage of Engeneering Jerusalem - As part of a project of Software engineering in service to the community ,Page created at 15/06/17</b>'+
             '</div>'+
         '</div>'
     }
