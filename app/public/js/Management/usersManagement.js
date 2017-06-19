@@ -488,6 +488,7 @@ var usersManagement = function()
 		$('#username').val(user.username);
 		$('#userType').val(user.userType);
 		document.getElementById("userType").disabled = true;  //disable option for changing user-type
+		document.getElementById("username").disabled = true;  //disable option for changing user-name
 		$('#passwordSection').html("");	// prevent change the password if there is oath with email
 		/*$('#password').val(user.password);
 		$('#confirm').val(user.password);*/
@@ -774,7 +775,57 @@ var usersManagement = function()
 				if (page == ADDPAGE)
 					$('#clubhouse_select_Add').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
 			}
+			if (page == EDITPAGE)
+			{
+				var tempBtnID = 'btn'+i;
+				var btnInput = '<a href="#" id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
+					'<i class="fa fa-home fa-2x"></i><br/>'+'מנהלים'+'</a>';
+				$('#clubBottunGroup').append(btnInput);
+				$('#'+tempBtnID).click(editManagersCH);
+				mainPage.paintButton(i,tempBtnID);
+			}	
 		});
+	}
+
+	var editManagersCH = function(e)
+	{  //load all managers
+		EditSectionClubName = e.target.innerText;
+		if(e.target.innerText == "")
+		{
+			alert("לא נבחר משתמש");
+			return;
+		}
+		document.getElementById('usersInCH').innerHTML = "";
+		
+	    var ref = firebase.database().ref("users");
+		ref.once("value")
+		.then(function(data)		// 		when value recieved
+		{
+			if (data.val() == null)
+			{
+				alert("לא נמצאו משתמשים להציג ");
+				return;
+			}
+			var users = data.val();   // get the whole tree of clubhouses
+			var keys = Object.keys(users);	// get all keys
+				
+			for(var i =0; i<keys.length;i++)
+			{
+				var k = keys[i];
+				var uType=users[k].userType;
+				if( (uType == User.ADMIN) && (users[k].userKey != login.correntUser[1]) )
+				{
+					var userRef= firebase.database().ref("users/"+users[k].userKey);
+					userRef.ref.once("value").then(function(data)
+					{
+						var user=data.val();
+						$('#usersInCH').append('<option value="'+user.userKey+'">'+user.firstName+' '+user.lastName+'</option>');
+					
+					});	
+				}
+			}
+		});
+		
 	}
 
 	/////////////////////////////////////////////////////////////////////
