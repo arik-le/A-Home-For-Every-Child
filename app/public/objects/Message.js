@@ -5,7 +5,7 @@ var Message=function()
         var private = 1;
         var general = 0;
         var date=new Date();
-    
+
         if(type ==  private)       //private
             return{
                 source:source,
@@ -80,12 +80,16 @@ var Message=function()
 
     var deleteGenMessage=function(i)
     {
+        var limit =[];
+
         var club = login.correntClub[0];//login.correntUser[0].clubhouseKey;
         var delMsg = firebase.database().ref("clubhouse/" + club + "/generalMessages").once("value")
         .then(function(data)
         {
             var messages = data.val();
             var keys = Object.keys(messages);
+            limit[0] = keys.length-1;
+            console.log(limit[0]);
             firebase.database().ref("clubhouse/" + club + "/generalMessages/" + keys[i]).once("value")
 			.then(function(data)
 			{
@@ -125,8 +129,11 @@ var Message=function()
             }
             var deleteMsg = firebase.database().ref("clubhouse/" + club + "/generalMessages/" +keys[i]);
             deleteMsg.remove();
+            $("#limitMes").html("<h1 id='allTitles2' dir='rtl'>"+limit[0]+"/"+sendMessagePage.CAPACITY_LIMIT+ " הודעות<h1>")
+
            });
         });
+
     }
 
     var getDateMes=function(dareMes)

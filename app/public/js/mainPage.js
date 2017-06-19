@@ -54,7 +54,7 @@ var mainPage=function()
                         '<li class="dropdown">'+
 							'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">טפסים <span class="caret"></span></a>'+
                             '<ul class="dropdown-menu">'+
-								'<li><a id="temp2">יצירת טופס</a></li>'+
+								'<li><a id="crateFormPage">יצירת טופס</a></li>'+
 								'<li><a id="temp1">טפסי מועדוניות</a></li>'+
 								'<li role="separator" class="divider"></li>'+
 							'</ul>'+
@@ -106,6 +106,7 @@ var mainPage=function()
         loadGeneralMessages();
 
         //listeners
+        $("#crateFormPage").click(fromPage.create);
 		$("#addUser_btn").click(usersManagement.addUser);
         $("#btnEditUser").click(usersManagement.editUser);
         $("#addClubhouse_btn").click(clubhouseManagement.addClubhouse);
@@ -231,11 +232,15 @@ var mainPage=function()
             curClubKey = login.correntUser[0].clubhouseKey;
 
         $("#body").append('<div id="mesBody"></div>');
+        $("#mesBody").html("");
+
+        
+       
+
+
         firebase.database().ref("clubhouse/" + curClubKey + "/generalMessages").once("value")
         .then(function(data)
         {
-            $("#mesBody").html("");
-
             var EVERYONE = 2;
             var messages = data.val();
             if(messages==null)
@@ -243,7 +248,8 @@ var mainPage=function()
             else
             {
                 var keys = Object.keys(messages);
-                $("#mesBody").append("<h1 id='allTitles2' dir='rtl'>"+keys.length+"/30 הודעות<h1>");
+                $("#mesBody").append("<div id ='limitMes'> <h1 id='allTitles2' dir='rtl'>"+keys.length+"/"+sendMessagePage.CAPACITY_LIMIT+ " הודעות<h1></div>");
+
 
                 for(var i=keys.length-1;i>=0;i--)
                 {    
