@@ -5,7 +5,8 @@ var sendMessagePage = function()
 	var ONLY_PARENTS = 0;
 	var ONLY_TEACHERS = 1;
 	var EVERYBODY = 2;
-
+    var CAPACITY_LIMIT = 30;
+	var isFull = false;
 	var msgPage={
 	inputSection:
 	
@@ -297,15 +298,12 @@ var sendMessagePage = function()
 			alert("אנה הזן תוכן");
 			return;
 		}
+	
 
 		if(toClubHouse == "allClubs")
 			sendToAll(from,toTeachers,toParents,subject,content);
 		else
 			sendToClub(from,toTeachers,toParents,subject,content,toClubHouse);
-			
-		uploadImage.myFileImg[0]=undefined;
-		clearValue();
-		alert("ההודעה נשלחה בהצלחה");
 	}
 
 //-------------------------------------------------------------------------------------------------
@@ -336,27 +334,46 @@ var sendMessagePage = function()
 
 	var sendToClub = function(from,toTeachers,toParents,subject,content,toClubHouse)
 	{
-		var file = uploadImage.myFileImg[0];
-		if(file === undefined)
+		firebase.database().ref("clubhouse/" + toClubHouse + "/generalMessages").once("value")
+		.then(function(data)
 		{
-			var message = pickMesByPermision(toTeachers,toParents,from,subject,content,-1,-1,-1);
-			firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
-		}
-		else
-		{
-			var b = Math.floor(Math.random()*100000000); 			
-			var imageName = b + file.name;
-			var storageRef = firebase.storage().ref('/generalMessagesImages/' + toClubHouse + '/' + imageName);
-			var uploadTask = storageRef.put(file);
-			uploadTask.on('state_changed', function(snapshot){
-			}, function(error) {
-				alert("לא ניתן לשלוח הודעה כעת.. אנה נסו שוב מאוחר יותר");
-			}, function() {
-			var downloadURL = uploadTask.snapshot.downloadURL;
-			var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,imageName,-1);
-			firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
-			});
-		}
+			var clubs = data.val();
+			var keys = Object.keys(clubs);
+			if(keys.length > CAPACITY_LIMIT)
+			{
+				alert("תיבת הודעות כלליות מלאה - אנא מחק הודעות קודמות");
+				uploadImage.myFileImg[0]=undefined;
+				clearValue();
+				return;
+			}
+			else
+			{
+				var file = uploadImage.myFileImg[0];
+				if(file === undefined)
+				{
+					var message = pickMesByPermision(toTeachers,toParents,from,subject,content,-1,-1,-1);
+					firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
+				}
+				else
+				{
+					var b = Math.floor(Math.random()*100000000); 			
+					var imageName = b + file.name;
+					var storageRef = firebase.storage().ref('/generalMessagesImages/' + toClubHouse + '/' + imageName);
+					var uploadTask = storageRef.put(file);
+					uploadTask.on('state_changed', function(snapshot){
+					}, function(error) {
+						alert("לא ניתן לשלוח הודעה כעת.. אנה נסו שוב מאוחר יותר");
+					}, function() {
+					var downloadURL = uploadTask.snapshot.downloadURL;
+					var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,imageName,-1);
+					firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
+					});
+				}
+			uploadImage.myFileImg[0]=undefined;
+			clearValue();
+			alert("ההודעה נשלחה בהצלחה");
+			}
+		});
 	}
 
 //-------------------------------------------------------------------------------------------------
@@ -389,29 +406,37 @@ var sendMessagePage = function()
 			}, function() {
 			var downloadURL = uploadTask.snapshot.downloadURL;
 			
-			firebase.database().ref("clubhouse/").once("value")
-			.then(function(data)
-			{
-				var clubs = data.val();
-				var keys = Object.keys(clubs);
-				var imgNode = Image.create(imageName,keys.length);
-				
-				var item = firebase.database().ref('Images/').push(imgNode);
-				for(var i=0;i<keys.length;i++)
-				{	
-					var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,imageName,item.key);
-					firebase.database().ref('clubhouse/' + keys[i] + '/generalMessages').push(message);
-				}
+				firebase.database().ref("clubhouse/").once("value")
+				.then(function(data)
+				{
+					var clubs = data.val();
+					var keys = Object.keys(clubs);
+					var imgNode = Image.create(imageName,keys.length);
+					
+					var item = firebase.database().ref('Images/').push(imgNode);
+					for(var i=0;i<keys.length;i++)
+					{	
+						var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,imageName,item.key);
+						firebase.database().ref('clubhouse/' + keys[i] + '/generalMessages').push(message);
+					}
 				});
 			});
 		}
+		uploadImage.myFileImg[0]=undefined;
+		clearValue();
+		alert("ההודעה נשלחה בהצלחה");
 	}
 
+
+
+
+//-------------------------------------------------------------------------------------------------
 	return{msgPage:msgPage,
 		updateUserType:updateUserType,
 		updateUserList:updateUserList,
 		sendPriMessage:sendPriMessage,
 		clearValue:clearValue,
 		updateClubList:updateClubList,
-		sendGenMessage:sendGenMessage}
+		sendGenMessage:sendGenMessage,
+		CAPACITY_LIMIT:CAPACITY_LIMIT}
 }();

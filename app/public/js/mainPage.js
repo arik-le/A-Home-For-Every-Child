@@ -232,11 +232,15 @@ var mainPage=function()
             curClubKey = login.correntUser[0].clubhouseKey;
 
         $("#body").append('<div id="mesBody"></div>');
+        $("#mesBody").html("");
+
+        
+       
+
+
         firebase.database().ref("clubhouse/" + curClubKey + "/generalMessages").once("value")
         .then(function(data)
         {
-            $("#mesBody").html("");
-
             var EVERYONE = 2;
             var messages = data.val();
             if(messages==null)
@@ -244,6 +248,9 @@ var mainPage=function()
             else
             {
                 var keys = Object.keys(messages);
+                $("#mesBody").append("<div id ='limitMes'> <h1 id='allTitles2' dir='rtl'>"+keys.length+"/"+sendMessagePage.CAPACITY_LIMIT+ " הודעות<h1></div>");
+
+
                 for(var i=keys.length-1;i>=0;i--)
                 {    
                     if(myType > 1 || myType == messages[keys[i]].permision || messages[keys[i]].permision == EVERYONE)

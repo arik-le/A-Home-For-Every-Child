@@ -276,8 +276,6 @@ var clubhouseManagement = function()
 			
 		//});
 		
-		
-		
 	}
 	var removeCH = function(clubKey)
 	{
