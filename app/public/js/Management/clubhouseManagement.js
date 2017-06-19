@@ -114,7 +114,7 @@ var clubhouseManagement = function()
 				var k = keys[i];
 				var tempName = allClubhouses[k].name;
 					
-				if( tempName == nameArg )
+				if( tempName === nameArg )
 					return true;
 			}
 			return false;
