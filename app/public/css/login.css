@@ -31,18 +31,21 @@
   text-align:right;
 }
 .form button {
+  position: relative;
+  margin-top:5%;
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
   background: #1dc328;
-  width: 50%;
+  width: 62%;
   border: 0;
   padding: 15px;
   color: #FFFFFF;
-  font-size: 14px;
+  font-size: 16px;
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
+  border-radius: 6px;
 }
 .form button:hover,.form button:active,.form button:focus {
   background: #43A047;
@@ -92,4 +95,6 @@ body {
 {
   color:dodgerblue;
   text-decoration: underline;
+  margin-top:-5%;
+  text-align: right;
 }

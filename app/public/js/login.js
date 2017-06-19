@@ -15,13 +15,16 @@ var login=function()
 				"<div class='form'>"+
 					"<div class='login-form'>"+
 						"<img src ='images/pictureLogo.jpg' width='200' height='110'/>"+
-						"<input  id='username' type='text' placeholder='הכנס שם משתמש'/>"+
-						"<input  id='password' type='password' placeholder='הכנס סיסמה'/>"+
-						"<button id = 'cmdLogin' >התחבר</button>"+
-						"</p><label id ='forgotPass'>שכחתי סיסמה</label>"+
+						"<input  id='username' type='text' value='royok17@outlook.com' placeholder='הכנס שם משתמש'/>"+
+						"<input  id='password' type='password' value='5799191' placeholder='הכנס סיסמה'/>"+
+						"<h5 id ='forgotPass'>שחכתי סיסמה</h5>"+
+						"<button id = 'cmdLogin' >כניסה</button>"+
 						"<img id='loader' src='images/homepreloader.gif'/ width ='40%'>"+
+
 					"</div>"+
+					
 				"</div>"+
+
 			"</div>"+
 		"</div>"
 	};
@@ -139,8 +142,6 @@ var login=function()
 		});
 			
 	}
-
-//---------------------------------------------------------------------------------------------------//	
 
 return { initModule : initModule,
 		 usersAndKeys:usersAndKeys,
