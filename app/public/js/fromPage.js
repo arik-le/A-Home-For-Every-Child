@@ -13,7 +13,7 @@ var fromPage=function()
             '<input type="text" class="form-control" name="name" id="formSubject" maxlength="20" placeholder="הכנס נושא שאלון " dir="rtl" />'+
         '</div>'+
        
-        '<a id="createForm_btn" class="btn btn-info btn-lg">צור</a>';
+        '<a id="createForm_btn" class="btn btn-success btn-lg btn-block">צור טופס חדש</a>';
         
        /* '<a href="#" class="btn btn-info btn-lg">'+
           '<span class="glyphicon glyphicon-plus"></span> </a>';*/
