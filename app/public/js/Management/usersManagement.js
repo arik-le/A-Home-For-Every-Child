@@ -95,15 +95,20 @@ var usersManagement = function()
 					'</div>'+
 				'</div>'+
 						'<div id="selectCHSection" class="form-group">'+
-						'<label for="clubHouseName" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
-						'<div class="col-sm-10">'+
-							'<div class="input-group">'+
-								'<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
-								'<select type="text" id="clubhouse_select_Add" class="form-control clubHouseName"  placeholder="בחר מועדונית מתוך הרשימה">'+
-								'</select>'+
+							'<label for="clubHouseName" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
+							'<div class="col-sm-10">'+
+								'<div class="input-group">'+
+									'<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
+									'<select type="text" id="clubhouse_select_Add" class="form-control clubHouseName"  placeholder="בחר מועדונית מתוך הרשימה">'+
+									'</select>'+
+								'</div>'+
 							'</div>'+
 						'</div>'+
+
+						'<div id="childSection" class="form-group">'+
 						'</div>'+
+
+
 					'<div class="form-group" id="buttons_area">'+
 						
 					'</div>'+
@@ -177,12 +182,6 @@ var usersManagement = function()
 		addPrevType=0;
 		$('#userType').on('change',updateType);
     }
-
-
-
-
-
-
 
     //-------------------------------------------------------------------------------------------------
     var createUser=function()
@@ -283,37 +282,7 @@ var usersManagement = function()
 	}
 
 	var checkAndPush = function(username,firstName,lastName,type,clubKey)
-	{	//check if the username exist - if not push to DB
-		// var ref = firebase.database().ref("users");
-		// ref.once("value")
-		// .then(function(data)		// 		when value recieved
-		// {
-		// 	// in case the root is empty  ->  name is not exist
-		// 	if (data.val() == null)
-		// 		return false;
-
-		// 	var allUsers = data.val();   // get the whole tree of users
-		// 	var keys = Object.keys(allUsers);	// get all keys
-			
-		// 	// loop on the answer array to find user name.
-		// 	var temp = false;
-		// 	for(var i =0; i<keys.length;i++)
-		// 	{
-		// 		var k = keys[i];
-		// 		var tempName = allUsers[k].username;
-
-		// 		if( tempName == username )
-		// 			temp =  true;
-		// 	}
-		// 	return temp;
-		// }).then(function(res) 
-		// {
-		// 	if(res)		// name is already exist in DB
-		// 	{
-        //         alert("שם משתמש כבר קיים");
-		// 		return;
-		// 	}	
-			// else - push user to DB
+	{	
 
 		var password=document.getElementById("password").value;
 		var auth = firebase.auth();
@@ -387,6 +356,7 @@ var usersManagement = function()
 								'</select>'+
 							'</div>'+
 						'</div>';
+			// if( type == User.C)
 			$('#selectCHSection').html(input);
 
 			for(var i =0; i<clubhousesInfo.length;i++)

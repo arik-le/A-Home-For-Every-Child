@@ -52,6 +52,7 @@ var login=function()
 		auth.onAuthStateChanged(function(user) {
 			if (user) 
 			{
+				console.log(user);
 				// User is signed in.
 				var ref = firebase.database().ref("users");
 				ref.once("value")
@@ -66,68 +67,34 @@ var login=function()
 					correntUser[0] = allUsers[user.uid];
 					correntClub[0] = allUsers[user.uid].clubhouseKey;
 				});
-				$("#loader").css("display", "inline-block");
-				setTimeout(function()
-				{ 
-					mainPage.openMainPage(correntUser[0]); 
-				}, 500);
+				
 			} 
 		});
 	
 		var promise = auth.signInWithEmailAndPassword(username,password);
-
-		promise.catch(function(err){alert(err.message);});
-	
-	}
-
-//---------------------------------------------------------------------------------------------------//	
-// main login function, handles authentication and connects to system.
-	var validateAndPushUser = function(nameArg,passwordArg)
-	{
-
-		var ref = firebase.database().ref("users");
-		ref.once("value")
-		.then(function(data)		
-		{
-			// in case the root is empty  ->  name is not exist
-			if (data.val() == null)
-			{
-				alert("לא נמצאו משתמשים במערכת");
-				return; 
-			}
-
-			var allUsers = data.val();   // get the whole tree of clubhouses
-			var keys = Object.keys(allUsers);	// get all keys
-			
-			usersAndKeys[0]= allUsers;
-			usersAndKeys[1] = keys;
-
-			// loop on the answere array to find clubhouse name.
-			for(var i =0; i<keys.length;i++)
-			{
-				var k = keys[i];
-				var tempUserName = allUsers[k].username;
-				var tempUserPassword = allUsers[k].password;
-
-				if( tempUserName == nameArg && tempUserPassword == passwordArg)
+		promise.then(function(user){
+			var ref = firebase.database().ref("users");
+				ref.once("value")
+				.then(function(data)		
 				{
-					correntUser[1]=k; 
-					correntUser[0] = allUsers[k];
-					correntClub[0]=correntUser[0].clubhouseKey;
-					$("#loader").css("display", "inline-block");
-					setTimeout(function()
-					{ 
-						mainPage.openMainPage(correntUser[0]); 
-					}, 500);
+					var allUsers = data.val();   // get the whole tree of clubhouses
+					var keys = Object.keys(allUsers);	// get all keys
 					
-					return;
-				}
-			}
-			rejectUser(); // username or password incorrect 
-		});
-	}
+					usersAndKeys[0]= allUsers;
+					usersAndKeys[1] = keys;
+					correntUser[1] = user.uid; 
+					correntUser[0] = allUsers[user.uid];
+					correntClub[0] = allUsers[user.uid].clubhouseKey;
+				});
 
-	
+			$("#loader").css("display", "inline-block");
+				setTimeout(function()
+				{ 
+					mainPage.openMainPage(correntUser[0]); 
+				}, 500);
+		});
+		promise.catch(function(err){alert(err.message);});
+	}
 
 //-------------------------------------------------------------------------------------------
 	
