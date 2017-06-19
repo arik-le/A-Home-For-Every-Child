@@ -490,9 +490,6 @@ var usersManagement = function()
 		document.getElementById("userType").disabled = true;  //disable option for changing user-type
 		document.getElementById("username").disabled = true;  //disable option for changing user-name
 		$('#passwordSection').html("");	// prevent change the password if there is oath with email
-		/*$('#password').val(user.password);
-		$('#confirm').val(user.password);*/
-		
 		
 		// html inject for each user type//
 		//===============================//
@@ -632,6 +629,12 @@ var usersManagement = function()
 	{
 		if(uType == OS_TYPE)    //if the user is Social worker - then it delete him from several clubhouses
 			deleteUserInCH();
+		else if(uType == User.ADMIN)
+		{
+			firebase.database().ref("users/"+userToEdit.userKey).remove();
+			alert("המשתמש הוסר בהצלחה");
+			editUser();
+		}
 		else
 		{
 			var clubKey = clubhousesInfo[clubIndex_Edit].key; 
