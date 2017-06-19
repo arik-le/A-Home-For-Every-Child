@@ -252,15 +252,26 @@ var clubhouseManagement = function()
 		edit_clubname = e.target.innerText;
 		edit_clubIndex = getClubKeyIndex(e.target.innerText.trim());
 	}
- 
+	var size=function(obj) 
+    {
+        var len = 0, key;
+        for (key in obj) 
+            if (obj.hasOwnProperty(key))
+                len++;
+        return len;
+    }
 	var removeCHlistener = function()
 	{
+		var len=size(login.correntClub[0]);
+		console.log(len);
+		for(var i=0;i<len;i++)
+			Message.deleteGenMessage(i);
 		if(!edit_clubname)
 			alert('לא נבחרה מועדונית');
 		else
 			alert('האם אתה בטוח ? פעולה זו תמחק את כל המשתמשים המשויכים למועדונית זו');
 		removeAllUsersFromCh(clubhousesInfo[edit_clubIndex].key);
-
+		
 		// var genRef=firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key+'/generalMessages');
 		// genRef.once("value").then(function(data)
 		// {
@@ -345,7 +356,7 @@ var clubhouseManagement = function()
 
 	var removeAllUsersFromCh = function(clubKey)
 	{
-		
+	
 		firebase.database().ref('clubhouse/'+clubKey+"/usersList").once("value")
 		.then(function(data)
 		{

@@ -5,18 +5,21 @@ var Form=function()
     {
         return {questions:questions,subject:subject}
     }
-    var len=function(obj) 
+   
+    var allQ=function(q)
     {
-        var size = 0, key;
-        for (key in obj) 
-            if (obj.hasOwnProperty(key))
-                size++;
-        
-        return size;
-    }
-    var allQ=function(id)
-    {
-        firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').once("value")
+        if(q!=undefined)
+        {
+            $(".listQue").html("");
+            for(var i=0;i<q.length;i++)
+            {
+                 var str='<div id="Q_'+i+'">'+
+                            '<label>'+q[i].question+' '+q[i].numOfvalues+'</label>'+
+                            '</div>' ;
+                    $(".listQue").append(str);
+            }
+        }
+        /*firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').once("value")
         .then(function(data)
         {
             var str="";
@@ -39,16 +42,10 @@ var Form=function()
                         
                     
                 }
-              //  console.log(len(f.questions.keys)); 
-                
-                /*for(var i=0;i<len(f.questions);i++)
-                {
-                    
-                }*/
             }   
 
         });
-          
+          */
     }
  
     var showQuestions=function()

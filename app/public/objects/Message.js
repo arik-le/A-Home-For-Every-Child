@@ -82,17 +82,17 @@ var Message=function()
     {
         var limit =[];
 
-        var club = login.correntClub[0];//login.correntUser[0].clubhouseKey;
+        var club = login.correntClub[0];
         var delMsg = firebase.database().ref("clubhouse/" + club + "/generalMessages").once("value")
         .then(function(data)
         {
             var messages = data.val();
             var keys = Object.keys(messages);
             limit[0] = keys.length-1;
-            console.log(limit[0]);
             firebase.database().ref("clubhouse/" + club + "/generalMessages/" + keys[i]).once("value")
 			.then(function(data)
 			{
+            console.log(curMessage);
             var curMessage = data.val();        //  take the message object
             if(curMessage.imageURL != -1)      // delete an image from storage
             {
