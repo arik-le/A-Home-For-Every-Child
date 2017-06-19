@@ -6,16 +6,15 @@ var User = function(username,password)
 	const SWUSER = 3;
 	const ADMIN = 4;
 
-	var create = function(username,password,firstName,lastName,userType,clubhouseKey)
+	var create = function(username,firstName,lastName,userType,clubhouseKey,userKey)
 	{
 		var d = new Date();
 		return{
 			username:username,
-			password:password,
 			firstName:firstName,
 			lastName:lastName,
 			userType:userType,
-			userKey:0,
+			userKey:userKey,
 			date:d.toDateString(),
 			inboxMessages:[],
 			outboxMessages:[],

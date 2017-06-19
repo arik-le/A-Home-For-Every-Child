@@ -178,6 +178,12 @@ var usersManagement = function()
 		$('#userType').on('change',updateType);
     }
 
+
+
+
+
+
+
     //-------------------------------------------------------------------------------------------------
     var createUser=function()
     {
@@ -196,16 +202,15 @@ var usersManagement = function()
 		 var res = inputsValidation({firstName:firstName,lastName:lastName,username:username,password:sPassword});
 		 if (!res)
 		 	return;
-        // selecting the clubhouse
+			 
 		var e;
         e=document.getElementById("userType");
 		var type = e.selectedIndex;
-	
+
 		if(type >= 0 && type < User.SOCIAL )
 		{
 			if (page == ADDPAGE)
 				e = document.getElementById("clubhouse_select_Add");
-			
 
 			if(e.selectedIndex == -1)// when there are no clubhouses at DB
 			{
@@ -214,7 +219,7 @@ var usersManagement = function()
 			}
 			Uclubhouse= e.options[e.selectedIndex].text;
 			var clubKey = getClubKeyByName(Uclubhouse);
-			checkAndPush(username,fPassword,firstName,lastName,type,clubKey);
+			checkAndPush(username,firstName,lastName,type,clubKey);
 		}
 		else if (type == User.SOCIAL)
 		{
@@ -235,12 +240,12 @@ var usersManagement = function()
 				alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
 				return;
 			}
-			checkAndPush(username,fPassword,firstName,lastName,type,clubhousesSw);
+			checkAndPush(username,firstName,lastName,type,clubhousesSw);
 		
 		}
 		else if (type == User.ADMIN)
 		{
-			checkAndPush(username,fPassword,firstName,lastName,type,clubhousesSw);
+			checkAndPush(username,firstName,lastName,type,clubhousesSw);
 		}
 		
 
@@ -249,20 +254,15 @@ var usersManagement = function()
 
 	var inputsValidation = function(args)
 	{
-		var usernameRegex  = /^\w+(\-+(\w)*)*$/;
-		// var namesRegex = /^[[(א-ת)]+$/|/^[(a-zA-Z)]]+$/;
+		// var usernameRegex  = /^\w+(\-+(\w)*)*$/;
+		// // var namesRegex = /^[[(א-ת)]+$/|/^[(a-zA-Z)]]+$/;
 		var spacesRegex = /\s/;
 		if (args.firstName == "" || args.lastName == "" || args.username == "")
 		{
 			alert("אנא מלא את כל השדות הנדרשים");
 			return false;
 		}
-		if(!usernameRegex.test(args.username))
-		{
-			alert("יש לבחור שם משתמש המורכב ממספרים ואותיות בלבד");
-			return false;
-		}
-		
+
 		if( spacesRegex.test(args.firstName) == true)
 		{
 			alert("שם פרטי שהוזן אינו חוקי");
@@ -274,84 +274,87 @@ var usersManagement = function()
 			return false;
 		}
 		
-		if(args.password.length<4 || args.password.length>10)
+		if(args.password.length<6)
 		{
-			alert("נא להזין סיסמא באורך בין 4-10 תווים");
+			alert("יש להזין לפחות 6 תווים");
 			return false;
 		}
 		return true;
 	}
 
-	var checkAndPush = function(username,fPassword,firstName,lastName,type,clubKey)
+	var checkAndPush = function(username,firstName,lastName,type,clubKey)
 	{	//check if the username exist - if not push to DB
-		var ref = firebase.database().ref("users");
-		ref.once("value")
-		.then(function(data)		// 		when value recieved
-		{
-			// in case the root is empty  ->  name is not exist
-			if (data.val() == null)
-				return false;
+		// var ref = firebase.database().ref("users");
+		// ref.once("value")
+		// .then(function(data)		// 		when value recieved
+		// {
+		// 	// in case the root is empty  ->  name is not exist
+		// 	if (data.val() == null)
+		// 		return false;
 
-			var allUsers = data.val();   // get the whole tree of users
-			var keys = Object.keys(allUsers);	// get all keys
+		// 	var allUsers = data.val();   // get the whole tree of users
+		// 	var keys = Object.keys(allUsers);	// get all keys
 			
-			// loop on the answer array to find user name.
-			var temp = false;
-			for(var i =0; i<keys.length;i++)
-			{
-				var k = keys[i];
-				var tempName = allUsers[k].username;
+		// 	// loop on the answer array to find user name.
+		// 	var temp = false;
+		// 	for(var i =0; i<keys.length;i++)
+		// 	{
+		// 		var k = keys[i];
+		// 		var tempName = allUsers[k].username;
 
-				if( tempName == username )
-					temp =  true;
-			}
-			return temp;
-		}).then(function(res) 
-		{
-			if(res)		// name is already exist in DB
-			{
-                alert("שם משתמש כבר קיים");
-				return;
-			}	
+		// 		if( tempName == username )
+		// 			temp =  true;
+		// 	}
+		// 	return temp;
+		// }).then(function(res) 
+		// {
+		// 	if(res)		// name is already exist in DB
+		// 	{
+        //         alert("שם משתמש כבר קיים");
+		// 		return;
+		// 	}	
 			// else - push user to DB
-			var usersRef = firebase.database().ref('users');
-        	var newUser;
+
+		var password=document.getElementById("password").value;
+		var auth = firebase.auth();
+		var promise = auth.createUserWithEmailAndPassword(username,password);
+
+		promise.then(function(user)
+		{
+			var usersRef = firebase.database().ref('users/'+user.uid);
+			var newUser;
 			if(type == User.ADMIN)
-			{
-				newUser = User.create(username,fPassword,firstName,lastName,type,null);
-				var key = usersRef.push(newUser);
-				firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
-				addUser();
-			}
+				newUser = User.create(username,firstName,lastName,type,null,user.uid);
+		
 			else if(type == User.SOCIAL)
 			{
-				newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
-				var key = usersRef.push(newUser);
-				firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
+				newUser = User.create(username,firstName,lastName,type,clubKey,user.uid);
 				for (var i = 0; i < clubKey.length; i++) {
 					firebase.database().ref('clubhouse/'+clubKey[i]+'/usersList')
-					.push({userkey:key.key,username:username,type:type});
+					.push({userkey:user.uid,username:username,type:type});
 				}
-				addUser();
-			} 
+			}
 			else
 			{
-				newUser = User.create(username,fPassword,firstName,lastName,type,clubKey);
-				var key = usersRef.push(newUser);
-				firebase.database().ref('users/' + key.key + '/userKey').set(key.key);
+				newUser = User.create(username,firstName,lastName,type,clubKey,user.uid);
 				firebase.database().ref('clubhouse/'+clubKey+'/usersList')
-				.push({userkey:key.key,username:username,type:type});
-				addUser();
+				.push({userkey:user.uid,username:username,type:type});
 			}
+			usersRef.set(newUser);
+			addUser();
 			alert("הוזן בהצלחה");
 		});
-
+		promise.catch(function(res)
+		{
+			alert(res.message);
+		});
 	}
 	
 	/////////////////////////////////////////////////////////////////
 	// addPrevType holds the last value on selectbox
 	var updateType = function(e)
 	{
+		console.log('updateType');
 		var type = e.target.value;
 		var input;
 		if(addPrevType !=type && type == User.ADMIN)
@@ -570,6 +573,7 @@ var usersManagement = function()
 		$('#delete-button').click(function(){ deleteUser(user.userType) });
 	}
 
+	// implemention of button listener for editing
 	var changeUserInfo = function()
 	{
 		var obj={};

@@ -41,19 +41,50 @@ var login=function()
 	{
 		var username = document.getElementById("username").value;
 		var password = document.getElementById("password").value;
-	
 		if(username == "" || password == "")
 		{
 			alert("אנא הכנס שם משתמש וסיסמה");
 			return;
 		}
-		validateAndPushUser(username,password);
-	};
+				// validateAndPushUser(username,password);
+
+		var auth = firebase.auth();
+		auth.onAuthStateChanged(function(user) {
+			if (user) 
+			{
+				// User is signed in.
+				var ref = firebase.database().ref("users");
+				ref.once("value")
+				.then(function(data)		
+				{
+					var allUsers = data.val();   // get the whole tree of clubhouses
+					var keys = Object.keys(allUsers);	// get all keys
+					
+					usersAndKeys[0]= allUsers;
+					usersAndKeys[1] = keys;
+					correntUser[1] = user.uid; 
+					correntUser[0] = allUsers[user.uid];
+					correntClub[0] = allUsers[user.uid].clubhouseKey;
+				});
+				$("#loader").css("display", "inline-block");
+				setTimeout(function()
+				{ 
+					mainPage.openMainPage(correntUser[0]); 
+				}, 500);
+			} 
+		});
+	
+		var promise = auth.signInWithEmailAndPassword(username,password);
+
+		promise.catch(function(err){alert(err.message);});
+	
+	}
 
 //---------------------------------------------------------------------------------------------------//	
 // main login function, handles authentication and connects to system.
 	var validateAndPushUser = function(nameArg,passwordArg)
 	{
+
 		var ref = firebase.database().ref("users");
 		ref.once("value")
 		.then(function(data)		
@@ -70,7 +101,6 @@ var login=function()
 			
 			usersAndKeys[0]= allUsers;
 			usersAndKeys[1] = keys;
-			
 
 			// loop on the answere array to find clubhouse name.
 			for(var i =0; i<keys.length;i++)
@@ -96,6 +126,8 @@ var login=function()
 			rejectUser(); // username or password incorrect 
 		});
 	}
+
+	
 
 //-------------------------------------------------------------------------------------------
 	

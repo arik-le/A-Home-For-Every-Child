@@ -316,7 +316,10 @@ var mainPage=function()
     var logout = function()
     {
         if(confirm('בטוח שברצונך להתנתק מהמערכת?')) 
+        {   
             login.initModule();
+            firebase.auth().signOut();
+        }
         else 
             return;
      }
