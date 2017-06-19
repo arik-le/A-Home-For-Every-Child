@@ -17,6 +17,7 @@ var login=function()
 						"<img src ='images/pictureLogo.jpg' width='200' height='110'/>"+
 						"<input  id='username' type='text' placeholder='הכנס שם משתמש'/>"+
 						"<input  id='password' type='password' placeholder='הכנס סיסמה'/>"+
+						"<label id ='forgotPass'>שכחתי סיסמה</label>"+
 						"<button id = 'cmdLogin' >התחבר</button></br>"+
 						"<img id='loader' src='images/homepreloader.gif'/ width ='40%'>"+
 					"</div>"+

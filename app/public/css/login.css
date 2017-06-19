@@ -88,3 +88,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
 }
+#forgotPass
+{
+  color: gray;
+  text-decoration: underline;
+}

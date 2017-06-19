@@ -15,12 +15,9 @@ var fromPage=function()
         '<div class="page">'+
             '<input type="text" class="form-control" name="name" id="formSubject" maxlength="20" placeholder="הכנס נושא שאלון " dir="rtl" />'+
         '</div>'+
-<<<<<<< HEAD
-       
+               
         '<a id="createForm_btn" class="btn btn-success btn-lg btn-block">צור טופס חדש</a>';
-=======
-        '<a id="createForm_btn" class="btn btn-info btn-lg">צור</a>';
->>>>>>> ffd63ea14990b78793da76ddde1eb82d27997515
+
         
         $("#body").html(str);
         $("#createForm_btn").click(createForm);
