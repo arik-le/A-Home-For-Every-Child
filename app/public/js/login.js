@@ -15,8 +15,8 @@ var login=function()
 				"<div class='form'>"+
 					"<div class='login-form'>"+
 						"<img src ='images/pictureLogo.jpg' width='200' height='110'/>"+
-						"<input value='g@g.com' id='username' type='text' placeholder='הכנס שם משתמש'/>"+
-						"<input value='123123' id='password' type='password' placeholder='הכנס סיסמה'/>"+
+						"<input  id='username' type='text' placeholder='הכנס שם משתמש'/>"+
+						"<input  id='password' type='password' placeholder='הכנס סיסמה'/>"+
 						"<button id = 'cmdLogin' >התחבר</button></br>"+
 						"<img id='loader' src='images/homepreloader.gif'/ width ='40%'>"+
 					"</div>"+
