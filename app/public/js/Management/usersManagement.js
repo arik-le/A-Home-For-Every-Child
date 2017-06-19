@@ -11,6 +11,7 @@ var usersManagement = function()
 	var AddSectionClubName;
 	var EditSectionClubName;
 	var clubIndex_Edit;
+	var socialPrevCH_edit=[];
 	var userToEdit;
      //-------------------------------------------------------------------------------------------------
 	var UserPage=
@@ -73,6 +74,7 @@ var usersManagement = function()
 						'</div>'+
 					'</div>'+
 
+				'<div id = "passwordSection">'+
 					'<div class="form-group">'+
 						'<label for="password" class="col-sm-2 controlLabel">:סיסמא</label>'+
 						'<div class="col-sm-10">'+
@@ -82,7 +84,6 @@ var usersManagement = function()
 							'</div>'+
 						'</div>'+
 					'</div>'+
-
 					'<div class="form-group">'+
 						'<label for="confirm" class="col-sm-2 controlLabel">:אימות סיסמא</label>'+
 						'<div class="col-sm-10">'+
@@ -92,7 +93,7 @@ var usersManagement = function()
 							'</div>'+
 						'</div>'+
 					'</div>'+
-
+				'</div>'+
 						'<div id="selectCHSection" class="form-group">'+
 						'<label for="clubHouseName" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
 						'<div class="col-sm-10">'+
@@ -204,6 +205,7 @@ var usersManagement = function()
 		{
 			if (page == ADDPAGE)
 				e = document.getElementById("clubhouse_select_Add");
+			
 
 			if(e.selectedIndex == -1)// when there are no clubhouses at DB
 			{
@@ -218,6 +220,7 @@ var usersManagement = function()
 		{
 			var clubhousesSw=[];
 			var childs = $('#swMultiSelect')[0].childNodes;
+			
 			for (var i = 0; i < childs.length; i++) 
 			{
 				var element = childs[i];
@@ -226,11 +229,11 @@ var usersManagement = function()
 					var temp = getClubKeyByName(childs[i].textContent);
 					clubhousesSw.push(temp);
 				}
-				if (clubhousesSw.length <= 0)
-				{
-					alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
-					return;
-				}
+			}
+			if (clubhousesSw.length <= 0)
+			{
+				alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
+				return;
 			}
 			checkAndPush(username,fPassword,firstName,lastName,type,clubhousesSw);
 		
@@ -240,7 +243,6 @@ var usersManagement = function()
 			checkAndPush(username,fPassword,firstName,lastName,type,clubhousesSw);
 		}
 		
-		// checkAndPush(username,fPassword,firstName,lastName,type,clubKey,Uclubhouse);
 
     }
 
@@ -507,23 +509,62 @@ var usersManagement = function()
 	var injectEditPage = function (user)
 	{
 		$('#body').html(UserPage.inputSection);
+		
 		document.getElementById('allTitles').innerHTML ="עריכת/מחיקת משתמש";
 		$('#UserPName').val(user.firstName);
 		$('#UserLName').val(user.lastName);
 		$('#username').val(user.username);
-		$('#password').val(user.password);
-		$('#confirm').val(user.password);
-		$('#userType').val(user.userType);	
-
-		var tempIndex;
-		for(var i =0; i<clubhousesInfo.length;i++)
-		{
-			if (clubhousesInfo[i].key == user.clubhouseKey)
-				tempIndex = i;
-			$('#clubhouse_select_Add').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
-		}
+		$('#userType').val(user.userType);
 		document.getElementById("userType").disabled = true;  //disable option for changing user-type
-		$('#clubhouse_select_Add').val(tempIndex);
+		$('#passwordSection').html("");	// prevent change the password if there is oath with email
+		/*$('#password').val(user.password);
+		$('#confirm').val(user.password);*/
+		
+		
+		// html inject for each user type//
+		//===============================//
+		if(user.userType == User.ADMIN)
+		{
+			$('#selectCHSection').html("");
+		}
+		// multi select injection for SW
+		if ( user.userType == User.SOCIAL)
+		{
+			socialPrevCH_edit=[];	// keep the indexes of the old clubhouses the social had
+			$('#selectCHSection').html(swMultiselect.inputSection);
+				for (var i = 0; i < clubhousesInfo.length; i++) {
+				var id='swClubhouseSelect'+i;
+				var line = '<li id="'+id+'" class="list-group-item">'+clubhousesInfo[i].name+'</li>'
+					for (var j = 0; j < userToEdit.clubhouseKey.length; j++) { // to retrive the slected clubhouses
+						if(userToEdit.clubhouseKey[j] == clubhousesInfo[i].key)
+						{
+							line = '<li id="'+id+'" class="list-group-item active">'+clubhousesInfo[i].name+'</li>';
+							socialPrevCH_edit.push(i);
+						}
+					}
+					
+				$('#swMultiSelect').append(line);
+				$('#'+id).click(SwClubListener);
+			}
+
+		}
+
+		if(user.userType >= User.PARENT && user.userType < User.SOCIAL)
+		{
+			// append element to select and choose the selected index on default.
+			var tempIndex;
+			for(var i =0; i<clubhousesInfo.length;i++)
+			{
+				if (clubhousesInfo[i].key == user.clubhouseKey)
+					tempIndex = i;
+				$('#clubhouse_select_Add').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
+			}
+			$('#clubhouse_select_Add').val(tempIndex);
+			$('#clubhouse_select_Add').on('change',function(e) // update selected index listener
+			{
+				clubIndex_Edit = e.currentTarget.selectedIndex;	
+			});
+		}
 		$('#buttons_area').html(EditUserButtons.inputSection);
 		$('#change-button').click(changeUserInfo);
 		$('#delete-button').click(function(){ deleteUser(user.userType) });
@@ -537,39 +578,95 @@ var usersManagement = function()
 		var Nusername = $('#username').val();
 		var password = $('#password').val();
 		var confirm = $('#confirm').val();
-		var userType = $('#userType').val();
 
-		var currClubIndex = $('#clubhouse_select_Add').val();
-
-		var currClubKey = clubhousesInfo[currClubIndex].key;
-		if (password != confirm)
-		{
-			alert('הסיסמאות אינן תואמות');
-			return;
-		}
 		if (userToEdit.firstName != firstName)
 			obj.firstName = firstName;
 		if (userToEdit.lastName != lastName)
 			obj.lastName = lastName;
 		if (userToEdit.username != Nusername)
 			obj.username = Nusername;
+
+		if( userToEdit.userType >= User.PARENT && userToEdit.userType < User.SOCIAL)
+		{
+			// currClubIndex= $('#clubhouse_select_Add').val();
+			currClubKey = clubhousesInfo[clubIndex_Edit].key;
+			if(userToEdit.clubhouseKey != currClubKey) // clubhouse changed
+			{
+				// update new clubhouse
+				firebase.database().ref('clubhouse/'+currClubKey+'/usersList')
+					.push({userkey:userToEdit.userKey,username:Nusername,type:userType});
+				
+				// remove from old clubhouse 
+				removeUserFromClubOnly(userToEdit.clubhouseKey);
+				
+				obj.clubhouseKey = currClubKey; // update user object
+			}
+		}
+		if (  userToEdit.userType == User.SOCIAL)
+		{
+			// get curr indexes
+			var currIndexes=[];
+			var childs = $('#swMultiSelect')[0].childNodes;
+			for (var i = 0; i < childs.length; i++) 
+			{
+				var element = childs[i];
+				if (element.className == 'list-group-item active')
+				{
+					currIndexes.push(i);
+				}
+			}
+			if(currIndexes.length<=0)
+			{
+				alert('אנא הזן מועדוניות ');
+				return;
+			}
+			//.........................................
+			// compare selection with previous values
+			
+			var max = Math.max(socialPrevCH_edit.length, currIndexes.length);
+			console.log(socialPrevCH_edit);
+			console.log(currIndexes);
+			var keyRM;
+			var keyADD; 
+			for (var i = 0 ; i < max ; i++) 
+			{
+				if(socialPrevCH_edit[i]==currIndexes[i])
+					continue;
+				
+				// indexes are not equal - remove from old clubhouse
+				if(i < socialPrevCH_edit.length)
+				{
+					keyRM = clubhousesInfo[socialPrevCH_edit[i]].key;
+					removeUserFromClubOnly(keyRM);
+				}
+				// push new Clubhouse
+				if (i < currIndexes.length )
+				{
+					keyADD = clubhousesInfo[currIndexes[i]].key;
+					firebase.database().ref('clubhouse/'+keyADD+'/userList').push({userkey:userToEdit.userKey,username:Nusername,type:userType});
+				}
+				
+			}
+
+			// if equal
+			var tempCHARr=[];
+			for(var i = 0 ; i <currIndexes.length ; i++)
+				tempCHARr.push(clubhousesInfo[currIndexes[i]].key);
+			obj.clubhouseKey = tempCHARr;
+		}
+
+
+		/*if (password != confirm)
+		{
+			alert('הסיסמאות אינן תואמות');
+			return;
 		if (userToEdit.password != password)
 			obj.password = password;
-		if(userToEdit.userType != userType)
-			obj.userType = userType;
-		if(userToEdit.clubhouseKey != currClubKey) // clubhouse changed
-		{
-			// update new clubhouse
-			firebase.database().ref('clubhouse/'+currClubKey+'/usersList')
-				.push({userkey:userToEdit.userKey,username:Nusername,type:userType});
-			
-			// remove from old clubhouse 
-			removeUserFromClubOnly(userToEdit.clubhouseKey);
-			
-			obj.clubhouseKey = currClubKey; // update user object
-		}
+		}*/
 		
-		var e = document.getElementById("clubhouse_select_Add");
+		
+		
+		// var e = document.getElementById("clubhouse_select_Add");
 		var userRef = firebase.database().ref('users/');
 		userRef.child(userToEdit.userKey).update(obj);
 		alert("המידע עודכן בהצלחה");
