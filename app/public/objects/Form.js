@@ -1,15 +1,56 @@
 var Form=function()
 {
     var questions=[];
-    var create=function()
+    var create=function(subject)
     {
-        return {questions:questions}
+        return {questions:questions,subject:subject}
     }
-    var addQuestion=function(q,n)
+    var len=function(obj) 
     {
-        var question=Question.create(q,n);
-        questions.push(question);
+        var size = 0, key;
+        for (key in obj) 
+            if (obj.hasOwnProperty(key))
+                size++;
+        
+        return size;
     }
+    var allQ=function(id)
+    {
+        firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').once("value")
+        .then(function(data)
+        {
+            var str="";
+            var forms = data.val();
+            var f=forms[id];
+            if(f.questions!=null)
+            {
+                 $(".listQue").html("");
+                 var i=0;
+                 for (var key in f.questions)
+                  {
+                    if (f.questions.hasOwnProperty(key)) 
+                    {
+                        var str='<div id="Q_'+(i++)+'">'+
+                            '<label>'+f.questions[key].question+' '+f.questions[key].numOfvalues+'</label>'+
+                            '</div>'
+                        //i++;
+                        $(".listQue").append(str);
+                    }
+                        
+                    
+                }
+              //  console.log(len(f.questions.keys)); 
+                
+                /*for(var i=0;i<len(f.questions);i++)
+                {
+                    
+                }*/
+            }   
+
+        });
+          
+    }
+ 
     var showQuestions=function()
     {
         $("#body").html('');
@@ -35,6 +76,6 @@ var Form=function()
     return {
         showQuestions:showQuestions,
         create:create,
-        addQuestion:addQuestion
+        allQ: allQ
     }
 }();

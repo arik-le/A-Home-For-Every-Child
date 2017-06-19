@@ -54,7 +54,7 @@ var mainPage=function()
                         '<li class="dropdown">'+
 							'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">טפסים <span class="caret"></span></a>'+
                             '<ul class="dropdown-menu">'+
-								'<li><a id="temp2">יצירת טופס</a></li>'+
+								'<li><a id="crateFormPage">יצירת טופס</a></li>'+
 								'<li><a id="temp1">טפסי מועדוניות</a></li>'+
 								'<li role="separator" class="divider"></li>'+
 							'</ul>'+
@@ -106,6 +106,7 @@ var mainPage=function()
         loadGeneralMessages();
 
         //listeners
+        $("#crateFormPage").click(fromPage.create);
 		$("#addUser_btn").click(usersManagement.addUser);
         $("#btnEditUser").click(usersManagement.editUser);
         $("#addClubhouse_btn").click(clubhouseManagement.addClubhouse);
