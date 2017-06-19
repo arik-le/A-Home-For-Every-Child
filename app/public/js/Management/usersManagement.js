@@ -53,7 +53,7 @@ var usersManagement = function()
 						'<div class="col-sm-10">'+
 							'<div class="input-group">'+
 								'<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>'+
-								'<input type="email" class="form-control" name="username" id="username"  maxlength="20" placeholder="הכנס שם משתמש" dir="rtl"/>'+
+								'<input type="email" class="form-control" name="username" id="username"  maxlength="40" placeholder="הכנס שם משתמש" dir="rtl"/>'+
 							'</div>'+
 						'</div>'+
 					'</div>'+
@@ -165,7 +165,18 @@ var usersManagement = function()
 		'</ul>'
 	}
 	//-------------------------------------------------------------------------------------------------
-
+	var childInput =
+	{
+		inputSection: '<div class="form-group">'+
+									'<label for="childName" class="col-sm-2 controlLabel">:שם הילד</label>'+
+									'<div class="col-sm-10">'+
+										'<div class="input-group">'+
+											'<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>'+
+											'<input id ="childName" class="form-control"  maxlength="20" placeholder="הכנס את שם הילד" dir="rtl"/>'+
+										'</div>'+
+									'</div>'+
+								'</div>'
+	}
 	/////////////////////////////////////////////////////////////////////
 	//			ADD USER											   //
 	/////////////////////////////////////////////////////////////////////
@@ -181,6 +192,7 @@ var usersManagement = function()
         $("#addUser").click(createUser);
 		addPrevType=0;
 		$('#userType').on('change',updateType);
+		$('#childSection').html(childInput.inputSection);
     }
 
     //-------------------------------------------------------------------------------------------------
@@ -191,7 +203,7 @@ var usersManagement = function()
         var username=document.getElementById("username").value;
         var fPassword=document.getElementById("password").value;
         var sPassword=document.getElementById("confirm").value;
-		var Uclubhouse;
+		var Uclubhouse,childName;
         if( sPassword!=fPassword && fPassword != "" )//&& fPassword < 4)
         {
             alert(" הסיסמאות שהוזנו אינן תואמות");
@@ -218,7 +230,12 @@ var usersManagement = function()
 			}
 			Uclubhouse= e.options[e.selectedIndex].text;
 			var clubKey = getClubKeyByName(Uclubhouse);
-			checkAndPush(username,firstName,lastName,type,clubKey);
+			if(type == User.PARENT || type == User.TEACHER)
+			{
+				childName = document.getElementById("childName").value;
+				console.log(childName);
+			}
+			checkAndPush(username,firstName,lastName,type,clubKey,childName);
 		}
 		else if (type == User.SOCIAL)
 		{
@@ -239,12 +256,12 @@ var usersManagement = function()
 				alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
 				return;
 			}
-			checkAndPush(username,firstName,lastName,type,clubhousesSw);
+			checkAndPush(username,firstName,lastName,type,clubhousesSw,"");
 		
 		}
 		else if (type == User.ADMIN)
 		{
-			checkAndPush(username,firstName,lastName,type,clubhousesSw);
+			checkAndPush(username,firstName,lastName,type,clubhousesSw,"");
 		}
 		
 
@@ -281,7 +298,7 @@ var usersManagement = function()
 		return true;
 	}
 
-	var checkAndPush = function(username,firstName,lastName,type,clubKey)
+	var checkAndPush = function(username,firstName,lastName,type,clubKey,childName)
 	{	
 
 		var password=document.getElementById("password").value;
@@ -292,12 +309,13 @@ var usersManagement = function()
 		{
 			var usersRef = firebase.database().ref('users/'+user.uid);
 			var newUser;
+			console.log(type);
 			if(type == User.ADMIN)
-				newUser = User.create(username,firstName,lastName,type,null,user.uid);
+				newUser = User.create(username,firstName,lastName,type,null,user.uid,"");
 		
 			else if(type == User.SOCIAL)
 			{
-				newUser = User.create(username,firstName,lastName,type,clubKey,user.uid);
+				newUser = User.create(username,firstName,lastName,type,clubKey,user.uid,"");
 				for (var i = 0; i < clubKey.length; i++) {
 					firebase.database().ref('clubhouse/'+clubKey[i]+'/usersList')
 					.push({userkey:user.uid,username:username,type:type});
@@ -305,7 +323,8 @@ var usersManagement = function()
 			}
 			else
 			{
-				newUser = User.create(username,firstName,lastName,type,clubKey,user.uid);
+				newUser = User.create(username,firstName,lastName,type,clubKey,user.uid,childName);
+				console.log(newUser);
 				firebase.database().ref('clubhouse/'+clubKey+'/usersList')
 				.push({userkey:user.uid,username:username,type:type});
 			}
@@ -323,6 +342,7 @@ var usersManagement = function()
 	// addPrevType holds the last value on selectbox
 	var updateType = function(e)
 	{
+		$('#childSection').html("");
 		var type = e.target.value;
 		var input;
 		if(addPrevType !=type && type == User.ADMIN)
@@ -355,7 +375,10 @@ var usersManagement = function()
 								'</select>'+
 							'</div>'+
 						'</div>';
-			// if( type == User.C)
+			if( type == User.PARENT || type == User.TEACHER)
+				$('#childSection').html(childInput.inputSection);
+			else
+
 			$('#selectCHSection').html(input);
 
 			for(var i =0; i<clubhousesInfo.length;i++)

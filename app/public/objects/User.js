@@ -6,7 +6,7 @@ var User = function(username,password)
 	const SWUSER = 3;
 	const ADMIN = 4;
 
-	var create = function(username,firstName,lastName,userType,clubhouseKey,userKey)
+	var create = function(username,firstName,lastName,userType,clubhouseKey,userKey,childName)
 	{
 		var d = new Date();
 		return{
@@ -19,7 +19,8 @@ var User = function(username,password)
 			inboxMessages:[],
 			outboxMessages:[],
 			generalMessages:[],
-			clubhouseKey:clubhouseKey
+			clubhouseKey:clubhouseKey,
+			childName:childName
 		}
 	}
 	return {create:create,
