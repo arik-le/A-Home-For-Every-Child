@@ -253,8 +253,8 @@ var usersManagement = function()
 
 	var inputsValidation = function(args)
 	{
-		// var usernameRegex  = /^\w+(\-+(\w)*)*$/;
-		// // var namesRegex = /^[[(א-ת)]+$/|/^[(a-zA-Z)]]+$/;
+		//var usernameRegex  = /^\w+(\-+(\w)*)*$/;
+		var namesRegex = new RegExp("/^([א-תA-Z0-9])+$/");
 		var spacesRegex = /\s/;
 		if (args.firstName == "" || args.lastName == "" || args.username == "")
 		{
@@ -262,12 +262,12 @@ var usersManagement = function()
 			return false;
 		}
 
-		if( spacesRegex.test(args.firstName) == true)
+		if( spacesRegex.test(args.firstName) == true || namesRegex.test(args.firstName) == true )
 		{
 			alert("שם פרטי שהוזן אינו חוקי");
 			return false;
 		}
-		if( spacesRegex.test(args.lastName) == true)
+		if( spacesRegex.test(args.lastName) == true || namesRegex.test(args.lastName) == true)
 		{
 			alert("שם משפחה שהוזן אינו חוקי");
 			return false;

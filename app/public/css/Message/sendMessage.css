@@ -6,7 +6,7 @@
 	background-color: white;
 }
 .active a {
-  background-color: #ec2323 !important;
+  background-color: #ec2323 ;
 }
 
 #clubHouseSM 
@@ -56,12 +56,12 @@
 #sendButtonPM{
     margin:3%;
     width:60px;
-	background-color: #ec2323 !important;
+	background-color: #ec2323 ;
 }
 #sendButtonGM{
     margin:3%;
     width:60px;
-	background-color: #ec2323 !important;
+	background-color: #ec2323 ;
 }
 
 #subjectSM{

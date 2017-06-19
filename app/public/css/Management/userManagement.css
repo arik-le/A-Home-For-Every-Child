@@ -1,13 +1,13 @@
 .btn-sq-sm {
-width: 32% !important;
-  height: 60px !important;
+  width: 32% ;
+  height: 60px ;
   margin-right: 1.25%;
   font-size: 85%;
 }
 
 .btn-sq-xs {
-  width: 25px !important;
-  height: 25px !important;
+  width: 25px ;
+  height: 25px ;
   padding:2px;
 }*
 
