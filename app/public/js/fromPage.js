@@ -10,7 +10,6 @@ var fromPage=function()
 //================================================================================================
     var addQuestion=function()
     {
-
         var n=document.getElementById("numOfOption").value;
         var q=document.getElementById("newQuestion").value;
        // var question=Question.create(q,n);
@@ -82,15 +81,79 @@ var fromPage=function()
     }
 
 //================================================================================================
+
+    var showForm = function()
+    {
+        $('.NAV').collapse('hide');
+        $("#body").html("");
+        var showExactForm = 
+        
+        `<h2 id='allTitles'>נושא הטופס</h2>
+			<div id="formTable" dir='rtl'>
+				<table class="table table-striped" >
+				  <thead>
+					<tr>
+					  <th>#</th>
+					  <th>תוכן השאלה</th>
+					  <th>ערך</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<tr>
+					  <th scope="row">1</th>
+					  <td>האם ההתנהגות של הילד השתפרה בשבוע הנוכחי?</td>
+					  <td>1/5</td>
+					</tr>
+					<tr>
+					  <th scope="row">1</th>
+					  <td>האם ההתנהגות של הילד השתפרה בשבוע הנוכחי?</td>
+					  <td>2/10</td>
+					</tr><tr>
+					  <th scope="row">1</th>
+					  <td>האם ההתנהגות של הילד השתפרה בשבוע הנוכחי?</td>
+					  <td>3/5</td>
+					<tr>
+					  <th scope="row">1</th>
+					  <td>האם ההתנהגות של הילד השתפרה בשבוע הנוכחי?</td>
+					  <td>1/10</td>
+					</tr>
+					<tr>
+					  <th scope="row">1</th>
+					  <td>האם ההתנהגות של הילד השתפרה בשבוע הנוכחי?</td>
+					  <td>2/5</td>
+					</tr><tr>
+					  <th scope="row">1</th>
+					  <td>האם ההתנהגות של הילד השתפרה בשבוע הנוכחי?</td>
+					  <td>7/10</td>
+					<tr>
+
+				  </tbody>
+				</table>
+			</div>
+			
+			<div class="fromDeatails">
+				<h5 id="formLbl">מאת: הורה32</h5>
+				<h5 id="formLbl">ילד: ישראל ישראלי</h5>
+				<h5 id="formLbl">תאריך: 29/5/17</h5>
+			</div>
+			
+			<div id="group_btn">
+				<a id="close_btn" class="btn btn-success btn-sq-sm"><span class="glyphicon glyphicon-ok-circle"></span></a>
+				<a id="del_btn" class="btn btn-danger btn-sq-sm"><span class="glyphicon glyphicon-trash"></span></a>
+			</div>`;
+        $("#body").html(showExactForm);
+
+    }
+//================================================================================================
+    //גיא יעצלן מסריח!!!
     var p=function(s)
     {
         console.log(s);
     }
 
-
 //================================================================================================
     
     return {
-        create:create
+        create:create,showForm:showForm
     }
 }();

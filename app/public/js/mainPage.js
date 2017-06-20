@@ -55,7 +55,7 @@ var mainPage=function()
 							'<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">טפסים <span class="caret"></span></a>'+
                             '<ul class="dropdown-menu">'+
 								'<li><a id="crateFormPage">יצירת טופס</a></li>'+
-								'<li><a id="temp1">טפסי מועדוניות</a></li>'+
+								'<li><a id="showClubHouseForms">טפסי מועדוניות</a></li>'+
 								'<li role="separator" class="divider"></li>'+
 							'</ul>'+
                         '</li>';
@@ -156,6 +156,7 @@ var mainPage=function()
         $("#aboutUs_btn").click(aboutUs.openAboutPage);
         $("#logout").click(logout);
         $("#logout1").click(logout);
+        $("#showClubHouseForms").click(fromPage.showForm);
     }
 
 

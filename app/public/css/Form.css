@@ -16,3 +16,43 @@
     background-color: yellow;
     max-width: 100%;
 }
+
+#allTitles2{
+	text-align:center;
+}
+
+th{
+	text-align:right;
+}
+tr{
+	text-align:right;
+	color:black;
+}
+
+#formTable{
+
+	margin:5%;
+	padding:2%;
+	background-color:#fcffd2;
+	overflow: scroll;
+	max-height: 50%;
+  max-width: 100%;
+}
+#formLbl
+{
+	margin-right:10%;
+	text-align:right;
+	margin-top:-2%;
+}
+.fromDeatails{
+	margin-right:5%;
+	float:right;
+	width:40%;
+}
+#group_btn{
+	margin-left:5%;
+	float:left;
+	display:inline-block;
+	text-align:center;
+	padding:3%
+}
