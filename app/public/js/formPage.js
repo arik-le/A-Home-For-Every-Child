@@ -2,6 +2,7 @@ var formPage=function()
 { 
     var questions=[];
     var corForm;
+    var numOfQuestions
     var plus_btn='<a href="#" class="btn btn-info btn-lg" id="plus_btn">'+
                   '<span class="glyphicon glyphicon-plus"></span>'+ 
                 '</a>';
@@ -168,6 +169,7 @@ var fillFrom = function(key)
         var keys=[];
         for(obj in data.be().questions )
             keys.push(obj);
+        numOfQuestions=keys.length;
         var form=data.val();
         var str;
         $("#body").html('');
@@ -182,13 +184,17 @@ var fillFrom = function(key)
             for(var j=0;j<form.questions[keys[i]].numOfvalues;j++) 
             {
                   str=  '<label class="j_lebal">'+(j+1)+'<br />'+ 
-                    '<input type="radio" name="select" value="'+(j+1)+'"/>'+
+                    '<input id="rbtn_'+i+'_'+j+'" type="radio" name="select" value="'+(j+1)+'"/>'+
                     '</label>';
                   $("#form_"+i).append(str);  
             }
         }
         var btn='<a id="sendForm_btn" class="btn btn-success btn-lg btn-block">שלח</a>';
         $("#body").append(btn);
+        $("#sendForm_btn").click(function()
+        {
+            sendForm(data.be().questions);
+        });
     });
     
 }
@@ -210,6 +216,7 @@ var loadAllForms=function()
               $("#body").append(str);
               $("#form_"+(i++)).click(function()
               {
+                  corForm=key;
                   fillFrom(key);
               });
         }
@@ -223,9 +230,31 @@ var loadAllForms=function()
     }
 
 //================================================================================================
-    
+    var sendForm=function(questions)
+    {
+        var ans=[];
+        for(var i=0;i<numOfQuestions;i++)
+        {
+            var maxSelect=questions[i].numOfvalues;
+            for(var j=0;j<maxSelect;j++)
+            {
+                var check =document.getElementById("rbtn_"+i+"_"+j);
+                if(check.checked)
+                    ans.push(j+1
+                    );
+            }
+        }
+        if(ans.length<numOfQuestions)
+        {
+            alert("יש לענות על כל השאלות");
+            return;
+        }
+        p(corForm);
+        var result={user:login.correntUser[1],anser:ans};
+        firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+corForm+'/result').push(result);
+        //return ans;
+    }
     return {
-
         create:create,showForm:showForm,
         loadAllForms:loadAllForms,
     }
