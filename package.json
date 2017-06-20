@@ -1,0 +1,23 @@
+{
+  "name": "a-home-for-every-child",
+  "version": "1.0.0",
+  "description": "Every Child in need deserve a better care, and we are here to provide it.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arik-le/A-Home-For-Every-Child.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arik-le/A-Home-For-Every-Child/issues"
+  },
+  "homepage": "https://github.com/arik-le/A-Home-For-Every-Child#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^1.12.4"
+  }
+}
