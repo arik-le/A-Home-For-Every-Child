@@ -9,21 +9,21 @@ var login=function()
 
 	var connectionPage = {
 		inputSection:
-			"<div class = '+deviceType+'>"+
-			"<div class='login-page'>"+
+			`<div class = '+deviceType+'>
+			<div class='login-page'>
 
-				"<div class='form'>"+
-					"<div class='login-form'>"+
-						"<img src ='images/pictureLogo.jpg' width='200' height='110'/>"+
-						"<input  id='username' type='text' value='' placeholder='הכנס שם משתמש'/>"+
-						"<input  id='password' type='password' value='' placeholder='הכנס סיסמה'/>"+
-						"<h5 id ='forgotPass'>שכחתי סיסמה</h5>"+
-						"<button id = 'cmdLogin' >כניסה</button>"+
-						"<img id='loader' src='images/homepreloader.gif'/ width ='40%'>"+
-					"</div>"+
-				"</div>"+
-			"</div>"+
-		"</div>"
+				<div class='form'>
+					<div class='login-form'>
+						<img src ='images/pictureLogo.jpg' width='200' height='110'/>
+						<input  id='username' type='text' value='' placeholder='דוא"ל'/>
+						<input  id='password' type='password' value='' placeholder='הכנס סיסמה'/>
+						<h5 id ='forgotPass'>שכחתי סיסמה</h5>
+						<button id = 'cmdLogin' >כניסה</button>
+						<img id='loader' src='images/homepreloader.gif'/ width ='40%'>
+					</div>
+				</div>
+			</div>
+		</div>`
 	};
 		
 	var stateMap = {$container : null };
