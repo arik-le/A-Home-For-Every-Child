@@ -17,9 +17,9 @@ var sendMessagePage = function()
 			'<div class = "mytabs">'+
 				'<ul class="nav nav-pills center-pills">'+
 					'<li class="active">'+
-						'<a  href="#privatreMessage" data-toggle="tab">הודעה פרטית</a>'+
+						'<a  href="#privatreMessage" id="prvtMes"data-toggle="tab">הודעה פרטית</a>'+
 					'</li>'+
-					'<li><a href="#generalMessage" data-toggle="tab">הודעה כללית</a>'+
+					'<li><a href="#generalMessage" id="genMes" data-toggle="tab">הודעה כללית</a>'+
 					'</li>'+
 				'</ul>'+
 			'</div>'+

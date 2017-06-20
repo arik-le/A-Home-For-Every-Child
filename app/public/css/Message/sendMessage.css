@@ -6,8 +6,10 @@
 	background-color: white;
 }
 .active a {
-  background-color: #ec2323 ;
+  background-color: #ec2323 !important ;
 }
+
+
 
 #clubHouseSM 
 {
