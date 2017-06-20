@@ -15,16 +15,18 @@ var login=function()
 				"<div class='form'>"+
 					"<div class='login-form'>"+
 						"<img src ='images/pictureLogo.jpg' width='200' height='110'/>"+
+<<<<<<< HEAD
 						"<input  id='username' type='text' value='more@gmail.com' placeholder='הכנס שם משתמש'/>"+
 						"<input  id='password' type='password' value='121212' placeholder='הכנס סיסמה'/>"+
+=======
+						"<input  id='username' type='text' value='royok17@outlook.com' placeholder='הכנס שם משתמש'/>"+
+						"<input  id='password' type='password' value='5799191' placeholder='הכנס סיסמה'/>"+
+>>>>>>> 944416bdd45284067f5e5a3f6ace56777b438b3a
 						"<h5 id ='forgotPass'>שכחתי סיסמה</h5>"+
 						"<button id = 'cmdLogin' >כניסה</button>"+
 						"<img id='loader' src='images/homepreloader.gif'/ width ='40%'>"+
-
 					"</div>"+
-					
 				"</div>"+
-
 			"</div>"+
 		"</div>"
 	};
@@ -47,26 +49,7 @@ var login=function()
 		// validateAndPushUser(username,password);
 
 		var auth = firebase.auth();
-		auth.onAuthStateChanged(function(user) {
-			if (user) 
-			{
-				// User is signed in.
-				var ref = firebase.database().ref("users");
-				ref.once("value")
-				.then(function(data)		
-				{
-					var allUsers = data.val();   // get the whole tree of clubhouses
-					var keys = Object.keys(allUsers);	// get all keys
-					
-					usersAndKeys[0]= allUsers;
-					usersAndKeys[1] = keys;
-					correntUser[1] = user.uid; 
-					correntUser[0] = allUsers[user.uid];
-					correntClub[0] = allUsers[user.uid].clubhouseKey;
-				});
-				
-			} 
-		});
+		
 	
 		var promise = auth.signInWithEmailAndPassword(username,password);
 		promise.then(function(user){
@@ -90,7 +73,13 @@ var login=function()
 					mainPage.openMainPage(correntUser[0]); 
 				}, 500);
 		});
-		promise.catch(function(err){alert(err.message);});
+		promise.catch(function(err)
+		{
+			if(err.message == 'the email address is badly formatted.')
+				alert("שם המשתמש שהוזן אינו כתובת מייל חוקית");
+			if(err.message == 'There is no user record corresponding to this identifier. The user may have been deleted.')
+				alert('שם משתמש או סיסמא אינם נכונים');
+		});
 	}
 
 //-------------------------------------------------------------------------------------------

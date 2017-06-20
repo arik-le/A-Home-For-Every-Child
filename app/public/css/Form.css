@@ -1,23 +1,24 @@
-.anser
+#formSubject
 {
-    display:inline;
-   
+	text-align: center;
 }
 .j_lebal
 {
   margin-right:5%;
 }
-/*.selectR
-{
-  margin-right:29%;  
-}*/
+
 .choiceList
 {
-    background-color: yellow;
     max-width: 100%;
 }
-<<<<<<< HEAD
-
+.allQue{
+	padding:0.5%;
+	background-color:lavender;
+	margin-top:2%;
+}
+.qstlbl{
+	margin-right:5%;
+}
 #allTitles2{
 	text-align:center;
 }
@@ -26,15 +27,15 @@ th{
 	text-align:right;
 }
 tr{
+  font-size:90%;
 	text-align:right;
 	color:black;
 }
 
 #formTable{
-
 	margin:5%;
 	padding:2%;
-	background-color:#fcffd2;
+	background-color:white;
 	overflow: scroll;
 	max-height: 50%;
   max-width: 100%;
@@ -53,7 +54,6 @@ tr{
 #group_btn{
 	margin-left:5%;
 	float:left;
-	display:inline-block;
 	text-align:center;
 	padding:3%
 }
@@ -63,10 +63,14 @@ tr{
     width: 100%;
     height: 75px;
     margin-top: 1%;
-
 }
 .SFL
 {
     margin-top: 5%;
     font-size: 150%;
+}
+.page
+{
+	text-align: right;
+	font-size: 20px;
 }

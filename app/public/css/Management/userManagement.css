@@ -1,16 +1,3 @@
-/*.btn-sq-sm {
-  width: 32% ;
-  height: 60px ;
-  margin-right: 1.25%;
-  font-size: 85%;
-}*/
-
-.btn-sq-xs {
-  width: 25px ;
-  height: 25px ;
-  padding:2px;
-}*
-
 #addUser{
     margin:0;
     text-align: center; 
@@ -53,3 +40,19 @@
   color:rgba(255, 255, 255, 0.89);
   text-shadow: 2px 3px 9px #000001 ;
 }
+
+/*ALL Texts in Add User Pag*/
+#formTxts
+{
+    text-align: right;
+}
+.form-control
+{
+    text-align: right;
+}
+.controlLabel
+{
+    text-align: right;    
+}
+
+

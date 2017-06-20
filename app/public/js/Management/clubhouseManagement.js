@@ -215,8 +215,13 @@ var clubhouseManagement = (function()
 	//		-------------										//
 	//////////////////////////////////////////////////////////////
 	// edit button from clubhosue edit menu
-	var EditCluhouseListener = function(e)
+	var EditCluhouseListener = function()
 	{
+		if(!edit_clubname)
+		{
+			alert("לא נבחרה מועדונית");
+			return;
+		}
 		var clubRef = firebase.database().ref('clubhouse/'+clubhousesInfo[edit_clubIndex].key);
 		clubRef.once("value").then(function(data)
 		{
@@ -248,25 +253,34 @@ var clubhouseManagement = (function()
 			login.correntClub[0]=keys[edit_clubIndex];
 		});
 	}
+
 	var removeCHlistener = function()
 	{
-		var club= login.correntClub[0];
-		firebase.database().ref("clubhouse/" +club+ "/generalMessages").once("value")
-		.then(function(data)
+		if(!edit_clubname)
 		{
-			
-			var mess=data.val();
-			var keys=Object.keys(mess);
-			for(var i=0;i<keys.length;i++)
-				Message.deleteGenMessage(i);
-			if(!edit_clubname)
 			alert('לא נבחרה מועדונית');
-			else
-				alert('האם אתה בטוח ? פעולה זו תמחק את כל המשתמשים המשויכים למועדונית זו');
-			setTimeout(function(){removeAllUsersFromCh(clubhousesInfo[edit_clubIndex].key);},1500);
-		});
-		
-	
+			return;
+		}
+		if(confirm('האם אתה בטוח ? פעולה זו תמחק את כל המשתמשים המשויכים למועדונית זו'))
+		{
+			var club= login.correntClub[0];
+			firebase.database().ref("clubhouse/" +club+ "/generalMessages").once("value")
+			.then(function(data)
+			{
+				if(data.val() != null)
+				{
+					var mess=data.val();
+					var keys=Object.keys(mess);
+					for(var i=0;i<keys.length;i++)
+						Message.deleteGenMessage(i);
+					if(!edit_clubname)
+						alert('לא נבחרה מועדונית');
+				}
+				setTimeout(function(){removeAllUsersFromCh(clubhousesInfo[edit_clubIndex].key);},1500);
+			});
+		}
+		else
+			return;
 		
 		
 	}
@@ -405,6 +419,7 @@ var clubhouseManagement = (function()
 	 var editClubhouse = function()
 	 {
 		page = EDITPAGE;
+		edit_clubname=undefined;
 		loadClubhousesData();
 		$('.Nav').collapse('hide');
 		$("#body").html(EditClubhousePage.inputSection);

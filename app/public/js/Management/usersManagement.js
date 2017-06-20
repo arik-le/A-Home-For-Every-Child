@@ -17,101 +17,101 @@ var usersManagement = function()
 	var UserPage=
 	{
 		inputSection:
-		"<div class='container'>"+
-				"<div class='row main'>"+
-				"<div class='panel-heading'>"+
-					"<div  class='panel-title text-center'>"+
-						"<h2 id='allTitles' class='registerTitle'>רישום משתמש</h2>"+
-					"</div>"+
-				"</div>"+
+		`<div class='container'>
+				<div class='row main'>
+				<div class='panel-heading'>
+					<div  class='panel-title text-center'>
+						<h2 id='allTitles' class='registerTitle'>רישום משתמש</h2>
+					</div>
+				</div>
 
-			"<div class='main-login main-center'>"+
-				"<form class='form-horizontal' method='post' action='#'>"+
+			<div class='main-login main-center'>
+				<form class='form-horizontal' method='post' action='#'>
 					
-					"<div class='form-group'>"+
-						"<label for='name' class='col-sm-2 controlLabel' >:שם פרטי</label>"+
-						"<div class='col-sm-10'>"+
-							"<div class='input-group'>"+
-								"<span class='input-group-addon'><i class='fa fa-user fa' aria-hidden='true'></i></span>"+
-								"<input type='text' class='form-control' name='name' id='UserPName' maxlength='20' placeholder='הכנס שם פרטי' dir='rtl' />"+
-							"</div>"+
-						"</div>"+
-					"</div>"+
+					<div class='form-group'>
+						<label for='name' class='col-sm-2 controlLabel' >שם פרטי</label>
+						<div class='col-sm-10'>
+							<div class='input-group'>
+								<span class='input-group-addon'><i class='fa fa-user fa' aria-hidden='true'></i></span>
+								<input type='text' class='form-control' name='name' id='UserPName' maxlength='20' placeholder='הכנס שם פרטי' dir='rtl' />
+							</div>
+						</div>
+					</div>
 
-					"<div class='form-group'>"+
-						"<label for='UserLastName' class='col-sm-2 controlLabel' id='formTxts'>:שם משפחה</label>"+
-						"<div class='col-sm-10'>"+
-							"<div class='input-group'>"+
-								"<span class='input-group-addon'><i class='fa fa-user fa' aria-hidden='true'></i></span>"+
-								"<input type='text' class='form-control' name='UserLastName' id='UserLName' maxlength='20' placeholder='הכנס שם משפחה' dir='rtl'/>"+
-							"</div>"+
-						"</div>"+
-					"</div>"+
+					<div class='form-group'>
+						<label for='UserLastName' class='col-sm-2 controlLabel' id='formTxts'>שם משפחה</label>
+						<div class='col-sm-10'>
+							<div class='input-group'>
+								<span class='input-group-addon'><i class='fa fa-user fa' aria-hidden='true'></i></span>
+								<input type='text' class='form-control' name='UserLastName' id='UserLName' maxlength='20' placeholder='הכנס שם משפחה' dir='rtl'/>
+							</div>
+						</div>
+					</div>
 
-					"<div class='form-group'>"+
-						"<label for='username' class='col-sm-2 controlLabel'>:שם משתמש</label>"+
-						"<div class='col-sm-10'>"+
-							"<div class='input-group'>"+
-								"<span class='input-group-addon'><i class='fa fa-users fa' aria-hidden='true'></i></span>"+
-								"<input type='email' class='form-control' name='username' id='username'  maxlength='40' placeholder='הכנס שם משתמש' dir='rtl'/>"+
-							"</div>"+
-						"</div>"+
-					"</div>"+
+					<div class='form-group'>
+						<label for='username' class='col-sm-2 controlLabel'>כתובת דוא"ל</label>
+						<div class='col-sm-10'>
+							<div class='input-group'>
+								<span class='input-group-addon'><i class='fa fa-users fa' aria-hidden='true'></i></span>
+								<input type='email' class='form-control' name='username' id='username'  maxlength='40' placeholder='הכנס כתובת דוא"ל' dir='rtl'/>
+							</div>
+						</div>
+					</div>
 
-					"<div class='form-group'>"+
-						"<label for='username' class='col-sm-2 controlLabel'>:סוג משתמש</label>"+
-						"<div class='col-sm-10'>"+
-							"<div class='input-group'>"+
-								"<span class='input-group-addon'><i class='fa fa-slideshare' aria-hidden='true'></i></span>"+
-								"<select type='text' class='form-control' id='userType'>"+
-									"<option value = '0' class='ptUser'>הורה</option>"+
-									"<option value = '1' class='tcUser'>מורה</option>"+
-									"<option value = '2' class='GuUser'>מדריך</option>"+
-									"<option value = '3' class='SWUser'>עובד סוציאלי</option>"+
-									"<option value = '4' class='AdmUser'>מנהל</option>"+
-								"</select>"+
-							"</div>"+
-						"</div>"+
-					"</div>"+
+					<div class='form-group'>
+						<label for='username' class='col-sm-2 controlLabel'>סוג משתמש</label>
+						<div class='col-sm-10'>
+							<div class='input-group'>
+								<span class='input-group-addon'><i class='fa fa-slideshare' aria-hidden='true'></i></span>
+								<select type='text' class='form-control' id='userType'>
+									<option value = '0' class='ptUser'>הורה</option>
+									<option value = '1' class='tcUser'>מורה</option>
+									<option value = '2' class='GuUser'>מדריך</option>
+									<option value = '3' class='SWUser'>עובד סוציאלי</option>
+									<option value = '4' class='AdmUser'>מנהל</option>
+								</select>
+							</div>
+						</div>
+					</div>
 
-				"<div id = 'passwordSection'>"+
-					"<div class='form-group'>"+
-						"<label for='password' class='col-sm-2 controlLabel'>:סיסמא</label>"+
-						"<div class='col-sm-10'>"+
-							"<div class='input-group'>"+
-								"<span class='input-group-addon'><i class='fa fa-lock fa-lg' aria-hidden='true'></i></span>"+
-								"<input type='password' class='form-control' name='password' id='password' maxlength='10' placeholder='הכנס סיסמה'/>"+
-							"</div>"+
-						"</div>"+
-					"</div>"+
-					"<div class='form-group'>"+
-						"<label for='confirm'  class='col-sm-2 controlLabel'>:אימות סיסמא</label>"+
-						"<div class='col-sm-10'>"+
-							"<div class='input-group'>"+
-								"<span class='input-group-addon'><i class='fa fa-lock fa-lg' aria-hidden='true'></i></span>"+
-								"<input type='password' class='form-control' name='confirm' id='confirm' maxlength='10' placeholder='אמת בשנית סיסמה'/>"+
-							"</div>"+
-						"</div>"+
-					"</div>"+
-				"</div>"+
-						"<div id='selectCHSection' class='form-group'>"+
-							"<label for='clubHouseName' class='col-sm-2 controlLabel'>:בחר מועדונית</label>"+
-							"<div class='col-sm-10'>"+
-								"<div class='input-group'>"+
-									"<span class='input-group-addon'><i class='fa fa-home' aria-hidden='true'></i></span>"+
-									"<select type='text' id='clubhouse_select_Add' class='form-control clubHouseName' placeholder='בחר מועדונית מתוך הרשימה'>"+
-									"</select>"+
-								"</div>"+
-							"</div>"+
-						"</div>"+
+				<div id = 'passwordSection'>
+					<div class='form-group'>
+						<label for='password' class='col-sm-2 controlLabel'>סיסמא</label>
+						<div class='col-sm-10'>
+							<div class='input-group'>
+								<span class='input-group-addon'><i class='fa fa-lock fa-lg' aria-hidden='true'></i></span>
+								<input type='password' class='form-control' name='password' id='password' maxlength='10' placeholder='הכנס סיסמה'/>
+							</div>
+						</div>
+					</div>
+					<div class='form-group'>
+						<label for='confirm'  class='col-sm-2 controlLabel'>אימות סיסמא</label>
+						<div class='col-sm-10'>
+							<div class='input-group'>
+								<span class='input-group-addon'><i class='fa fa-lock fa-lg' aria-hidden='true'></i></span>
+								<input type='password' class='form-control' name='confirm' id='confirm' maxlength='10' placeholder='אמת בשנית סיסמה'/>
+							</div>
+						</div>
+					</div>
+				</div>
+						<div id='selectCHSection' class='form-group'>
+							<label for='clubHouseName' class='col-sm-2 controlLabel'>בחר מועדונית</label>
+							<div class='col-sm-10'>
+								<div class='input-group'>
+									<span class='input-group-addon'><i class='fa fa-home' aria-hidden='true'></i></span>
+									<select type='text' id='clubhouse_select_Add' class='form-control clubHouseName' placeholder='בחר מועדונית מתוך הרשימה'>
+									</select>
+								</div>
+							</div>
+						</div>
 
-						"<div id='childSection' class='form-group'>"+
-						"</div>"+
-					"<div class='form-group' id='buttons_area'>"+
-					"</div>"+
-				"</form>"+
-			"</div>"+
-		"</div>"
+						<div id='childSection' class='form-group'>
+						</div>
+					<div class='form-group' id='buttons_area'>
+					</div>
+				</form>
+			</div>
+		</div>`
 	}
 	//-------------------------------------------------------------------------------------------------
 	var EditUserOp={
@@ -167,7 +167,7 @@ var usersManagement = function()
 		inputSection: '<label for="" class="col-sm-2 controlLabel">:שם הילד</label>'+
 									'<div class="col-sm-10">'+
 										'<div class="input-group">'+
-											'<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>'+
+											'<span class="input-group-addon"><i class="fa fa-child fa" aria-hidden="true"></i></span>'+
 											'<input id ="childName" class="form-control"  maxlength="20" placeholder="הכנס את שם הילד" dir="rtl"/>'+
 										'</div>'+
 									'</div>'
@@ -241,11 +241,18 @@ var usersManagement = function()
 		 var res = inputsValidation({firstName:firstName,lastName:lastName,username:username,password:sPassword});
 		 if (!res)
 		 	return;
-			 
 		var e;
         e=document.getElementById("userType");
 		var type = e.selectedIndex;
-
+		if (type == User.PARENT || type == User.TEACHER )
+		{
+			childName = document.getElementById("childName").value;
+			if(childName == "")
+			{
+				alert('אנא הזן את שם הילד');
+				return;
+			}
+		}
 		if(type >= 0 && type < User.SOCIAL )
 		{
 			if (page == ADDPAGE)
@@ -373,7 +380,9 @@ var usersManagement = function()
 	var inputsValidation = function(args)
 	{
 		//var usernameRegex  = /^\w+(\-+(\w)*)*$/;
-		var namesRegex = new RegExp("/^([א-תA-Z0-9])+$/");
+		// var namesRegex = new RegExp("/^([א-תA-Z0-9])+$/");
+		HebrewChars = /(\S*[\u05D0]+\S*)/g;
+
 		var spacesRegex = /\s/;
 		if (args.firstName == "" || args.lastName == "" || args.username == "")
 		{
@@ -381,12 +390,12 @@ var usersManagement = function()
 			return false;
 		}
 
-		if( spacesRegex.test(args.firstName) == true || namesRegex.test(args.firstName) == true )
+		if( spacesRegex.test(args.firstName) == true || HebrewChars.test(args.firstName) == true )
 		{
 			alert("שם פרטי שהוזן אינו חוקי");
 			return false;
 		}
-		if( spacesRegex.test(args.lastName) == true || namesRegex.test(args.lastName) == true)
+		if( spacesRegex.test(args.lastName) == true || HebrewChars.test(args.lastName) == true)
 		{
 			alert("שם משפחה שהוזן אינו חוקי");
 			return false;
@@ -425,7 +434,6 @@ var usersManagement = function()
 			else
 			{
 				newUser = User.create(username,firstName,lastName,type,clubKey,user.uid,childName);
-				console.log(newUser);
 				firebase.database().ref('clubhouse/'+clubKey+'/usersList')
 				.push({userkey:user.uid,username:username,type:type});
 			}
@@ -433,9 +441,10 @@ var usersManagement = function()
 			addUser();
 			alert("הוזן בהצלחה");
 		});
-		promise.catch(function(res)
+		promise.catch(function(err)
 		{
-			alert(res.message);
+			if (err.message == 'The email address is badly formatted.')
+			alert('אנא הכנס כתובת דוא"ל חוקית');
 		});
 	}
 	
@@ -481,8 +490,6 @@ var usersManagement = function()
 	// show user list from a selected clubhouse
     var  showUsersPerCH = function(clubhouseSelected)
     {
-		console.log(clubhouseSelected);
-		// if(clubhouseSelected)
 		document.getElementById('usersInCH').innerHTML = "";
 	    var tmpIndex = getClubKeyIndex(clubhouseSelected);
         if(tmpIndex == FAIL)
