@@ -61,13 +61,11 @@ var login=function()
 					correntUser[1] = user.uid; 
 					correntUser[0] = allUsers[user.uid];
 					correntClub[0] = allUsers[user.uid].clubhouseKey;
+					$("#loader").css("display", "inline-block");
+					mainPage.openMainPage(correntUser[1]); 
 				});
 
-			$("#loader").css("display", "inline-block");
-				setTimeout(function()
-				{ 
-					mainPage.openMainPage(correntUser[0]); 
-				}, 500);
+				
 		});
 		promise.catch(function(err)
 		{
