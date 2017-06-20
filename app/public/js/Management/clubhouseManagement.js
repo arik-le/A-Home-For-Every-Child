@@ -171,7 +171,7 @@ var clubhouseManagement = (function()
 				var k = keys[i];
 				var tempName = allClubhouses[k].name;
 					
-				if( tempName === nameArg )
+				if( tempName == nameArg )
 					return true;
 			}
 			return false;
@@ -201,7 +201,7 @@ var clubhouseManagement = (function()
 	{
 		var name = 	document.getElementById("clubhouseNameID").value;
 		var address = document.getElementById("clubhouseAddrID").value;
-		if (name === "" || address === "" )
+		if (name == "" || address == "" )
 		{
 			alert("אנא הכנס שם מועדונית וכתובת");
 			return;
@@ -233,7 +233,7 @@ var clubhouseManagement = (function()
 		});
 	}
 
-	//==================================================================================================
+	//=============================================================
 
 	var CHsellection = function(e)
 	{
@@ -256,7 +256,6 @@ var clubhouseManagement = (function()
 		{
 			
 			var mess=data.val();
-			console.log(login.correntClub[0]);
 			var keys=Object.keys(mess);
 			for(var i=0;i<keys.length;i++)
 				Message.deleteGenMessage(i);
