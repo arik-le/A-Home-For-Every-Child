@@ -45,7 +45,7 @@ var mainPage=function()
 							'</ul>'+
 						'</li>';
                         if(myType < User.GUIDE)
-                            str+='<li><a id="temp0">שליחת טפסים</a></li>';
+                            str+='<li><a id="sendForms">שליחת טפסים</a></li>';
                         else if(myType >= User.GUIDE && myType !=User.ADMIN)
                         	str+='<li><a id="temp1">טפסי מועדונית</a></li>';
                         else
@@ -144,7 +144,8 @@ var mainPage=function()
         loadGeneralMessages();
 
         //listeners
-        $("#crateFormPage").click(fromPage.create);
+        $("#sendForms").click(formPage.loadAllForms);
+        $("#crateFormPage").click(formPage.create);
 		$("#addUser_btn").click(usersManagement.addUser);
         $("#btnEditUser").click(usersManagement.editUser);
         $("#addClubhouse_btn").click(clubhouseManagement.addClubhouse);

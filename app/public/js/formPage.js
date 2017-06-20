@@ -1,4 +1,4 @@
-var fromPage=function()
+var formPage=function()
 { 
     var questions=[];
     var corForm;
@@ -86,11 +86,84 @@ var fromPage=function()
     {
         console.log(s);
     }
+    //================================================================================================
+
+     var showQuestions=function(f)
+    {
+        p("//////");
+        p(f);
+        p("//////");
+       
+    }
+//================================================================================================
+var fillFrom = function(key)
+{
+   firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+key).once("value")
+    .then(function(data)
+    {
+        var keys=[];
+        for(obj in data.be().questions )
+            keys.push(obj);
+        var form=data.val();
+        var str;
+        $("#body").html('');
+        for(var i=0;i<keys.length;i++)
+        {
+            str=	'<div class="row que" id="que_'+i+'">'+
+                        '<label>'+form.questions[keys[i]].question+'</label>'+
+                        '<form id="form_'+i+'"class="choiceList">'+
+                        '</form>'+
+                    '</div>'
+            $("#body").append(str);
+            for(var j=0;j<form.questions[keys[i]].numOfvalues;j++) 
+            {
+                  str=  '<label class="j_lebal">'+(j+1)+'<br />'+ 
+                    '<input type="radio" name="select" value="'+(j+1)+'"/>'+
+                    '</label>';
+                  $("#form_"+i).append(str);  
+            }
+        }
+        var btn='<a id="sendForm_btn" class="btn btn-success btn-lg btn-block">שלח</a>';
+        $("#body").append(btn);
+    });
+    
+}
+var loadAllForms=function()
+{
+    $('.Nav').collapse('hide');
+    firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').once("value")
+    .then(function(data)
+    {
+        var str="";
+        var forms=data.val();
+        var i=0;
+        $("#body").html("");
+        for(key in forms)
+        {
+             str=  '<div class="selectFormDiv" id="form_'+i+'">'+
+                        '<label class="SFL">'+forms[key].subject+'</label>'+
+                    '</div>';
+              $("#body").append(str);
+              $("#form_"+(i++)).click(function()
+              {
+                  fillFrom(key);
+              });
+        }
+
+      
+    });
+}
+    var test=function(id)
+    {
+        fillFrom(id);
+    }
 
 
 //================================================================================================
     
     return {
-        create:create
+        create:create,
+        loadAllForms:loadAllForms,
+        test:test
     }
 }();
