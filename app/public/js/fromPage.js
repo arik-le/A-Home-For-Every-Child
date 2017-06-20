@@ -42,12 +42,14 @@ var fromPage=function()
     }    
 
 //================================================================================================
+
     var finish=function()
     {
         firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+corForm.key+'/questions').set(questions);
         alert("טופס הוזן בהצלחה");
         create();
     }
+    
 //================================================================================================
     var createForm=function()
     {
@@ -61,7 +63,6 @@ var fromPage=function()
         $("#body").html(str);
         $("#plus_btn").click(addQuestionPage);
         $("#finsh_btn").click(finish);
-        
     }
 //================================================================================================
     var create=function()

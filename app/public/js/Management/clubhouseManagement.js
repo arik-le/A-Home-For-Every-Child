@@ -45,7 +45,7 @@ var clubhouseManagement = function()
 									'<div class="col-sm-10">'+
 										'<div class="input-group">'+
 											'<span class="input-group-addon"><i class="fa fa-map-marker fa" aria-hidden="true"></i></span>'+
-											'<input type="text" class="form-control" name="clubhouseAddress" id="clubhouseAddrID"  placeholder="הכנס כתובת מועדונית"/>'+
+											"<input type='text' class='form-control' name='clubhouseAddress' id='clubhouseAddrID'  placeholder='הכנס כתובת מועדונית'/>"+
 										'</div>'+
 									'</div>'+
 								'</div>'+
