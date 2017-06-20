@@ -28,7 +28,7 @@ var formPage=function()
         $("#plus_btn").remove();
         var str='<div class="addQPage">'+
                     '<div class="page">'+            
-                        '<input type="text" class="form-control" name="name" id="newQuestion" maxlength="20" placeholder="הכנס שאלה " dir="rtl" />'+
+                        '<input type="text" class="form-control" name="name" id="newQuestion" placeholder="הכנס שאלה " dir="rtl" />'+
                     '</div>'+
                     '<select class = "userCkecklist" id = "numOfOption" required >'+
                         '<option value="5" >5</option>'+
@@ -47,10 +47,32 @@ var formPage=function()
         questions=[];
         var str=
         '<div class="page">'+
-            '<input type="text" class="form-control" name="name" id="formSubject" maxlength="20" placeholder="הכנס נושא שאלון " dir="rtl" />'+
+            '<label id="allTitles2" dir="rtl">בחר נושא:</label></p>'+
+            '<input type="text" class="form-control" name="name" id="formSubject" maxlength="40" placeholder="הכנס נושא - טופס חדש " dir="rtl" />'+
+            '</br><label id="allTitles2" dir="rtl">בחר מועדונית:</label></p>'+
+            "<div class='input-group'>"+
+                "<span class='input-group-addon'><i class='fa fa-home' aria-hidden='true'></i></span>"+
+                "<select type='text' id='clubhouse_select_Add' class='form-control clubHouseName' placeholder='בחר מועדונית מתוך הרשימה'></select>"+
+            "</div>"+
+            '</br><label id="allTitles2" dir="rtl">בחר מספר שאלות:</label></p>'+
+             "<div class='input-group'>"+
+                "<span class='input-group-addon'><i class='fa fa-home' aria-hidden='true'></i></span>"+
+                "<select type='text' id='clubhouse_select_Add' class='form-control clubHouseName' placeholder='בחר מועדונית מתוך הרשימה'>"+
+                    "<option value='1'>1</option>"+
+                    "<option value='2'>2</option>"+
+                    "<option value='3'>3</option>"+
+                    "<option value='4'>4</option>"+
+                    "<option value='5'>5</option>"+
+                    "<option value='6'>6</option>"+
+                    "<option value='7'>7</option>"+
+                    "<option value='8'>8</option>"+
+                    "<option value='9'>9</option>"+
+                    "<option value='10'>10</option>"+
+                "</select>"+
+            "</div>"+
         '</div>'+
                
-        '<a id="createForm_btn" class="btn btn-success btn-lg btn-block">צור טופס חדש</a>';
+        '</br><a id="createForm_btn" class="btn btn-success btn-lg btn-block">צור טופס חדש</a>';
 
         $("#body").html(str);
         $("#createForm_btn").click(createForm);
@@ -70,7 +92,7 @@ var formPage=function()
         var sub=document.getElementById("formSubject").value;
         var new_form=Form.create(sub);
         corForm = firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').push(new_form);
-        var str='<h1>'+sub+'</h1>'+
+        var str='<h1 id="allTitles">'+sub+'</h1></p>'+
                 '<div class="listQue"></div>'+plus_btn+finsh_btn;
 
         Form.allQ(corForm.key);
@@ -170,24 +192,27 @@ var fillFrom = function(key)
         var form=data.val();
         var str;
         $("#body").html('');
+        $("#body").css("text-align", "right");
+
         for(var i=0;i<keys.length;i++)
         {
-            str=	'<div class="row que" id="que_'+i+'">'+
-                        '<label class = "qstlbl">'+form.questions[keys[i]].question+'</label>'+
-                        '<form id="form_'+i+'"class="choiceList">'+
-                        '</form>'+
-                    '</div>'
+            str='<div class="allQue" id="que_'+i+'">'+
+                    '<h4 class = "qstlbl" dir="rtl">'+form.questions[keys[i]].question+'</h4>'+
+                    '<form id="form_'+i+'"class="choiceList">'+
+                    '</form>'+
+                '</div>'
+
             $("#body").append(str);
             for(var j=0;j<form.questions[keys[i]].numOfvalues;j++) 
             {
-                  str=  '<label class="j_lebal">'+(j+1)+'<br />'+ 
+                  str='<label class="j_lebal">'+(j+1)+'<br />'+ 
                     '<input type="radio" name="select" value="'+(j+1)+'"/>'+
                     '</label>';
                   $("#form_"+i).append(str);  
             }
         }
-        var btn='<a id="sendForm_btn" class="btn btn-success btn-lg btn-block">שלח</a>';
-        $("#body").append(btn);
+        var btn='</br><a id="sendForm_btn" class="btn btn-success btn-lg btn-block">שלח</a>';
+        $("body").append(btn);
     });
     
 }

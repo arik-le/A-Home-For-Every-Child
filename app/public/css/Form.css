@@ -1,25 +1,24 @@
-.anser
+#formSubject
 {
-    display:inline;
-   
+	text-align: center;
 }
 .j_lebal
 {
   margin-right:5%;
 }
-/*.selectR
-{
-  margin-right:29%;  
-}*/
+
 .choiceList
 {
     max-width: 100%;
 }
-.row que
-{
-	text-align: right;
+.allQue{
+	padding:0.5%;
+	background-color:lavender;
+	margin-top:2%;
 }
-
+.qstlbl{
+	margin-right:5%;
+}
 #allTitles2{
 	text-align:center;
 }
@@ -69,4 +68,9 @@ tr{
 {
     margin-top: 5%;
     font-size: 150%;
+}
+.page
+{
+	text-align: right;
+	font-size: 20px;
 }
