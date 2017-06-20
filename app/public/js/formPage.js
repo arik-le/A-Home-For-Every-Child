@@ -167,19 +167,9 @@ var formPage=function()
 
     }
 //================================================================================================
-    //גיא יעצלן מסריח!!!
     var p=function(s)
     {
         console.log(s);
-    }
-    //================================================================================================
-
-     var showQuestions=function(f)
-    {
-        p("//////");
-        p(f);
-        p("//////");
-       
     }
 //================================================================================================
 var fillFrom = function(key)
@@ -207,28 +197,20 @@ var fillFrom = function(key)
             $("#body").append(str);
             for(var j=0;j<form.questions[keys[i]].numOfvalues;j++) 
             {
-<<<<<<< HEAD
                   str=  '<label class="j_lebal">'+(j+1)+'<br />'+ 
                     '<input id="rbtn_'+i+'_'+j+'" type="radio" name="select" value="'+(j+1)+'"/>'+
-=======
-                  str='<label class="j_lebal">'+(j+1)+'<br />'+ 
-                    '<input type="radio" name="select" value="'+(j+1)+'"/>'+
->>>>>>> 944416bdd45284067f5e5a3f6ace56777b438b3a
+
                     '</label>';
                   $("#form_"+i).append(str);  
             }
         }
-<<<<<<< HEAD
+
         var btn='<a id="sendForm_btn" class="btn btn-success btn-lg btn-block">שלח</a>';
         $("#body").append(btn);
         $("#sendForm_btn").click(function()
         {
             sendForm(data.be().questions);
         });
-=======
-        var btn='</br><a id="sendForm_btn" class="btn btn-success btn-lg btn-block">שלח</a>';
-        $("body").append(btn);
->>>>>>> 944416bdd45284067f5e5a3f6ace56777b438b3a
     });
     
 }
@@ -243,14 +225,20 @@ var loadAllForms=function()
         var i=0;
         $("#body").html("");
         for(key in forms)
-        {
-             str=  '<div class="selectFormDiv" id="form_'+i+'">'+
-                        '<label class="SFL">'+forms[key].subject+'</label>'+
+        {  
+            var this_user_ans=false;
+            for(id in forms[key].result)
+                 if(forms[key].result[id].user=== login.correntUser[1])
+                        this_user_ans=true;
+            if(this_user_ans)
+                str=  '<div class="selectFormDivAns" id="form_'+i+'">';
+            else
+                str=  '<div class="selectFormDiv" id="form_'+i+'">';
+                       str+= '<label class="SFL">'+forms[key].subject+'</label>'+
                     '</div>';
               $("#body").append(str);
               $("#form_"+(i++)).click(function()
               {
-                  corForm=key;
                   fillFrom(key);
               });
         }
@@ -258,10 +246,6 @@ var loadAllForms=function()
       
     });
 }
-    var test=function(id)
-    {
-        fillFrom(id);
-    }
 
 //================================================================================================
     var sendForm=function(questions)
@@ -284,9 +268,8 @@ var loadAllForms=function()
             return;
         }
         p(corForm);
-        var result={user:login.correntUser[1],anser:ans};
+        var result={user:login.correntUser[1],answers:ans};
         firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+corForm+'/result').push(result);
-        //return ans;
     }
     return {
         create:create,showForm:showForm,
