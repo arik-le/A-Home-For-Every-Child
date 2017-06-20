@@ -335,7 +335,10 @@ var usersManagement = function()
 			if( type == User.PARENT || type == User.TEACHER)
 				$('#childSection').html(childInput.inputSection);
 			else
-
+			{
+				$('#childSection').html("");
+			}
+			$('#selectCHSection').html("");
 			$('#selectCHSection').html(input);
 
 			for(var i =0; i<clubhousesInfo.length;i++)
