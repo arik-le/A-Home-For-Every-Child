@@ -225,12 +225,8 @@ var loadAllForms=function()
 //================================================================================================
     
     return {
-<<<<<<< HEAD:app/public/js/fromPage.js
-        create:create,showForm:showForm
-=======
-        create:create,
+
+        create:create,showForm:showForm,
         loadAllForms:loadAllForms,
-        test:test
->>>>>>> 11cc9537b99139ff98a7445ad0df7ad2546be638:app/public/js/formPage.js
     }
 }();
