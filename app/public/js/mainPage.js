@@ -17,7 +17,6 @@ var mainPage=function()
     var createNavbar = function(){
 
         var myType = correntUser[0].userType;
-        console.log(myType);
         var str = 
         '<nav class="navbar navbar-default">'+
 			'<div class="container-fluid">'+
