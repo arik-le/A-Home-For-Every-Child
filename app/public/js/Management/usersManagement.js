@@ -425,7 +425,6 @@ var usersManagement = function()
 			else
 			{
 				newUser = User.create(username,firstName,lastName,type,clubKey,user.uid,childName);
-				console.log(newUser);
 				firebase.database().ref('clubhouse/'+clubKey+'/usersList')
 				.push({userkey:user.uid,username:username,type:type});
 			}
@@ -481,8 +480,6 @@ var usersManagement = function()
 	// show user list from a selected clubhouse
     var  showUsersPerCH = function(clubhouseSelected)
     {
-		console.log(clubhouseSelected);
-		// if(clubhouseSelected)
 		document.getElementById('usersInCH').innerHTML = "";
 	    var tmpIndex = getClubKeyIndex(clubhouseSelected);
         if(tmpIndex == FAIL)
