@@ -52,7 +52,6 @@ var formPage=function()
                
         '<a id="createForm_btn" class="btn btn-success btn-lg btn-block">צור טופס חדש</a>';
 
-        
         $("#body").html(str);
         $("#createForm_btn").click(createForm);
     }
@@ -174,7 +173,7 @@ var fillFrom = function(key)
         for(var i=0;i<keys.length;i++)
         {
             str=	'<div class="row que" id="que_'+i+'">'+
-                        '<label>'+form.questions[keys[i]].question+'</label>'+
+                        '<label class = "qstlbl">'+form.questions[keys[i]].question+'</label>'+
                         '<form id="form_'+i+'"class="choiceList">'+
                         '</form>'+
                     '</div>'
