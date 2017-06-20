@@ -17,104 +17,101 @@ var usersManagement = function()
 	var UserPage=
 	{
 		inputSection:
-		'<div class="container">'+
-				'<div class="row main">'+
-				'<div class="panel-heading">'+
-					'<div  class="panel-title text-center">'+
-						'<h2 id="allTitles" class="registerTitle">רישום משתמש</h2>'+
-					'</div>'+
-				'</div> '+
+		"<div class='container'>"+
+				"<div class='row main'>"+
+				"<div class='panel-heading'>"+
+					"<div  class='panel-title text-center'>"+
+						"<h2 id='allTitles' class='registerTitle'>רישום משתמש</h2>"+
+					"</div>"+
+				"</div>"+
 
-			'<div class="main-login main-center">'+
-				'<form class="form-horizontal" method="post" action="#">'+
+			"<div class='main-login main-center'>"+
+				"<form class='form-horizontal' method='post' action='#'>"+
 					
-					'<div class="form-group">'+
-						'<label for="name" class="col-sm-2 controlLabel" >:שם פרטי</label>'+
-						'<div class="col-sm-10">'+
-							'<div class="input-group">'+
-								'<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>'+
-								'<input type="text" class="form-control" name="name" id="UserPName" maxlength="20" placeholder="הכנס שם פרטי" dir="rtl" />'+
-							'</div>'+
-						'</div>'+
-					'</div>'+
+					"<div class='form-group'>"+
+						"<label for='name' class='col-sm-2 controlLabel' >:שם פרטי</label>"+
+						"<div class='col-sm-10'>"+
+							"<div class='input-group'>"+
+								"<span class='input-group-addon'><i class='fa fa-user fa' aria-hidden='true'></i></span>"+
+								"<input type='text' class='form-control' name='name' id='UserPName' maxlength='20' placeholder='הכנס שם פרטי' dir='rtl' />"+
+							"</div>"+
+						"</div>"+
+					"</div>"+
 
-					'<div class="form-group">'+
-						'<label for="UserLastName" class="col-sm-2 controlLabel" id="formTxts">:שם משפחה</label>'+
-						'<div class="col-sm-10">'+
-							'<div class="input-group">'+
-								'<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>'+
-								'<input type="text" class="form-control" name="UserLastName" id="UserLName" maxlength="20" placeholder="הכנס שם משפחה" dir="rtl"/>'+
-							'</div>'+
-						'</div>'+
-					'</div>'+
+					"<div class='form-group'>"+
+						"<label for='UserLastName' class='col-sm-2 controlLabel' id='formTxts'>:שם משפחה</label>"+
+						"<div class='col-sm-10'>"+
+							"<div class='input-group'>"+
+								"<span class='input-group-addon'><i class='fa fa-user fa' aria-hidden='true'></i></span>"+
+								"<input type='text' class='form-control' name='UserLastName' id='UserLName' maxlength='20' placeholder='הכנס שם משפחה' dir='rtl'/>"+
+							"</div>"+
+						"</div>"+
+					"</div>"+
 
-					'<div class="form-group">'+
-						'<label for="username" class="col-sm-2 controlLabel">:שם משתמש</label>'+
-						'<div class="col-sm-10">'+
-							'<div class="input-group">'+
-								'<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>'+
-								'<input type="email" class="form-control" name="username" id="username"  maxlength="40" placeholder="הכנס שם משתמש" dir="rtl"/>'+
-							'</div>'+
-						'</div>'+
-					'</div>'+
+					"<div class='form-group'>"+
+						"<label for='username' class='col-sm-2 controlLabel'>:שם משתמש</label>"+
+						"<div class='col-sm-10'>"+
+							"<div class='input-group'>"+
+								"<span class='input-group-addon'><i class='fa fa-users fa' aria-hidden='true'></i></span>"+
+								"<input type='email' class='form-control' name='username' id='username'  maxlength='40' placeholder='הכנס שם משתמש' dir='rtl'/>"+
+							"</div>"+
+						"</div>"+
+					"</div>"+
 
-					'<div class="form-group">'+
-						'<label for="username" class="col-sm-2 controlLabel">:סוג משתמש</label>'+
-						'<div class="col-sm-10">'+
-							'<div class="input-group">'+
-								'<span class="input-group-addon"><i class="fa fa-slideshare" aria-hidden="true"></i></span>'+
-								'<select type="text" class="form-control" id="userType">'+
-									'<option value = "0" class="ptUser">הורה</option>'+
-									'<option value = "1" class="tcUser">מורה</option>'+
-									'<option value = "2" class="GuUser">מדריך</option>'+
-									'<option value = "3" class="SWUser">עו"ס</option>'+
-									'<option value = "4" class="AdmUser">מנהל</option>'+
-								'</select>'+
-							'</div>'+
-						'</div>'+
-					'</div>'+
+					"<div class='form-group'>"+
+						"<label for='username' class='col-sm-2 controlLabel'>:סוג משתמש</label>"+
+						"<div class='col-sm-10'>"+
+							"<div class='input-group'>"+
+								"<span class='input-group-addon'><i class='fa fa-slideshare' aria-hidden='true'></i></span>"+
+								"<select type='text' class='form-control' id='userType'>"+
+									"<option value = '0' class='ptUser'>הורה</option>"+
+									"<option value = '1' class='tcUser'>מורה</option>"+
+									"<option value = '2' class='GuUser'>מדריך</option>"+
+									"<option value = '3' class='SWUser'>עובד סוציאלי</option>"+
+									"<option value = '4' class='AdmUser'>מנהל</option>"+
+								"</select>"+
+							"</div>"+
+						"</div>"+
+					"</div>"+
 
-				'<div id = "passwordSection">'+
-					'<div class="form-group">'+
-						'<label for="password" class="col-sm-2 controlLabel">:סיסמא</label>'+
-						'<div class="col-sm-10">'+
-							'<div class="input-group">'+
-								'<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>'+
-								'<input type="password" class="form-control" name="password" id="password" maxlength="10" placeholder="הכנס סיסמה"/>'+
-							'</div>'+
-						'</div>'+
-					'</div>'+
-					'<div class="form-group">'+
-						'<label for="confirm" class="col-sm-2 controlLabel">:אימות סיסמא</label>'+
-						'<div class="col-sm-10">'+
-							'<div class="input-group">'+
-								'<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>'+
-								'<input type="password" class="form-control" name="confirm" id="confirm" maxlength="10" placeholder="אמת בשנית סיסמה"/>'+
-							'</div>'+
-						'</div>'+
-					'</div>'+
-				'</div>'+
-						'<div id="selectCHSection" class="form-group">'+
-							'<label for="clubHouseName" class="col-sm-2 controlLabel">:בחר מועדונית</label>'+
-							'<div class="col-sm-10">'+
-								'<div class="input-group">'+
-									'<span class="input-group-addon"><i class="fa fa-home" aria-hidden="true"></i></span>'+
-									'<select type="text" id="clubhouse_select_Add" class="form-control clubHouseName"  placeholder="בחר מועדונית מתוך הרשימה">'+
-									'</select>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
+				"<div id = 'passwordSection'>"+
+					"<div class='form-group'>"+
+						"<label for='password' class='col-sm-2 controlLabel'>:סיסמא</label>"+
+						"<div class='col-sm-10'>"+
+							"<div class='input-group'>"+
+								"<span class='input-group-addon'><i class='fa fa-lock fa-lg' aria-hidden='true'></i></span>"+
+								"<input type='password' class='form-control' name='password' id='password' maxlength='10' placeholder='הכנס סיסמה'/>"+
+							"</div>"+
+						"</div>"+
+					"</div>"+
+					"<div class='form-group'>"+
+						"<label for='confirm' class='col-sm-2 controlLabel'>:אימות סיסמא</label>"+
+						"<div class='col-sm-10'>"+
+							"<div class='input-group'>"+
+								"<span class='input-group-addon'><i class='fa fa-lock fa-lg' aria-hidden='true'></i></span>"+
+								"<input type='passwor' class='form-control' name='confirm' id='confirm' maxlength='10' placeholder='אמת בשנית סיסמה'/>"+
+							"</div>"+
+						"</div>"+
+					"</div>"+
+				"</div>"+
+						"<div id='selectCHSection' class='form-group'>"+
+							"<label for='clubHouseName' class='col-sm-2 controlLabel'>:בחר מועדונית</label>"+
+							"<div class='col-sm-10'>"+
+								"<div class='input-group'>"+
+									"<span class='input-group-addon'><i class='fa fa-home' aria-hidden='true'></i></span>"+
+									"<select type='text' id='clubhouse_select_Add' class='form-control clubHouseName' placeholder='בחר מועדונית מתוך הרשימה'>"+
+									"</select>"+
+								"</div>"+
+							"</div>"+
+						"</div>"+
 
-						'<div id="childSection" class="form-group">'+
-						'</div>'+
-
-
-					'<div class="form-group" id="buttons_area">'+
-						
-					'</div>'+
-				'</form>'+
-			'</div>'+
-		'</div>'
+						"<div id='childSection' class='form-group'>"+
+						"</div>"+
+					"<div class='form-group' id='buttons_area'>"+
+					"</div>"+
+				"</form>"+
+			"</div>"+
+		"</div>"
 	}
 	//-------------------------------------------------------------------------------------------------
 	var EditUserOp={
