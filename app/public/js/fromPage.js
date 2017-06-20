@@ -40,7 +40,23 @@ var fromPage=function()
         $(".listQue").append(str);
         $("#addQuestion_btn").click(addQuestion);
     }    
+//================================================================================================
+    var create=function()
+    {
+        $('.NAV').collapse('hide');
+        $("#body").html("");
+        questions=[];
+        var str=
+        '<div class="page">'+
+            '<input type="text" class="form-control" name="name" id="formSubject" maxlength="20" placeholder="הכנס נושא שאלון " dir="rtl" />'+
+        '</div>'+
+               
+        '<a id="createForm_btn" class="btn btn-success btn-lg btn-block">צור טופס חדש</a>';
 
+        
+        $("#body").html(str);
+        $("#createForm_btn").click(createForm);
+    }
 //================================================================================================
 
     var finish=function()
@@ -64,23 +80,7 @@ var fromPage=function()
         $("#plus_btn").click(addQuestionPage);
         $("#finsh_btn").click(finish);
     }
-//================================================================================================
-    var create=function()
-    {
-        $('.NAV').collapse('hide');
-        $("#body").html("");
-        questions=[];
-        var str=
-        '<div class="page">'+
-            '<input type="text" class="form-control" name="name" id="formSubject" maxlength="20" placeholder="הכנס נושא שאלון " dir="rtl" />'+
-        '</div>'+
-               
-        '<a id="createForm_btn" class="btn btn-success btn-lg btn-block">צור טופס חדש</a>';
 
-        
-        $("#body").html(str);
-        $("#createForm_btn").click(createForm);
-    }
 //================================================================================================
     var p=function(s)
     {

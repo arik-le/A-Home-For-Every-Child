@@ -15,7 +15,66 @@ var clubhouseManagement = function()
 
 
 	///////////////////////////////////////
-	
+	//-------------------------------------------------------------------------------------------------
+    // Initial page for add clubHouse
+	 var addClubhouse = function ()
+	 {
+		page = ADDPAGE;
+		$('.Nav').collapse('hide');
+		$("#body").html(addClubhousePage.inputSection); // opens page 
+		$('#buttonSection').html(addClubhouseBtn.inputSection);
+		$("#addClubhouseBtn").click(addClubhouseListener);
+	 }
+	 //-------------------------------------------------------------------------------------------------
+	 var changeCHListener = function()
+	{
+		var obj={};
+		var name = $('#clubhouseNameID').val();  //current value
+		var address = $('#clubhouseAddrID').val();
+		
+		if(clubToEdit.name != name)
+			obj.name = name;
+
+		if(clubToEdit.address != address)
+			obj.address = address;
+
+		var ref = firebase.database().ref("clubhouse");
+		ref.once("value")
+		.then(function(data)		// 		when value recieved
+		{
+			// in case the root is empty  ->  name is not exist
+			if (data.val() == null)
+				return false;
+
+			var allClubhouses = data.val();   // get the whole tree of clubhouses
+			var keys = Object.keys(allClubhouses);	// get all keys
+			
+			// loop on the answere array to find clubhouse name.
+			for(var i =0; i<keys.length;i++)
+			{
+				var k = keys[i];
+				var tempName = allClubhouses[k].name;
+					
+				if( tempName == obj.name )
+					return true;
+			}
+			return false;	
+		}).then(function(res)
+		{
+			if(res == false)
+			{
+				var cref = firebase.database().ref('clubhouse/');
+				cref.child(clubhousesInfo[edit_clubIndex].key).update(obj);
+				alert("!עודכן בהצלחה");
+				editClubhouse();
+			}
+			else
+			{
+				alert("!מועדונית בשם זה כבר קיימת");
+			}
+		});
+		
+	}
      //-------------------------------------------------------------------------------------------------
      // INJECTION FOR ADDING NEW CLUBHOUSE PAGE
 	var addClubhousePage={
@@ -144,7 +203,7 @@ var clubhouseManagement = function()
 	{
 		var name = 	document.getElementById("clubhouseNameID").value;
 		var address = document.getElementById("clubhouseAddrID").value;
-		if (name == "" || address == "" )
+		if (name === "" || address === "" )
 		{
 			alert("אנא הכנס שם מועדונית וכתובת");
 			return;
@@ -176,55 +235,7 @@ var clubhouseManagement = function()
 		});
 	}
 
-	var changeCHListener = function()
-	{
-		var obj={};
-		var name = $('#clubhouseNameID').val();  //current value
-		var address = $('#clubhouseAddrID').val();
-		
-		if(clubToEdit.name != name)
-			obj.name = name;
-
-		if(clubToEdit.address != address)
-			obj.address = address;
-
-		var ref = firebase.database().ref("clubhouse");
-		ref.once("value")
-		.then(function(data)		// 		when value recieved
-		{
-			// in case the root is empty  ->  name is not exist
-			if (data.val() == null)
-				return false;
-
-			var allClubhouses = data.val();   // get the whole tree of clubhouses
-			var keys = Object.keys(allClubhouses);	// get all keys
-			
-			// loop on the answere array to find clubhouse name.
-			for(var i =0; i<keys.length;i++)
-			{
-				var k = keys[i];
-				var tempName = allClubhouses[k].name;
-					
-				if( tempName == obj.name )
-					return true;
-			}
-			return false;	
-		}).then(function(res)
-		{
-			if(res == false)
-			{
-				var cref = firebase.database().ref('clubhouse/');
-				cref.child(clubhousesInfo[edit_clubIndex].key).update(obj);
-				alert("!עודכן בהצלחה");
-				editClubhouse();
-			}
-			else
-			{
-				alert("!מועדונית בשם זה כבר קיימת");
-			}
-		});
-		
-	}
+	//==================================================================================================
 
 	var CHsellection = function(e)
 	{
@@ -391,16 +402,7 @@ var clubhouseManagement = function()
 		return{ clubhousesInfo:clubhousesInfo} ;  
 	}
 
-	//-------------------------------------------------------------------------------------------------
-    // Initial page for add clubHouse
-	 var addClubhouse = function ()
-	 {
-		page = ADDPAGE;
-		$('.Nav').collapse('hide');
-		$("#body").html(addClubhousePage.inputSection); // opens page 
-		$('#buttonSection').html(addClubhouseBtn.inputSection);
-		$("#addClubhouseBtn").click(addClubhouseListener);
-	 }
+
 	 //-------------------------------------------------------------------------------------------------
     // Initial page for edit clubHouse
 	 var editClubhouse = function()
