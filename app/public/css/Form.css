@@ -16,7 +16,6 @@
     background-color: yellow;
     max-width: 100%;
 }
-<<<<<<< HEAD
 
 #allTitles2{
 	text-align:center;
@@ -26,12 +25,12 @@ th{
 	text-align:right;
 }
 tr{
+  font-size:90%;
 	text-align:right;
 	color:black;
 }
 
 #formTable{
-
 	margin:5%;
 	padding:2%;
 	background-color:#fcffd2;
@@ -53,7 +52,6 @@ tr{
 #group_btn{
 	margin-left:5%;
 	float:left;
-	display:inline-block;
 	text-align:center;
 	padding:3%
 }
