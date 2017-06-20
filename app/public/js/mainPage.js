@@ -157,7 +157,7 @@ var mainPage=function()
         $("#aboutUs_btn").click(aboutUs.openAboutPage);
         $("#logout").click(logout);
         $("#logout1").click(logout);
-        $("#showClubHouseForms").click(fromPage.showForm);
+        $("#showClubHouseForms").click(formPage.showForm);
     }
 
 
