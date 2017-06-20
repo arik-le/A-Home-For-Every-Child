@@ -15,16 +15,18 @@ var login=function()
 				"<div class='form'>"+
 					"<div class='login-form'>"+
 						"<img src ='images/pictureLogo.jpg' width='200' height='110'/>"+
-						"<input  id='username' type='text' value='sdfdsf@gmail.com' placeholder='הכנס שם משתמש'/>"+
-						"<input  id='password' type='password' value='111111' placeholder='הכנס סיסמה'/>"+
+<<<<<<< HEAD
+						"<input  id='username' type='text' value='' placeholder='הכנס שם משתמש'/>"+
+						"<input  id='password' type='password' value='' placeholder='הכנס סיסמה'/>"+
+=======
+						"<input  id='username' type='text'  placeholder='הכנס שם משתמש'/>"+
+						"<input  id='password' type='password'  placeholder='הכנס סיסמה'/>"+
+>>>>>>> 6e9ec4a208172c55b5de0034c3f886dccf2d9cbf
 						"<h5 id ='forgotPass'>שכחתי סיסמה</h5>"+
 						"<button id = 'cmdLogin' >כניסה</button>"+
 						"<img id='loader' src='images/homepreloader.gif'/ width ='40%'>"+
-
 					"</div>"+
-					
 				"</div>"+
-
 			"</div>"+
 		"</div>"
 	};

@@ -167,7 +167,7 @@ var usersManagement = function()
 		inputSection: '<label for="" class="col-sm-2 controlLabel">:שם הילד</label>'+
 									'<div class="col-sm-10">'+
 										'<div class="input-group">'+
-											'<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>'+
+											'<span class="input-group-addon"><i class="fa fa-child fa" aria-hidden="true"></i></span>'+
 											'<input id ="childName" class="form-control"  maxlength="20" placeholder="הכנס את שם הילד" dir="rtl"/>'+
 										'</div>'+
 									'</div>'
