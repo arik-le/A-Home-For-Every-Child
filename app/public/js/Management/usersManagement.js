@@ -390,12 +390,12 @@ var usersManagement = function()
 			return false;
 		}
 
-		if( spacesRegex.test(args.firstName) == true || HebrewChars.test(args.firstName) == true )
+		if( spacesRegex.test(args.firstName) == true)
 		{
 			alert("שם פרטי שהוזן אינו חוקי");
 			return false;
 		}
-		if( spacesRegex.test(args.lastName) == true || HebrewChars.test(args.lastName) == true)
+		if( spacesRegex.test(args.lastName) == true)
 		{
 			alert("שם משפחה שהוזן אינו חוקי");
 			return false;

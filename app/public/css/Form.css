@@ -74,7 +74,6 @@ tr{
 	float:right;
 	max-width: 74%;
 	margin-top:3%;
-
 }
 .numOfAnswers{
 	text-align: right;
@@ -92,4 +91,19 @@ tr{
 {
 	overflow: scroll;
 	max-height: 50%;
+}
+.formRec
+{
+	width:80%;
+	margin:0.5%;
+	margin-top:2%;
+	margin-right: 2%;
+	padding:5%;
+	font-size:95%;
+	border:0;
+	text-align: center;
+	background: #ECE9E6;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	box-shadow: 5px 5px gray;
 }

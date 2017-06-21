@@ -44,7 +44,6 @@ var login=function()
 
 		var auth = firebase.auth();
 		
-	
 		var promise = auth.signInWithEmailAndPassword(username,password);
 		promise.then(function(user){
 			var ref = firebase.database().ref("users");
@@ -67,10 +66,11 @@ var login=function()
 		});
 		promise.catch(function(err)
 		{
-			if(err.message == 'the email address is badly formatted.')
+			alert("נא למלא משתמש תקף וסיסמה");
+			/*if(err.message == 'the email address is badly formatted.')
 				alert("שם המשתמש שהוזן אינו כתובת מייל חוקית");
 			if(err.message == 'There is no user record corresponding to this identifier. The user may have been deleted.')
-				alert('שם משתמש או סיסמא אינם נכונים');
+				alert('שם משתמש או סיסמא אינם נכונים');*/
 		});
 	}
 

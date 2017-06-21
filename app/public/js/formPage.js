@@ -175,6 +175,7 @@ var formPage=function()
 		    '</tr>`';
         return queStr;
     }
+    
     var keysArray=function(objects)
     {
         var keys=[];
@@ -284,7 +285,6 @@ var formPage=function()
                     $("#body").append(btn);
                 });
             }
-            
         });
     }
     var loadAllForms=function()
@@ -300,7 +300,7 @@ var formPage=function()
             for(key in forms)
             {
                 var tempId ="form_"+i;
-                str='<a class="btn btn-sq-lg clubSquare" id="'+tempId+'">'+
+                str='<a class="btn btn-sq-lg formRec" id="'+tempId+'">'+
                 '<i class="fa fa-clipboard fa-2x"></i><br/>'+forms[key].subject+'</a>';
                 $("#body").append(str);
                 mainPage.paintButton(i,tempId);
@@ -360,6 +360,8 @@ var formPage=function()
             showForm(form,user);
         });
     }
+
+    var showForms 
     return {
         create:create,showForm:showForm,
         loadAllForms:loadAllForms,

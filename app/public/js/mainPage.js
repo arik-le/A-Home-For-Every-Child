@@ -47,7 +47,7 @@ var mainPage=function()
                         if(myType < User.GUIDE)
                             str+='<li><a id="sendForms">שליחת טפסים</a></li>';
                         else if(myType >= User.GUIDE && myType !=User.ADMIN)
-                        	str+='<li><a id="temp1">טפסי מועדונית</a></li>';
+                        	str+='<li><a id="showClubHouseForms">טפסי מועדונית</a></li>';
                         else
                         {
 						str+='<li role="separator" class="divider"></li>'+
@@ -137,9 +137,7 @@ var mainPage=function()
             var addNavbar = createNavbar();
 
             $("body").html(header+addNavbar);
-
             $("#userName_lbl").html(correntUser[0].firstName);
-
             $("#homePage").click(function(){
                 $('.Nav').collapse('hide');
                 loadGeneralMessages();

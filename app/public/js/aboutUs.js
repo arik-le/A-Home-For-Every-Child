@@ -1,6 +1,5 @@
 var aboutUs=function()
 {
-    
     var aboutPage =
     {
     inputSection:
