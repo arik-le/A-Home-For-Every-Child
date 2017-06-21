@@ -65,12 +65,12 @@ var clubhouseManagement = (function()
 			{
 				var cref = firebase.database().ref('clubhouse/');
 				cref.child(clubhousesInfo[edit_clubIndex].key).update(obj);
-				alert("!עודכן בהצלחה");
+				alert("עודכן בהצלחה");
 				editClubhouse();
 			}
 			else
 			{
-				alert("!מועדונית בשם זה כבר קיימת");
+				alert("מועדונית בשם זה כבר קיימת");
 			}
 		});
 		

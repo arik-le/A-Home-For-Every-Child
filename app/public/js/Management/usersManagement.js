@@ -271,7 +271,7 @@ var usersManagement = function()
 			}
 			if(type == User.GUIDE)
 				childName="";
-				
+
 			checkAndPush(username,firstName,lastName,type,clubKey,childName);
 		}
 		else if (type == User.SOCIAL)
@@ -732,49 +732,54 @@ var usersManagement = function()
 
 	var deleteUser = function(uType)
 	{
-		if(uType == OS_TYPE)    //if the user is Social worker - then it delete him from several clubhouses
-			deleteUserInCH();
-		else if(uType == User.ADMIN)
+		if(confirm("האם אתה בטוח?"))
 		{
-			firebase.database().ref("users/"+userToEdit.userKey).remove();
-			alert("המשתמש הוסר בהצלחה");
-			editUser();
+			if(uType == OS_TYPE)    //if the user is Social worker - then it delete him from several clubhouses
+				deleteUserInCH();
+			else if(uType == User.ADMIN)
+			{
+				firebase.database().ref("users/"+userToEdit.userKey).remove();
+				alert("המשתמש הוסר בהצלחה");
+				editUser();
+			}
+			else
+			{
+				var clubKey = clubhousesInfo[clubIndex_Edit].key; 
+				firebase.database().ref("clubhouse/"+clubKey+"/usersList").once("value")
+				.then(function(data)
+				{
+					if (data.val() == null)
+					{
+						alert("לא נמצאו משתמשים להציג ");
+						return;
+					}
+					var users = data.val();   // get the whole tree of clubhouses
+					var keys = Object.keys(users);	// get all keys
+						
+					for(var i =0; i<keys.length;i++)
+					{
+						var key = users[keys[i]].userkey;
+						var k = keys[i];
+						if(userToEdit.userKey == users[keys[i]].userkey)
+						{
+							firebase.database().ref("clubhouse/"+clubKey+"/usersList").child(k).remove();
+							return "true";
+						}
+					}
+					return ("false")
+				}).then(function(res)
+				{
+					if(res == "true")
+					{
+						firebase.database().ref("users/"+userToEdit.userKey).remove();
+						alert("המשתמש הוסר בהצלחה");
+						editUser();
+					}
+				});
+			}
 		}
 		else
-		{
-			var clubKey = clubhousesInfo[clubIndex_Edit].key; 
-			firebase.database().ref("clubhouse/"+clubKey+"/usersList").once("value")
-			.then(function(data)
-			{
-				if (data.val() == null)
-				{
-					alert("לא נמצאו משתמשים להציג ");
-					return;
-				}
-				var users = data.val();   // get the whole tree of clubhouses
-				var keys = Object.keys(users);	// get all keys
-					
-				for(var i =0; i<keys.length;i++)
-				{
-					var key = users[keys[i]].userkey;
-					var k = keys[i];
-					if(userToEdit.userKey == users[keys[i]].userkey)
-					{
-						firebase.database().ref("clubhouse/"+clubKey+"/usersList").child(k).remove();
-						return "true";
-					}
-				}
-				return ("false")
-			}).then(function(res)
-			{
-				if(res == "true")
-				{
-					firebase.database().ref("users/"+userToEdit.userKey).remove();
-					alert("המשתמש הוסר בהצלחה");
-					editUser();
-				}
-			});
-		}	
+			return;	
 	}
 
 	var deleteUserInCH = function()
