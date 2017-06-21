@@ -144,7 +144,6 @@ var sendMessagePage = function()
 			$("#TypeUserSM").html(select);
 			updateUserList();
 		}
-
 	}
 
 //-------------------------------------------------------------------------------------------------

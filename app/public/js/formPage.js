@@ -5,7 +5,8 @@ var formPage=function()
     var plus_btn='<a href="#" class="btn btn-info btn-lg" id="plus_btn">'+
                   '<span class="glyphicon glyphicon-plus"></span>'+ 
                 '</a>';
-    var finsh_btn='<a href="#" class="btn btn-info btn-lg " id="finsh_btn">סיום</a>';
+    var finish_btn='<button type="button" class="btn btn-success btn-lg " id="finish_btn" >סיום</button>'
+
 
 //================================================================================================
     var addQuestion=function()
@@ -52,12 +53,12 @@ var formPage=function()
             '</br><label id="allTitles2" dir="rtl">בחר מועדונית:</label></p>'+
             "<div class='input-group'>"+
                 "<span class='input-group-addon'><i class='fa fa-home' aria-hidden='true'></i></span>"+
-                "<select type='text' id='clubhouse_select_Add' class='form-control clubHouseName' placeholder='בחר מועדונית מתוך הרשימה'></select>"+
+                "<select type='text' id='clubhousesForm' class='form-control clubHouseName'></select>"+
             "</div>"+
             '</br><label id="allTitles2" dir="rtl">בחר מספר שאלות:</label></p>'+
              "<div class='input-group'>"+
                 "<span class='input-group-addon'><i class='fa fa-home' aria-hidden='true'></i></span>"+
-                "<select type='text' id='clubhouse_select_Add' class='form-control clubHouseName' placeholder='בחר מועדונית מתוך הרשימה'>"+
+                "<select type='text'  id='numOfQustions' class='form-control'>"+
                     "<option value='1'>1</option>"+
                     "<option value='2'>2</option>"+
                     "<option value='3'>3</option>"+
@@ -68,13 +69,18 @@ var formPage=function()
                     "<option value='8'>8</option>"+
                     "<option value='9'>9</option>"+
                     "<option value='10'>10</option>"+
+                    "<option value='11'>11</option>"+
+                    "<option value='12'>12</option>"+
+                    "<option value='13'>13</option>"+
+                    "<option value='14'>14</option>"+
+                    "<option value='15'>15</option>"+
                 "</select>"+
             "</div>"+
         '</div>'+
                
         '</br><a id="createForm_btn" class="btn btn-success btn-lg btn-block">צור טופס חדש</a>';
-
         $("#body").html(str);
+        updateClubs();
         $("#createForm_btn").click(createForm);
     }
 //================================================================================================
@@ -89,16 +95,52 @@ var formPage=function()
 //================================================================================================
     var createForm=function()
     {
-        var sub=document.getElementById("formSubject").value;
+        var sub = document.getElementById("formSubject").value;
+        var numOfQustions = document.getElementById("numOfQustions").value;
+        var toClubHouse = document.getElementById("clubhousesForm").value;
+        if(sub == "" || sub == undefined)
+        {
+            alert("אנה הזן שם לטופס");
+            return;
+        }
+        if(toClubHouse == "nun")
+        {
+            alert("אנה בחר מועדונית");
+            return;
+        }
+        if(numOfQustions == "nun")
+        {
+            alert("אנה בחר מספר שאלות");
+            return;
+        }
+        
         var new_form=Form.create(sub);
         corForm = firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').push(new_form);
+       
+        var str='<div id="allTitles">'+sub+'</div></p>'
+        $("#body").html(str+"<div id='listQue'></div>");      
+        for(var i=0;i<numOfQustions;i++)
+        {
+            var k=i+1;
+            var list='<div id="Q_'+i+'">'+
+                    '<input type="text" class="form-control qestionInput" maxlength="100" placeholder="שאלה '+k+'" dir="rtl" />'+
+                    "<select type='text' value='nan'  id='numOfAnswers' class='form-control clubHouseName' placeholder='בחר מועדונית מתוך הרשימה'>"+
+                        "<option value='5_Options'>5</option>"+
+                        "<option value='10_Options'>10</option>"+
+                    "</select>"+
+                '</div>';
+            $("#listQue").append(list);
+        }
+        $("#body").append(finish_btn);
+
+
+        /*
         var str='<h1 id="allTitles">'+sub+'</h1></p>'+
                 '<div class="listQue"></div>'+plus_btn+finsh_btn;
-
         Form.allQ(corForm.key);
         $("#body").html(str);
         $("#plus_btn").click(addQuestionPage);
-        $("#finsh_btn").click(finish);
+        $("#finsh_btn").click(finish);*/
     }
 
 //================================================================================================
@@ -163,7 +205,6 @@ var formPage=function()
 				<a id="del_btn" class="btn btn-danger btn-sq-sm"><span class="glyphicon glyphicon-trash"></span></a>
 			</div>`;
         $("#body").html(showExactForm);
-
     }
 //================================================================================================
     //גיא יעצלן מסריח!!!
@@ -181,70 +222,87 @@ var formPage=function()
        
     }
 //================================================================================================
-var fillFrom = function(key)
-{
-   firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+key).once("value")
-    .then(function(data)
-    {
-        var keys=[];
-        for(obj in data.be().questions )
-            keys.push(obj);
-        var form=data.val();
-        var str;
-        $("#body").html('');
-        $("#body").css("text-align", "right");
-
-        for(var i=0;i<keys.length;i++)
+        var fillFrom = function(key)
         {
-            str='<div class="allQue" id="que_'+i+'">'+
-                    '<h4 class = "qstlbl" dir="rtl">'+form.questions[keys[i]].question+'</h4>'+
-                    '<form id="form_'+i+'"class="choiceList">'+
-                    '</form>'+
-                '</div>'
-
-            $("#body").append(str);
-            for(var j=0;j<form.questions[keys[i]].numOfvalues;j++) 
+        firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+key).once("value")
+            .then(function(data)
             {
-                  str='<label class="j_lebal">'+(j+1)+'<br />'+ 
-                    '<input type="radio" name="select" value="'+(j+1)+'"/>'+
-                    '</label>';
-                  $("#form_"+i).append(str);  
-            }
+                var keys=[];
+                for(obj in data.be().questions )
+                    keys.push(obj);
+                var form=data.val();
+                var str;
+                $("#body").html('');
+                $("#body").html('<div id="allTitles">'+form.subject+'</div></p>');
+                $("#body").css("text-align", "right");
+
+                for(var i=0;i<keys.length;i++)
+                {
+                    str='<div class="allQue" id="que_'+i+'">'+
+                            '<h4 class = "qstlbl" dir="rtl">'+form.questions[keys[i]].question+'</h4>'+
+                            '<form id="form_'+i+'"class="choiceList">'+
+                            '</form>'+
+                        '</div>'
+
+                    $("#body").append(str);
+                    for(var j=0;j<form.questions[keys[i]].numOfvalues;j++) 
+                    {
+                        str='<label class="j_lebal">'+(j+1)+'<br />'+ 
+                            '<input type="radio" name="select" value="'+(j+1)+'"/>'+
+                            '</label>';
+                        $("#form_"+i).append(str);  
+                    }
+                }
+            });
+            var btn='<a id="sendForm_btn" class="btn btn-success btn-md btn-block">שלח</a>';
+            $("body").append(btn);
         }
-        var btn='</br><a id="sendForm_btn" class="btn btn-success btn-lg btn-block">שלח</a>';
-        $("body").append(btn);
-    });
-    
-}
-var loadAllForms=function()
-{
-    $('.Nav').collapse('hide');
-    firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').once("value")
-    .then(function(data)
-    {
-        var str="";
-        var forms=data.val();
-        var i=0;
-        $("#body").html("");
-        for(key in forms)
+        var loadAllForms=function()
         {
-             str=  '<div class="selectFormDiv" id="form_'+i+'">'+
-                        '<label class="SFL">'+forms[key].subject+'</label>'+
-                    '</div>';
-              $("#body").append(str);
-              $("#form_"+(i++)).click(function()
-              {
-                  fillFrom(key);
-              });
+            $('.Nav').collapse('hide');
+            firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').once("value")
+            .then(function(data)
+            {
+                var str="";
+                var forms=data.val();
+                var i=0;
+                $("#body").html("");
+                for(key in forms)
+                {
+                    var tempId ="form_"+i;
+                    str='<a class="btn btn-sq-lg clubSquare" id="'+tempId+'">'+
+                    '<i class="fa fa-clipboard fa-2x"></i><br/>'+forms[key].subject+'</a>';
+                    $("#body").append(str);
+                    mainPage.paintButton(i,tempId);
+                    $("#form_"+(i++)).click(function()
+                    {
+                        fillFrom(key);
+                    });
+                    
+                }
+
+            
+            });
+        }
+        
+        var test=function(id)
+        {
+            fillFrom(id);
         }
 
-      
-    });
-}
-    var test=function(id)
-    {
-        fillFrom(id);
-    }
+    var updateClubs=function()				//update the list of clubHouses
+	{		
+        firebase.database().ref("clubhouse/").once("value")
+        .then(function(data)
+        {
+            var clubs=data.val();
+            var keys=Object.keys(clubs);
+            for(var i=0;i<keys.length;i++)
+                $("#clubhousesForm").append('<option value='+clubs[keys[i]].ClubhouseDBkey+'>'+clubs[keys[i]].name+'</option>');
+
+            $("#clubhousesForm").append('<option value="allClubs">כל המועדוניות</option>');
+        });
+	}
 
 //================================================================================================
     

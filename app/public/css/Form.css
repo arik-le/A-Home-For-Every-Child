@@ -57,13 +57,6 @@ tr{
 	text-align:center;
 	padding:3%
 }
-.selectFormDiv
-{
-    background-color: white;
-    width: 100%;
-    height: 75px;
-    margin-top: 1%;
-}
 .SFL
 {
     margin-top: 5%;
@@ -73,4 +66,30 @@ tr{
 {
 	text-align: right;
 	font-size: 20px;
+}
+
+.qestionInput
+{
+	text-align: right;
+	float:right;
+	max-width: 74%;
+	margin-top:3%;
+
+}
+#numOfAnswers{
+	text-align: right;
+	float:left;
+	max-width: 25%;
+	margin-top:3%;
+}
+#finish_btn
+{
+	margin-top:5%;
+	width: 100%;
+}
+
+#listQue
+{
+	overflow: scroll;
+	max-height: 50%;
 }
