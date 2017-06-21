@@ -21,7 +21,6 @@ var formPage=function()
         $(".addQPage").remove();
        $("#body").append(plus_btn);
        $("#plus_btn").click(addQuestionPage);
-       // p(corForm.key);
     }
 
 //================================================================================================
@@ -147,7 +146,6 @@ var formPage=function()
                 questions[i-1]={numOfvalues:a,question:q};
             }
             var newForm=Form.create(sub,name,questions);      
-            p(toClubHouse);
             if(toClubHouse != "allClubs")
                 firebase.database().ref('clubhouse/'+toClubHouse+'/forms').push(newForm);
             else
@@ -169,7 +167,7 @@ var formPage=function()
     var addQtoTable=function(q,a,i)
     {
         var queStr='<tr>'+
-					  '<th scope="row">'+i+'</th>'+
+					  '<th scope="row">'+(i+1)+'</th>'+
 					  '<td>'+q.question+'</td>'+
 					  '<td>'+a[i]+'/'+q.numOfvalues+'</td>'+
 		    '</tr>`';
@@ -185,11 +183,9 @@ var formPage=function()
     }
     var showForm = function(form,user)
     {
+        
         $('.NAV').collapse('hide');
         $("#body").html("");      
-
-
-
         var showExactForm = 
         
         `<h2 id='allTitles'>`+form.subject+`</h2>
@@ -211,11 +207,10 @@ var formPage=function()
         var keys=keysArray(form.questions);
 		for(i=0;i<keys.length;i++)
             showExactForm+=addQtoTable(form.questions[keys[i]],ans,i);
-          firebase.database().ref('users/'+user).once("value")
+        firebase.database().ref('users/'+user).once("value")
         .then(function(data)
         {
             var thisUser=data.val();
-            p(thisUser);
             showExactForm+=  `</tbody>
                     </table>
                 </div>
@@ -288,7 +283,6 @@ var formPage=function()
                     $("#body").append(btn);
                     $("#sendForm_btn").click(function()
                     {
-                       // p(data.key);
                         sendForm(data.be().questions,data.key);
                     })
                 });
@@ -303,6 +297,7 @@ var formPage=function()
         {
             var str="";
             var forms=data.val();
+            var keys=Object.keys(forms);
             var i=0;
             $("#body").html("");
             for(key in forms)
@@ -312,9 +307,11 @@ var formPage=function()
                 '<i class="fa fa-clipboard fa-2x"></i><br/>'+forms[key].subject+'</a>';
                 $("#body").append(str);
                 mainPage.paintButton(i,tempId);
-                $("#form_"+(i++)).click(function()
+                $("#form_"+(i++)).click(function(e)
                 {
-                    fillFrom(key);
+                    var id=e.target.id;
+                    id=id.substring(5,id.length); 
+                    fillFrom(keys[id]);
                 });
             }
         });
@@ -374,7 +371,13 @@ var formPage=function()
     {
         var clubhouses = login.correntUser[0].clubhouseKey;
         var myType = login.correntUser[0].userType;
-        
+        var users,user;
+        var fs=[];
+        firebase.database().ref('users/').once("value")
+        .then(function(data)
+        {
+            users=data.val();
+        });
         if(myType == User.GUIDE)
         {
             //load next page forms//
@@ -401,21 +404,64 @@ var formPage=function()
                 else
                     $("#body").append(str);
                 mainPage.paintButton(i,tempId);
-                $("#clubForm_"+(i++)).click(function()
+                $("#clubForm_"+(i++)).click(function(e)
                 {
-                    str=   "<div class='row'><h2 id = 'allTitles'>טפסי מועדונית</h2></br>"+
-                        '<div class="row massage">'+             
-                            '<span class="glyphicon glyphicon-trash col-xs-2 trash"></span>'+
-                                '<h5 class="topic col-xs-offset-2 col-xs-6" data-toggle="modal" data-target="#myModal"  dir="rtl"></h5>'+
-                                    '<span class="glyphicon glyphicon-list-alt col-xs-1 envelopeR" id="enve"></span>'+
-                                '<div class="col-xs-1"></div></div></div>';7
-                    $("#body").html(str);
+                    var str="<div class='row allForms'>"+
+                                "<h2 id = 'allTitles'>טפסי מועדונית</h2></br>"+
+                             '</div>';
+                    $("#body").html(str);          
+                    var ans,k=0;
+                    var index=e.target.id;
+                    index=index.substring(9,index.length); 
+                    var keys=Object.keys(clubs);
+                    var forms=clubs[keys[index]].forms;
+                    for(i in forms)
+                    {
+                            
+                            if(forms[i].result!=null)
+                            {
+                               
+                                res=forms[i].result;
+                                for(j in res)
+                                {
+                                    user=res[j].user;
+                                    str=   '<div class="row massage" id="Form_'+(k++)+'">'+   
+                                                '<span class="glyphicon glyphicon-trash col-xs-2 trash"></span>'+
+                                                '<h5 class="topic  col-xs-5">'+' מאת :'+users[user].firstName+' '+users[user].lastName+'</h5>'+
+                                                '<h5 class="topic  col-xs-3">'+forms[i].subject+'</h5>'+
+                                                '<span class="glyphicon glyphicon-list-alt col-xs-1 envelopeR" id="enve"></span>'+
+                                                '<div class="col-xs-1"></div>';
+                                            '</div>'+
+                                     $(".allForms").append(str);
+                                     fs.push({form:forms[i],user:user});
+                                }
+                                var delayMillis = 1500; //1.5 secon
+                                setTimeout(function() {
+                                    
+                                         formLis(fs);
+                                }, delayMillis);  
+                            }
+                    }
                 });
             }
+         /*     
+           p(fs);*/
         });
     }
-
-    var showForms 
+    var formLis=function(fs)
+    {
+        for(var i=0;i<fs.length;i++)
+        {
+            // p(i);
+            $("#Form_"+i).click(function()
+            {
+                    p(fs[i].form.subject);
+                    p(fs[i].user);
+                    p("------------");
+                showForm(fs[i].form,fs[i].user);
+            });
+        }
+    }
     return {
         create:create,
         showForm:showForm,
