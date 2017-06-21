@@ -274,14 +274,19 @@ var formPage=function()
                         $("#body").append(str);
                         for(var j=0;j<form.questions[keys[i]].numOfvalues;j++) 
                         {
-                            str='<label class="j_lebal">'+(j+1)+'<br />'+ 
-                                '<input type="radio" name="select" value="'+(j+1)+'"/>'+
+                            str='<label  class="j_lebal">'+(j+1)+'<br />'+ 
+                                '<input id="rbtn_'+i+'_'+j+'" type="radio" name="select" value="'+(j+1)+'"/>'+
                                 '</label>';
                             $("#form_"+i).append(str);  
                         }
                     }
                     var btn='<a id="sendForm_btn" class="btn btn-success btn-lg btn-block">שלח</a>';
                     $("#body").append(btn);
+                    $("#sendForm_btn").click(function()
+                    {
+                       // p(data.key);
+                        sendForm(data.be().questions,data.key);
+                    })
                 });
             }
             
@@ -327,7 +332,7 @@ var formPage=function()
 	}
 
 //================================================================================================
-    var sendForm=function(questions)
+    var sendForm=function(questions,formKey)
     {
         var ans=[];
         for(var i=0;i<numOfQuestions;i++)
@@ -340,14 +345,15 @@ var formPage=function()
                     ans.push(j+1);
             }
         }
+       
         if(ans.length<numOfQuestions)
         {
             alert("יש לענות על כל השאלות");
             return;
         }
-        p(corForm);
         var result={user:login.correntUser[1],answers:ans};
-        firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+corForm+'/result').push(result);
+        firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+formKey+'/result').push(result);
+        loadAllForms()
     }
 
     var test=function()
