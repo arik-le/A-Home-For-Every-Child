@@ -103,14 +103,29 @@ var formPage=function()
     }
 
 //================================================================================================
-
-    var showForm = function()
+    var addQtoTable=function(q,a,i)
+    {
+        var queStr='<tr>'+
+					  '<th scope="row">'+i+'</th>'+
+					  '<td>'+q.question+'</td>'+
+					  '<td>'+a[i]+'/'+q.numOfvalues+'</td>'+
+		    '</tr>`';
+        return queStr;
+    }
+    var keysArray=function(objects)
+    {
+        var keys=[];
+        for(obj in objects )
+            keys.push(obj);
+        return keys;
+    }
+    var showForm = function(form,user)
     {
         $('.NAV').collapse('hide');
-        $("#body").html("");
+        $("#body").html("");      
         var showExactForm = 
         
-        `<h2 id='allTitles'>נושא הטופס</h2>
+        `<h2 id='allTitles'>`+form.subject+`</h2>
 			<div id="formTable" dir='rtl'>
 				<table class="table table-striped" >
 				  <thead>
@@ -120,51 +135,36 @@ var formPage=function()
 					  <th>ערך</th>
 					</tr>
 				  </thead>
-				  <tbody>
-					<tr>
-					  <th scope="row">1</th>
-					  <td>האם ההתנהגות של הילד השתפרה בשבוע הנוכחי?</td>
-					  <td>1/5</td>
-					</tr>
-					<tr>
-					  <th scope="row">1</th>
-					  <td>האם ההתנהגות של הילד השתפרה בשבוע הנוכחי?</td>
-					  <td>2/10</td>
-					</tr><tr>
-					  <th scope="row">1</th>
-					  <td>האם ההתנהגות של הילד השתפרה בשבוע הנוכחי?</td>
-					  <td>3/5</td>
-					<tr>
-					  <th scope="row">1</th>
-					  <td>האם ההתנהגות של הילד השתפרה בשבוע הנוכחי?</td>
-					  <td>1/10</td>
-					</tr>
-					<tr>
-					  <th scope="row">1</th>
-					  <td>האם ההתנהגות של הילד השתפרה בשבוע הנוכחי?</td>
-					  <td>2/5</td>
-					</tr><tr>
-					  <th scope="row">1</th>
-					  <td>האם ההתנהגות של הילד השתפרה בשבוע הנוכחי?</td>
-					  <td>7/10</td>
-					<tr>
-
-				  </tbody>
-				</table>
-			</div>
-			
-			<div class="fromDeatails">
-				<h5 id="formLbl">מאת: הורה32</h5>
-				<h5 id="formLbl">ילד: ישראל ישראלי</h5>
-				<h5 id="formLbl">תאריך: 29/5/17</h5>
-			</div>
-			
-			<div id="group_btn">
-				<a id="close_btn" class="btn btn-success btn-sq-sm"><span class="glyphicon glyphicon-ok-circle"></span></a>
-				<a id="del_btn" class="btn btn-danger btn-sq-sm"><span class="glyphicon glyphicon-trash"></span></a>
-			</div>`;
-        $("#body").html(showExactForm);
-
+				  <tbody>`;
+        var answers=keysArray(form.result);
+        var ans;
+        for(var i=0;i<answers.length;i++)//find the user answer
+            if(form.result[answers[i]].user===user)
+                ans=form.result[answers[i]].answers;
+        var keys=keysArray(form.questions);
+		for(i=0;i<keys.length;i++)
+            showExactForm+=addQtoTable(form.questions[keys[i]],ans,i);
+          firebase.database().ref('users/'+user).once("value")
+        .then(function(data)
+        {
+            var thisUser=data.val();
+            p(thisUser);
+            showExactForm+=  `</tbody>
+                    </table>
+                </div>
+                
+                <div class="fromDeatails">
+                    <h5 id="formLbl">מאת :`+thisUser.lastName+` `+thisUser.firstName+` `+`</h5>
+                    <h5 id="formLbl">ילד :`+thisUser.childName+` `+`</h5>
+                    <h5 id="formLbl">תאריך: 29/5/17</h5>
+                </div>
+                
+                <div id="group_btn">
+                    <a id="close_btn" class="btn btn-success btn-sq-sm"><span class="glyphicon glyphicon-ok-circle"></span></a>
+                    <a id="del_btn" class="btn btn-danger btn-sq-sm"><span class="glyphicon glyphicon-trash"></span></a>
+                </div>`;
+            $("#body").html(showExactForm);
+        });
     }
 //================================================================================================
     var p=function(s)
@@ -210,6 +210,7 @@ var fillFrom = function(key)
         $("#sendForm_btn").click(function()
         {
             sendForm(data.be().questions);
+            loadAllForms();
         });
     });
     
@@ -223,6 +224,7 @@ var loadAllForms=function()
         var str="";
         var forms=data.val();
         var i=0;
+        var keys=Object.keys(forms);
         $("#body").html("");
         for(key in forms)
         {  
@@ -237,10 +239,20 @@ var loadAllForms=function()
                        str+= '<label class="SFL">'+forms[key].subject+'</label>'+
                     '</div>';
               $("#body").append(str);
-              $("#form_"+(i++)).click(function()
+              if(!this_user_ans)
               {
-                  fillFrom(key);
-              });
+                  p(i);
+                $("#form_"+i).click(function(e)
+                {
+                    var id=e.target.id;
+                    id=id.substring(5,id.length);
+                    var keys=Object.keys(forms);
+                    corForm=keys[id];
+                    p(corForm);
+                    fillFrom(key);
+                });
+              }
+              i++;
         }
 
       
@@ -271,8 +283,19 @@ var loadAllForms=function()
         var result={user:login.correntUser[1],answers:ans};
         firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+corForm+'/result').push(result);
     }
+    var test=function()
+    {
+    firebase.database().ref('clubhouse/-Kn-BZInu3pPlaW11V7v/forms/-Kn6CV3USW-N-KeL1up2').once("value")
+    .then(function(data)
+    {
+        var form=data.val();
+        var user="DIgNUeLsWndpOtrvK49MUbS3rgg2";
+        showForm(form,user);
+    });
+    }
     return {
         create:create,showForm:showForm,
         loadAllForms:loadAllForms,
+        test:test
     }
 }();
