@@ -164,8 +164,6 @@ var mainPage=function()
         });
     }
 
-
-
 /***********************************************************************************/
 
     var loadAllClubs = function()
@@ -177,6 +175,7 @@ var mainPage=function()
         .then(function(data)
         {
             $("#body").html("");
+            $("#body").css("text-align", "center");
             $("#body").append("<h2 id='allTitles'>בחר מועדונית</h2></p>")
             var clubs = data.val();
             var keys = Object.keys(clubs);

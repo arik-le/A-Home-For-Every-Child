@@ -86,19 +86,14 @@ var formPage=function()
     }
 //================================================================================================
 
-    var finish=function()
-    {
-        firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+corForm.key+'/questions').set(questions);
-        alert("טופס הוזן בהצלחה");
-        create();
-    }
     
 //================================================================================================
     var createForm=function()
     {
         var sub = document.getElementById("formSubject").value;
-        var numOfQustions = document.getElementById("numOfQustions").value;
+        var numOfQuestions = document.getElementById("numOfQustions").value;
         var toClubHouse = document.getElementById("clubhousesForm").value;
+
         if(sub == "" || sub == undefined)
         {
             alert("אנה הזן שם לטופס");
@@ -109,39 +104,65 @@ var formPage=function()
             alert("אנה בחר מועדונית");
             return;
         }
-        if(numOfQustions == "nun")
+        if(numOfQuestions == "nun")
         {
             alert("אנה בחר מספר שאלות");
             return;
         }
-        
-        var new_form=Form.create(sub);
-        corForm = firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').push(new_form);
-       
+        var name = login.correntUser[0].firstName +" "+ login.correntUser[0].lastName;
+
+        //inject to body
         var str='<div id="allTitles">'+sub+'</div></p>'
         $("#body").html(str+"<div id='listQue'></div>");      
-        for(var i=0;i<numOfQustions;i++)
+        for(var i=0;i<numOfQuestions;i++)
         {
-            var k=i+1;
-            var list='<div id="Q_'+i+'">'+
-                    '<input type="text" class="form-control qestionInput" maxlength="100" placeholder="שאלה '+k+'" dir="rtl" />'+
-                    "<select type='text' value='nan'  id='numOfAnswers' class='form-control clubHouseName' placeholder='בחר מועדונית מתוך הרשימה'>"+
-                        "<option value='5_Options'>5</option>"+
-                        "<option value='10_Options'>10</option>"+
+            
+            var list='<div>'+
+                    '<input  id="Q_'+(i+1)+'" type="text" class="form-control qestionInput" maxlength="100" placeholder="שאלה '+(i+1)+'" dir="rtl" />'+
+                    "<select type='text' value='nan' id='A_"+(i+1)+"' class='form-control numOfAnswers' placeholder='בחר מועדונית מתוך הרשימה'>"+
+                        "<option value='5'>5</option>"+
+                        "<option value='10'>10</option>"+
                     "</select>"+
                 '</div>';
             $("#listQue").append(list);
         }
         $("#body").append(finish_btn);
 
+        $("#finish_btn").click(function()
+        {
+            var qList = [];
+            var aList = [];
+            var questions=[];
 
-        /*
-        var str='<h1 id="allTitles">'+sub+'</h1></p>'+
-                '<div class="listQue"></div>'+plus_btn+finsh_btn;
-        Form.allQ(corForm.key);
-        $("#body").html(str);
-        $("#plus_btn").click(addQuestionPage);
-        $("#finsh_btn").click(finish);*/
+            
+            for(var i=1;i<=numOfQuestions;i++)
+            {
+                var q = document.getElementById("Q_"+i).value;
+                var a = document.getElementById("A_"+i).value;
+                if(q == "")
+                {   
+                    alert(" אנה הזן שאלה"+(i));
+                    return;
+                }
+                questions[i-1]={numOfvalues:a,question:q};
+            }
+            var newForm=Form.create(sub,name,questions);      
+            p(toClubHouse);
+            if(toClubHouse != "allClubs")
+                firebase.database().ref('clubhouse/'+toClubHouse+'/forms').push(newForm);
+            else
+            {
+                firebase.database().ref("clubhouse/").once("value")
+                .then(function(data)
+                {
+                    var clubs = data.val();
+                    for(c in clubs)
+                        firebase.database().ref('clubhouse/' + c + '/forms').push(newForm);
+                });
+            }
+            alert("טופס הוזן בהצלחה");
+            create();
+        });
     }
 
 //================================================================================================
@@ -225,7 +246,7 @@ var formPage=function()
             numOfQuestions=keys.length;
             var form=data.val();
             var str;
-            $("#body").html('');
+            $("#body").html("");
             $("#body").css("text-align", "right");
 
             for(var i=0;i<keys.length;i++)
@@ -259,10 +280,11 @@ var formPage=function()
                             $("#form_"+i).append(str);  
                         }
                     }
+                    var btn='<a id="sendForm_btn" class="btn btn-success btn-lg btn-block">שלח</a>';
+                    $("#body").append(btn);
                 });
             }
-            var btn='<a id="sendForm_btn" class="btn btn-success btn-md btn-block">שלח</a>';
-            $("body").append(btn);
+            
         });
     }
     var loadAllForms=function()
@@ -286,16 +308,8 @@ var formPage=function()
                 {
                     fillFrom(key);
                 });
-                
             }
-
-        
         });
-    }
-        
-    var test=function(id)
-    {
-        fillFrom(id);
     }
 
     var updateClubs=function()				//update the list of clubHouses
@@ -323,8 +337,7 @@ var formPage=function()
             {
                 var check =document.getElementById("rbtn_"+i+"_"+j);
                 if(check.checked)
-                    ans.push(j+1
-                    );
+                    ans.push(j+1);
             }
         }
         if(ans.length<numOfQuestions)

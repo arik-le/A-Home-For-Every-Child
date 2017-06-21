@@ -1,9 +1,15 @@
 var Form=function()
 {
     var questions=[];
-    var create=function(subject)
+    var create=function(subject,createdBy,questions)
     {
-        return {questions:questions,subject:subject}
+        var d = new Date();
+        return {
+                questions:questions,
+                subject:subject,
+                createdBy:createdBy,
+                date:getDateForm()
+            }
     }
    
     var allQ=function(q)
@@ -21,10 +27,19 @@ var Form=function()
         }
       
     }
+
+    var getDateForm=function()
+    {
+        var date=new Date();
+        var d=date.getDate();
+        var m=date.getMonth()+1;
+        var y=date.getFullYear();
+        return d+"."+m+"."+y;
+    }
  
    
     return {
         create:create,
-        allQ: allQ
+        allQ: allQ,
     }
 }();
