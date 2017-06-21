@@ -55,7 +55,6 @@ var Message=function()
         else
             typeSender = "מדריך";
 
-
             var message=
                 '<div class = "generalMessageBox" id="generalMessageBox_'+index+'">'+
                     '<div class = "title" id="genTitle">'+
