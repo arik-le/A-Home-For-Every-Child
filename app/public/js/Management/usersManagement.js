@@ -269,6 +269,9 @@ var usersManagement = function()
 			{
 				childName = document.getElementById("childName").value;
 			}
+			if(type == User.GUIDE)
+				childName="";
+				
 			checkAndPush(username,firstName,lastName,type,clubKey,childName);
 		}
 		else if (type == User.SOCIAL)

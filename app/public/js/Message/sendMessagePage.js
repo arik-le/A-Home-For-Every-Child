@@ -203,10 +203,23 @@ var sendMessagePage = function()
 					if(clubHouses[mykeys[i]].ClubhouseDBkey == club)
 					{
 						var curClub = clubHouses[mykeys[i]].usersList;
+						if(curClub == null)
+							return;
 						var allUsersInClub = Object.keys(curClub);
+						
 						for(var j=0;j<allUsersInClub.length;j++)
 							if(curClub[allUsersInClub[j]].type == type && curClub[allUsersInClub[j]].username != login.correntUser[0].username)
-								$("#chooseUserSM").append('<option value='+curClub[allUsersInClub[j]].userKey+'>'+curClub[allUsersInClub[j]].username+'</option>');
+							{	
+								firebase.database().ref("users/"+curClub[allUsersInClub[j]].userkey).once("value")
+								.then(function(data)
+								{
+									if(data.val() == null)
+										return;
+									var user = data.val();
+									var mykeys=Object.keys(user);
+									$("#chooseUserSM").append('<option value='+user.userKey+'>'+user.firstName+" "+user.lastName+'</option>');													
+								});
+							}
 					}
 				}
 			});
