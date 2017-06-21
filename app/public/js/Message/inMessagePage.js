@@ -77,8 +77,6 @@ var inMassagePage=function()
             return str;
         }
 
-
-  
 //-------------------------------------------------------------------------------------------------
 
      var openSendMassage=function()
@@ -104,7 +102,6 @@ var inMassagePage=function()
         $("#cleanButtonPM").click(sendMessagePage.clearValue);
         $("#sendButtonGM").click(sendMessagePage.sendGenMessage);
         $("#cleanButtonGM").click(sendMessagePage.clearValue);
-
         $("#userList").val("");
      }
 
@@ -154,7 +151,6 @@ var inMassagePage=function()
         $('.NAV').collapse('hide');     //close nav bar after enterance
         
         var me = login.correntUser[1];
-        
         firebase.database().ref("users/" + me + "/inboxMessages").once("value")
         .then(function(data)
         {

@@ -158,7 +158,7 @@ var mainPage=function()
             $("#aboutUs_btn").click(aboutUs.openAboutPage);
             $("#logout").click(logout);
             $("#logout1").click(logout);
-            $("#showClubHouseForms").click(formPage.showForm);
+            $("#showClubHouseForms").click(formPage.showFormByClubs);
         });
     }
 

@@ -187,6 +187,9 @@ var formPage=function()
     {
         $('.NAV').collapse('hide');
         $("#body").html("");      
+
+
+
         var showExactForm = 
         
         `<h2 id='allTitles'>`+form.subject+`</h2>
@@ -367,10 +370,51 @@ var formPage=function()
         });
     }
 
+    var showFormByClubs = function()
+    {
+        var clubhouses = login.correntUser[0].clubhouseKey;
+        var myType = login.correntUser[0].userType;
+        
+        if(myType == User.GUIDE)
+        {
+            //load next page forms//
+        }
+        $('.Nav').collapse('hide');
+        $("#body").html("<h2 id='allTitles'>בחר מועדונית - הצגת טפסים</h2></p>")
+
+        firebase.database().ref('clubhouse/').once("value")
+        .then(function(data)
+        {
+            var clubs=data.val();
+            var i=0;
+            for(key in clubs)
+            {
+                var tempId ="clubForm_"+i;
+                str='<a class="btn btn-sq-lg clubSquare" id="'+tempId+'">'+
+                '<i class="fa fa-home fa-2x"></i><br/>'+clubs[key].name+'</a>';
+                if(myType == User.SOCIAL)
+                {
+                    for(var j=0;j<clubhouses.length;j++) 
+                        if(clubhouses[j]==key)
+                            $("#body").append(str);
+                }
+                else
+                    $("#body").append(str);
+                mainPage.paintButton(i,tempId);
+                $("#clubForm_"+(i++)).click(function()
+                {
+                    $("#body").html("<div class='row'><h2 id = 'allTitles'>טפסי מועדונית</h2></br></div>");
+                });
+            }
+        });
+    }
+
     var showForms 
     return {
-        create:create,showForm:showForm,
+        create:create,
+        showForm:showForm,
         loadAllForms:loadAllForms,
+        showFormByClubs:showFormByClubs,
         test:test
     }
 }();
