@@ -403,7 +403,13 @@ var formPage=function()
                 mainPage.paintButton(i,tempId);
                 $("#clubForm_"+(i++)).click(function()
                 {
-                    $("#body").html("<div class='row'><h2 id = 'allTitles'>טפסי מועדונית</h2></br></div>");
+                    str=   "<div class='row'><h2 id = 'allTitles'>טפסי מועדונית</h2></br>"+
+                        '<div class="row massage">'+             
+                            '<span class="glyphicon glyphicon-trash col-xs-2 trash"></span>'+
+                                '<h5 class="topic col-xs-offset-2 col-xs-6" data-toggle="modal" data-target="#myModal"  dir="rtl"></h5>'+
+                                    '<span class="glyphicon glyphicon-list-alt col-xs-1 envelopeR" id="enve"></span>'+
+                                '<div class="col-xs-1"></div></div></div>';7
+                    $("#body").html(str);
                 });
             }
         });

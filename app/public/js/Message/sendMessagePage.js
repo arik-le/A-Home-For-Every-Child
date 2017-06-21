@@ -220,7 +220,7 @@ var sendMessagePage = function()
 				var mykeys=Object.keys(users);
 				for(var i=0;i<mykeys.length;i++)
 					if(users[mykeys[i]].userType == User.ADMIN && users[mykeys[i]].username !=login.correntUser[0].username)
-						$("#chooseUserSM").append('<option value='+users[mykeys[i]].userKey+'>'+users[mykeys[i]].username+'</option>');														
+						$("#chooseUserSM").append('<option value='+users[mykeys[i]].userKey+'>'+users[mykeys[i]].firstName+" "+users[mykeys[i]].lastName+'</option>');													
 			});
 		}
 	}
