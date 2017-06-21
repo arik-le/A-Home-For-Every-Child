@@ -47,10 +47,18 @@ var Message=function()
     {
         var url = m.imageURL;
         var myType = login.correntUser[0].userType;
+        var typeSender;
+        if(myType == User.ADMIN)
+            typeSender = "מנהל ראשי";
+        else if(myType == User.SOCIAL)
+            typeSender = "עובד סוציאלי";
+        else
+            typeSender = "מדריך";
+
             var message=
                 '<div class = "generalMessageBox" id="generalMessageBox_'+index+'">'+
                     '<div class = "title" id="genTitle">'+
-                        '<h6  dir="rtl">הודעה מאת:' + " " +login.getObj(m.source).username+'</h6>'+
+                        '<h6  dir="rtl">הודעה מאת:' + " " +login.getObj(m.source).firstName+" - "+typeSender+'</h6>'+
                         '<label id="subjectGMS" dir="rtl">'+m.subject+'<label>'+
                     '</div>'+
                     '<div id = "textAreaGM" dir="rtl">'+ m.content + '</br>';

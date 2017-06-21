@@ -236,17 +236,13 @@ var mainPage=function()
             curClubKey = login.correntUser[0].clubhouseKey;
 
         $("#body").append('<div id="mesBody"></div>');
-        $("#mesBody").html("");
-
-        
-       
-
 
         firebase.database().ref("clubhouse/" + curClubKey + "/generalMessages").once("value")
         .then(function(data)
         {
             var EVERYONE = 2;
             var messages = data.val();
+            $("#mesBody").html("");
             if(messages==null)
                 $("#mesBody").append("<h1 id='allTitles' dir='rtl'>אין הודעות חדשות...<h1>");
             else
