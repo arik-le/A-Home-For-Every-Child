@@ -2,6 +2,7 @@ var formPage=function()
 { 
     var questions=[];
     var corForm;
+    var numOfQuestions
     var plus_btn='<a href="#" class="btn btn-info btn-lg" id="plus_btn">'+
                   '<span class="glyphicon glyphicon-plus"></span>'+ 
                 '</a>';
@@ -144,14 +145,29 @@ var formPage=function()
     }
 
 //================================================================================================
-
-    var showForm = function()
+    var addQtoTable=function(q,a,i)
+    {
+        var queStr='<tr>'+
+					  '<th scope="row">'+i+'</th>'+
+					  '<td>'+q.question+'</td>'+
+					  '<td>'+a[i]+'/'+q.numOfvalues+'</td>'+
+		    '</tr>`';
+        return queStr;
+    }
+    var keysArray=function(objects)
+    {
+        var keys=[];
+        for(obj in objects )
+            keys.push(obj);
+        return keys;
+    }
+    var showForm = function(form,user)
     {
         $('.NAV').collapse('hide');
-        $("#body").html("");
+        $("#body").html("");      
         var showExactForm = 
         
-        `<h2 id='allTitles'>נושא הטופס</h2>
+        `<h2 id='allTitles'>`+form.subject+`</h2>
 			<div id="formTable" dir='rtl'>
 				<table class="table table-striped" >
 				  <thead>
@@ -161,6 +177,7 @@ var formPage=function()
 					  <th>ערך</th>
 					</tr>
 				  </thead>
+<<<<<<< HEAD
 				  <tbody>
 					<tr>
 					  <th scope="row">1</th>
@@ -205,24 +222,64 @@ var formPage=function()
 				<a id="del_btn" class="btn btn-danger btn-sq-sm"><span class="glyphicon glyphicon-trash"></span></a>
 			</div>`;
         $("#body").html(showExactForm);
+=======
+				  <tbody>`;
+        var answers=keysArray(form.result);
+        var ans;
+        for(var i=0;i<answers.length;i++)//find the user answer
+            if(form.result[answers[i]].user===user)
+                ans=form.result[answers[i]].answers;
+        var keys=keysArray(form.questions);
+		for(i=0;i<keys.length;i++)
+            showExactForm+=addQtoTable(form.questions[keys[i]],ans,i);
+          firebase.database().ref('users/'+user).once("value")
+        .then(function(data)
+        {
+            var thisUser=data.val();
+            p(thisUser);
+            showExactForm+=  `</tbody>
+                    </table>
+                </div>
+                
+                <div class="fromDeatails">
+                    <h5 id="formLbl">מאת :`+thisUser.lastName+` `+thisUser.firstName+` `+`</h5>
+                    <h5 id="formLbl">ילד :`+thisUser.childName+` `+`</h5>
+                    <h5 id="formLbl">תאריך: 29/5/17</h5>
+                </div>
+                
+                <div id="group_btn">
+                    <a id="close_btn" class="btn btn-success btn-sq-sm"><span class="glyphicon glyphicon-ok-circle"></span></a>
+                    <a id="del_btn" class="btn btn-danger btn-sq-sm"><span class="glyphicon glyphicon-trash"></span></a>
+                </div>`;
+            $("#body").html(showExactForm);
+        });
+>>>>>>> de147a76be2d7b06c149a69f8cd4ec47b426d5d2
     }
 //================================================================================================
-    //גיא יעצלן מסריח!!!
     var p=function(s)
     {
         console.log(s);
     }
-    //================================================================================================
-
-     var showQuestions=function(f)
-    {
-        p("//////");
-        p(f);
-        p("//////");
-       
-    }
 //================================================================================================
+<<<<<<< HEAD
         var fillFrom = function(key)
+=======
+var fillFrom = function(key)
+{
+   firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+key).once("value")
+    .then(function(data)
+    {
+        var keys=[];
+        for(obj in data.be().questions )
+            keys.push(obj);
+        numOfQuestions=keys.length;
+        var form=data.val();
+        var str;
+        $("#body").html('');
+        $("#body").css("text-align", "right");
+
+        for(var i=0;i<keys.length;i++)
+>>>>>>> de147a76be2d7b06c149a69f8cd4ec47b426d5d2
         {
         firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+key).once("value")
             .then(function(data)
@@ -263,6 +320,7 @@ var formPage=function()
             firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').once("value")
             .then(function(data)
             {
+<<<<<<< HEAD
                 var str="";
                 var forms=data.val();
                 var i=0;
@@ -303,12 +361,107 @@ var formPage=function()
             $("#clubhousesForm").append('<option value="allClubs">כל המועדוניות</option>');
         });
 	}
+=======
+                  str=  '<label class="j_lebal">'+(j+1)+'<br />'+ 
+                    '<input id="rbtn_'+i+'_'+j+'" type="radio" name="select" value="'+(j+1)+'"/>'+
+
+                    '</label>';
+                  $("#form_"+i).append(str);  
+            }
+        }
+
+        var btn='<a id="sendForm_btn" class="btn btn-success btn-lg btn-block">שלח</a>';
+        $("#body").append(btn);
+        $("#sendForm_btn").click(function()
+        {
+            sendForm(data.be().questions);
+            loadAllForms();
+        });
+    });
+    
+}
+var loadAllForms=function()
+{
+    $('.Nav').collapse('hide');
+    firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms').once("value")
+    .then(function(data)
+    {
+        var str="";
+        var forms=data.val();
+        var i=0;
+        var keys=Object.keys(forms);
+        $("#body").html("");
+        for(key in forms)
+        {  
+            var this_user_ans=false;
+            for(id in forms[key].result)
+                 if(forms[key].result[id].user=== login.correntUser[1])
+                        this_user_ans=true;
+            if(this_user_ans)
+                str=  '<div class="selectFormDivAns" id="form_'+i+'">';
+            else
+                str=  '<div class="selectFormDiv" id="form_'+i+'">';
+                       str+= '<label class="SFL">'+forms[key].subject+'</label>'+
+                    '</div>';
+              $("#body").append(str);
+              if(!this_user_ans)
+              {
+                  p(i);
+                $("#form_"+i).click(function(e)
+                {
+                    var id=e.target.id;
+                    id=id.substring(5,id.length);
+                    var keys=Object.keys(forms);
+                    corForm=keys[id];
+                    p(corForm);
+                    fillFrom(key);
+                });
+              }
+              i++;
+        }
+
+      
+    });
+}
+>>>>>>> de147a76be2d7b06c149a69f8cd4ec47b426d5d2
 
 //================================================================================================
-    
+    var sendForm=function(questions)
+    {
+        var ans=[];
+        for(var i=0;i<numOfQuestions;i++)
+        {
+            var maxSelect=questions[i].numOfvalues;
+            for(var j=0;j<maxSelect;j++)
+            {
+                var check =document.getElementById("rbtn_"+i+"_"+j);
+                if(check.checked)
+                    ans.push(j+1
+                    );
+            }
+        }
+        if(ans.length<numOfQuestions)
+        {
+            alert("יש לענות על כל השאלות");
+            return;
+        }
+        p(corForm);
+        var result={user:login.correntUser[1],answers:ans};
+        firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+corForm+'/result').push(result);
+    }
+    var test=function()
+    {
+    firebase.database().ref('clubhouse/-Kn-BZInu3pPlaW11V7v/forms/-Kn6CV3USW-N-KeL1up2').once("value")
+    .then(function(data)
+    {
+        var form=data.val();
+        var user="DIgNUeLsWndpOtrvK49MUbS3rgg2";
+        showForm(form,user);
+    });
+    }
     return {
-
         create:create,showForm:showForm,
         loadAllForms:loadAllForms,
+        test:test
     }
 }();

@@ -16,7 +16,7 @@ var mainPage=function()
     }
     var createNavbar = function(){
 
-        var myType = login.correntUser[0].userType;
+        var myType = correntUser[0].userType;
         var str = 
         '<nav class="navbar navbar-default">'+
 			'<div class="container-fluid">'+
@@ -127,37 +127,41 @@ var mainPage=function()
 
 /***********************************************************************************/
 
-    var openMainPage=function(user) // user is a copy of the original user 
+    var openMainPage=function(userUid) // user is a copy of the original user 
     {
-        correntUser[0] = user;
-        var header = topHeader.inputSection;
-        var addNavbar = createNavbar();
+        firebase.database().ref('users/'+userUid).once("value")
+        .then(function(user)
+        {
+            correntUser[0]=user.val();
+            var header = topHeader.inputSection;
+            var addNavbar = createNavbar();
 
-        $("body").html(header+addNavbar);
+            $("body").html(header+addNavbar);
 
-        $("#userName_lbl").html(correntUser[0].firstName);
+            $("#userName_lbl").html(correntUser[0].firstName);
 
-        $("#homePage").click(function(){
-            $('.Nav').collapse('hide');
+            $("#homePage").click(function(){
+                $('.Nav').collapse('hide');
+                loadGeneralMessages();
+            });
             loadGeneralMessages();
-        });
-        loadGeneralMessages();
 
-        //listeners
-        $("#sendForms").click(formPage.loadAllForms);
-        $("#crateFormPage").click(formPage.create);
-		$("#addUser_btn").click(usersManagement.addUser);
-        $("#btnEditUser").click(usersManagement.editUser);
-        $("#addClubhouse_btn").click(clubhouseManagement.addClubhouse);
-        $("#editClubhouse_btn").click(clubhouseManagement.editClubhouse);
-        $("#MessNav").click(unReadMess);
-        $("#writeMessage_btn").click(inMassagePage.openSendMassage);
-        $("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
-        $("#outMessage_btn").click(outMessagePage.open);
-        $("#aboutUs_btn").click(aboutUs.openAboutPage);
-        $("#logout").click(logout);
-        $("#logout1").click(logout);
-        $("#showClubHouseForms").click(formPage.showForm);
+            //listeners
+            $("#sendForms").click(formPage.loadAllForms);
+            $("#crateFormPage").click(formPage.create);
+            $("#addUser_btn").click(usersManagement.addUser);
+            $("#btnEditUser").click(usersManagement.editUser);
+            $("#addClubhouse_btn").click(clubhouseManagement.addClubhouse);
+            $("#editClubhouse_btn").click(clubhouseManagement.editClubhouse);
+            $("#MessNav").click(unReadMess);
+            $("#writeMessage_btn").click(inMassagePage.openSendMassage);
+            $("#incomingMessage_btn").click(inMassagePage.openInBoxMes);
+            $("#outMessage_btn").click(outMessagePage.open);
+            $("#aboutUs_btn").click(aboutUs.openAboutPage);
+            $("#logout").click(logout);
+            $("#logout1").click(logout);
+            $("#showClubHouseForms").click(formPage.showForm);
+        });
     }
 
 
