@@ -260,9 +260,9 @@ var formPage=function()
                         }
                     }
                 });
-                var btn='<a id="sendForm_btn" class="btn btn-success btn-md btn-block">שלח</a>';
-                $("body").append(btn);
             }
+            var btn='<a id="sendForm_btn" class="btn btn-success btn-md btn-block">שלח</a>';
+            $("body").append(btn);
         });
     }
     var loadAllForms=function()
