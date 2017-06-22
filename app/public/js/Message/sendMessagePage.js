@@ -179,6 +179,7 @@ var sendMessagePage = function()
 	var updateUserList = function()			//update the list of users according the clubHouses
 	{
 		$("#chooseUserSM").html('<option value="nan" disabled selected>בחר משתמש</option>');
+
 		var list=login.usersAndKeys;
 		var myIndex=login.correntUser[1];
 		var type=document.getElementById("TypeUserSM").value;
@@ -224,7 +225,7 @@ var sendMessagePage = function()
 				}
 			});
 		}
-		else
+		if(type == User.ADMIN && type != "nan")
 		{
 			firebase.database().ref("users/").once("value")
 			.then(function(data)
@@ -232,7 +233,7 @@ var sendMessagePage = function()
 				var users = data.val();
 				var mykeys=Object.keys(users);
 				for(var i=0;i<mykeys.length;i++)
-					if(users[mykeys[i]].userType == User.ADMIN && users[mykeys[i]].username !=login.correntUser[0].username)
+					if(users[mykeys[i]].userType == User.ADMIN && users[mykeys[i]].username !=login.correntUser[0].username )
 						$("#chooseUserSM").append('<option value='+users[mykeys[i]].userKey+'>'+users[mykeys[i]].firstName+" "+users[mykeys[i]].lastName+'</option>');													
 			});
 		}
