@@ -226,6 +226,7 @@ var formPage=function()
                     <a id="del_btn" class="btn btn-danger btn-sq-sm"><span class="glyphicon glyphicon-trash"></span></a>
                 </div>`;
             $("#body").html(showExactForm);
+            $("#close_btn").click(showFormByClubs);
         });
     }
 //================================================================================================
@@ -371,8 +372,9 @@ var formPage=function()
     {
         var clubhouses = login.correntUser[0].clubhouseKey;
         var myType = login.correntUser[0].userType;
-        var users,user;
-        var fs=[];
+        var users;
+        var clubs;
+        var clubsKeys;
         firebase.database().ref('users/').once("value")
         .then(function(data)
         {
@@ -384,70 +386,86 @@ var formPage=function()
         }
         $('.Nav').collapse('hide');
         $("#body").html("<h2 id='allTitles'>בחר מועדונית - הצגת טפסים</h2></p>")
-
         firebase.database().ref('clubhouse/').once("value")
         .then(function(data)
         {
-            var clubs=data.val();
-            var i=0;
-            for(key in clubs)
+            clubs=data.val();
+            clubsKeys=Object.keys(clubs);
+            for(var i=0;i<clubsKeys.length;i++)
             {
                 var tempId ="clubForm_"+i;
                 str='<a class="btn btn-sq-lg clubSquare" id="'+tempId+'">'+
-                '<i class="fa fa-home fa-2x"></i><br/>'+clubs[key].name+'</a>';
+                '<i class="fa fa-home fa-2x"></i><br/>'+clubs[clubsKeys[i]].name+'</a>';
                 if(myType == User.SOCIAL)
                 {
                     for(var j=0;j<clubhouses.length;j++) 
-                        if(clubhouses[j]==key)
+                        if(clubhouses[j]==clubsKeys[i])
                             $("#body").append(str);
                 }
                 else
-                    $("#body").append(str);
+                      $("#body").append(str);
+    
                 mainPage.paintButton(i,tempId);
-                $("#clubForm_"+(i++)).click(function(e)
+                   
+                $("#clubForm_"+i).click(function()
                 {
-                    var str="<div class='row allForms'>"+
-                                "<h2 id = 'allTitles'>טפסי מועדונית</h2></br>"+
-                             '</div>';
-                    $("#body").html(str);          
-                    var ans,k=0;
-                    var index=e.target.id;
-                    index=index.substring(9,index.length); 
-                    var keys=Object.keys(clubs);
-                    var forms=clubs[keys[index]].forms;
-                    for(i in forms)
+                    $("#body").html("");
+                    var id=this.id;
+                    id=id.split("_")[1];//take index from div id 
+                    var forms=clubs[clubsKeys[id]].forms;
+                    var k=0,t=0;//k is the number of form ,t is the place in forms
+                    for(fKey in forms)
                     {
-                            
-                            if(forms[i].result!=null)
-                            {
-                               
-                                res=forms[i].result;
-                                for(j in res)
-                                {
-                                    user=res[j].user;
-                                    str=   '<div class="row massage" id="Form_'+(k++)+'">'+   
+                        if(forms[fKey].result!=undefined)
+                        {
+                            var rKeys=Object.keys(forms[fKey].result);//all the keys of the filed form
+                            for(var j=0;j<rKeys.length;j++)
+                            { 
+                                var user=forms[fKey].result[rKeys[j]].user;
+                                var indexUser=indexOfobj(users,user);
+                                var str=   '<div class="row massage" id="Form_'+k+'_'+t+'_'+indexUser+'">'+   
                                                 '<span class="glyphicon glyphicon-trash col-xs-2 trash"></span>'+
                                                 '<h5 class="topic  col-xs-5">'+' מאת :'+users[user].firstName+' '+users[user].lastName+'</h5>'+
-                                                '<h5 class="topic  col-xs-3">'+forms[i].subject+'</h5>'+
+                                                '<h5 class="topic  col-xs-3">'+forms[fKey].subject+'</h5>'+
                                                 '<span class="glyphicon glyphicon-list-alt col-xs-1 envelopeR" id="enve"></span>'+
-                                                '<div class="col-xs-1"></div>';
-                                            '</div>'+
-                                     $(".allForms").append(str);
-                                     fs.push({form:forms[i],user:user});
-                                }
-                                var delayMillis = 1500; //1.5 secon
-                                setTimeout(function() {
+                                                '<div class="col-xs-1"></div>'+
+                                            '</div>';
+                                $("#body").append(str);
+                                $("#Form_"+k+"_"+t+"_"+indexUser).click(function()
+                                {
+                                    var id=this.id.split("_");//k=id[1],t=id[2],indexUser=id[3] 
+                                    var formsKeys=Object.keys(forms);
+                                    var usersKeys=Object.keys(users);
+                                    showForm(forms[formsKeys[id[2]]],usersKeys[id[3]]);
                                     
-                                         formLis(fs);
-                                }, delayMillis);  
+                                });
+                                k++;
+
                             }
+                        }
+                        t++;
                     }
+
                 });
-            }
-         /*     
-           p(fs);*/
+                    
+            } 
         });
+        
+     
+                            
+
     }
+    var indexOfobj=function(objs,obj)
+    {
+        var keys=Object.keys(objs);
+        for(var i=0;i<keys.length;i++)
+        {   
+             if(obj===keys[i])
+                return i;
+        }
+        return -1;
+    } 
+       
     var formLis=function(fs)
     {
         for(var i=0;i<fs.length;i++)

@@ -137,8 +137,8 @@ var sendMessagePage = function()
 			select ='<option value="nan" disabled selected>סוג משתמש</option>'+
 				'<option class="ptUser" value="0">הורה</option>'+
 				'<option class="TtUser" value="1">מורה</option>'+
-				'<option class="GuUser" value="2">מדריך</option>'+
-				'<option class="SWUser" value="3">עו"ס</option>'+
+				'<option class="GuUser" value="2">רכז/מדריך</option>'+
+				'<option class="SWUser" value="3">ראש צוות/עו"ס</option>'+
 				'<option class="admin" value="4">מנהל</option>'
 
 			$("#TypeUserSM").html(select);
@@ -164,8 +164,8 @@ var sendMessagePage = function()
 			select ='<option value="nan" disabled selected>סוג משתמש</option>'+
 						'<option class="ptUser" value="0">הורה</option>'+
 						'<option class="TtUser" value="1">מורה</option>'+
-						'<option class="GuUser" value="2">מדריך</option>'+
-						'<option class="SWUser" value="3">עו"ס</option>';
+						'<option class="GuUser" value="2">רכז/מדריך</option>'+
+						'<option class="SWUser" value="3">ראש צוות/עו"ס</option>';
 		}
 		else
 			select = '<option value="4" selected>מנהל</option>';

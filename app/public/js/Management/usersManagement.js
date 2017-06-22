@@ -66,8 +66,8 @@ var usersManagement = function()
 								<select type='text' class='form-control' id='userType'>
 									<option value = '0' class='ptUser'>הורה</option>
 									<option value = '1' class='tcUser'>מורה</option>
-									<option value = '2' class='GuUser'>מדריך</option>
-									<option value = '3' class='SWUser'>עובד סוציאלי</option>
+									<option value = '2' class='GuUser'>רכז/מדריך</option>
+									<option value = '3' class='SWUser'> ראש צוות/עובד סוציאלי</option>
 									<option value = '4' class='AdmUser'>מנהל</option>
 								</select>
 							</div>
@@ -901,9 +901,9 @@ var usersManagement = function()
 		if(type == User.TEACHER)
 			return "מורה";
 		if(type == User.GUIDE)
-			return "מדריך";
+			return "רכז/מדריך";
 		if(type == User.SOCIAL)
-			return 'עו"ס';
+			return 'ראש צוות/עו"ס';
 		if(type == User.ADMIN)
 			return "מנהל";
 		else
