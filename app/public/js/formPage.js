@@ -160,6 +160,7 @@ var formPage=function()
             }
             alert("טופס הוזן בהצלחה");
             create();
+            loadAllForms();
         });
     }
 
@@ -241,6 +242,7 @@ var formPage=function()
         .then(function(data)
         {
             var keys=[];
+            p(data.be());
             for(obj in data.be().questions )
                 keys.push(obj);
             numOfQuestions=keys.length;
@@ -290,6 +292,22 @@ var formPage=function()
             }
         });
     }
+    var isAlreadySolved=function(form)
+    {
+        var user=login.correntUser[1];
+        var results=form.result;
+        if(results!=undefined)
+        {
+            for(key in results)
+            {
+                p(results[key]);
+                if(results[key].user===user)
+                    return true;
+            }
+        }
+        return false;
+
+    }
     var loadAllForms=function()
     {
         $('.Nav').collapse('hide');
@@ -308,16 +326,28 @@ var formPage=function()
                 '<i class="fa fa-clipboard fa-2x"></i><br/>'+forms[key].subject+'</a>';
                 $("#body").append(str);
                 mainPage.paintButton(i,tempId);
-                $("#form_"+(i++)).click(function(e)
+                if(!isAlreadySolved(forms[key]))
                 {
-                    var id=e.target.id;
-                    id=id.substring(5,id.length); 
-                    fillFrom(keys[id]);
-                });
+                    $("#form_"+(i++)).click(function()
+                    {
+                        p(i);
+                        var id=this.id;
+                        id=id.substring(5,id.length); 
+                        fillFrom(keys[id]);
+                    });
+                }
+                else
+                {
+                    $("#"+tempId).css("background","#509975");
+                    $("#form_"+(i++)).click(function()
+                    {
+                        alert("טופס כבר הוזן לא ניתן להזין פעמים");
+                    });
+                }
             }
         });
     }
-
+ 
     var updateClubs=function()				//update the list of clubHouses
 	{		
         firebase.database().ref("clubhouse/").once("value")
@@ -422,25 +452,31 @@ var formPage=function()
                             for(var j=0;j<rKeys.length;j++)
                             { 
                                 var user=forms[fKey].result[rKeys[j]].user;
-                                var indexUser=indexOfobj(users,user);
-                                var str=   '<div class="row massage" id="Form_'+k+'_'+t+'_'+indexUser+'">'+   
-                                                '<span class="glyphicon glyphicon-trash col-xs-2 trash"></span>'+
-                                                '<h5 class="topic  col-xs-5">'+' מאת :'+users[user].firstName+' '+users[user].lastName+'</h5>'+
-                                                '<h5 class="topic  col-xs-3">'+forms[fKey].subject+'</h5>'+
-                                                '<span class="glyphicon glyphicon-list-alt col-xs-1 envelopeR" id="enve"></span>'+
-                                                '<div class="col-xs-1"></div>'+
-                                            '</div>';
-                                $("#body").append(str);
-                                $("#Form_"+k+"_"+t+"_"+indexUser).click(function()
+                                if(users[user]!=undefined)
                                 {
-                                    var id=this.id.split("_");//k=id[1],t=id[2],indexUser=id[3] 
-                                    var formsKeys=Object.keys(forms);
-                                    var usersKeys=Object.keys(users);
-                                    showForm(forms[formsKeys[id[2]]],usersKeys[id[3]]);
-                                    
-                                });
-                                k++;
-
+                                    var indexUser=indexOfobj(users,user);
+                                    var str=   '<div class="row massage" id="Form_'+k+'_'+t+'_'+indexUser+'">'+   
+                                                    '<span class="glyphicon glyphicon-trash col-xs-2 trash"></span>'+
+                                                    '<h5 class="topic  col-xs-5">'+' מאת :'+users[user].firstName+' '+users[user].lastName+'</h5>'+
+                                                    '<h5 class="topic  col-xs-3">'+forms[fKey].subject+'</h5>'+
+                                                    '<span class="glyphicon glyphicon-list-alt col-xs-1 envelopeR" id="enve"></span>'+
+                                                    '<div class="col-xs-1"></div>'+
+                                                '</div>';
+                                    $("#body").append(str);
+                                    $("#Form_"+k+"_"+t+"_"+indexUser).click(function()
+                                    {
+                                        var id=this.id.split("_");//k=id[1],t=id[2],indexUser=id[3] 
+                                        var formsKeys=Object.keys(forms);
+                                        var usersKeys=Object.keys(users);
+                                        showForm(forms[formsKeys[id[2]]],usersKeys[id[3]]);
+                                        
+                                    });
+                                    k++;
+                                }
+                                else
+                                {
+                                    //need to delete the form form databse
+                                }
                             }
                         }
                         t++;
