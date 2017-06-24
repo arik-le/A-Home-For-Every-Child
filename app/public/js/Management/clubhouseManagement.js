@@ -378,6 +378,9 @@ var clubhouseManagement = (function()
 			var keys = Object.keys(allClubhouses);	// get all keys
 			
 			$("#body").html(EditClubhousePage.inputSection);
+			$("#editCHbtn").click(EditCluhouseListener);
+			$('#deleteCHbtn').click(removeCHlistener);
+
 			for(var i =0; i<keys.length;i++)
 			{
 				if(page == EDITPAGE)
@@ -426,9 +429,8 @@ var clubhouseManagement = (function()
 		edit_clubname=undefined;
 		loadClubhousesData();
 		$('.Nav').collapse('hide');
-		// $("#body").html(EditClubhousePage.inputSection);
-        $("#editCHbtn").click(EditCluhouseListener);
-		$('#deleteCHbtn').click(removeCHlistener);
+		
+      
 	 }
 	 //-------------------------------------------------------------------------------------------------
 	
