@@ -66,11 +66,14 @@ var login=function()
 		});
 		promise.catch(function(err)
 		{
-			alert("נא למלא משתמש תקף וסיסמה");
-			/*if(err.message == 'the email address is badly formatted.')
-				alert("שם המשתמש שהוזן אינו כתובת מייל חוקית");
-			if(err.message == 'There is no user record corresponding to this identifier. The user may have been deleted.')
-				alert('שם משתמש או סיסמא אינם נכונים');*/
+			if (err.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.")
+				alert("שגיאה בחיבור לרשת");
+			else if (err.message == "There is no user record corresponding to this identifier. The user may have been deleted.")
+				alert('שם המשתמש לא נמצא במערכת');
+			else if ( err.message == "The password is invalid or the user does not have a password.")
+				alert('הסיסמא שהוזנה שגוייה');
+			else
+				alert("נא למלא משתמש תקף וסיסמה");
 		});
 	}
 
