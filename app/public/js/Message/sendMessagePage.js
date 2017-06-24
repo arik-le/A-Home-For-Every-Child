@@ -351,44 +351,61 @@ var sendMessagePage = function()
 		.then(function(data)
 		{
 			var clubs = data.val();
-			if(clubs != null)
+			var keys = Object.keys(clubs);
+
+			var file = uploadImage.myFileImg[0];
+			if(file == undefined)
 			{
-				var keys = Object.keys(clubs);
-				if(keys.length > CAPACITY_LIMIT)
+				if(clubs != null)
 				{
-					alert("תיבת הודעות כלליות מלאה - אנא מחק הודעות קודמות");
-					uploadImage.myFileImg[0]=undefined;
-					clearValue();
-					return;
+					if(keys.length > CAPACITY_LIMIT)
+					{
+						alert("תיבת הודעות כלליות מלאה - אנא מחק הודעות קודמות");
+						uploadImage.myFileImg[0]=undefined;
+						clearValue();
+						return;
+					}
 				}
+				
+				var message = pickMesByPermision(toTeachers,toParents,from,subject,content,-1,-1,-1);
+				firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
+				uploadImage.myFileImg[0]=undefined;
+				clearValue();
+				alert("ההודעה נשלחה בהצלחה");
+				
 			}
 			else
 			{
-				var file = uploadImage.myFileImg[0];
-				if(file === undefined)
+				if(clubs != null)
 				{
-					var message = pickMesByPermision(toTeachers,toParents,from,subject,content,-1,-1,-1);
-					firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
+					if(keys.length > CAPACITY_LIMIT)
+					{
+						alert("תיבת הודעות כלליות מלאה - אנא מחק הודעות קודמות");
+						uploadImage.myFileImg[0]=undefined;
+						clearValue();
+						return;
+					}
 				}
-				else
-				{
-					var b = Math.floor(Math.random()*100000000); 			
-					var imageName = b + file.name;
-					var storageRef = firebase.storage().ref('/generalMessagesImages/' + toClubHouse + '/' + imageName);
-					var uploadTask = storageRef.put(file);
-					uploadTask.on('state_changed', function(snapshot){
-					}, function(error) {
-						alert("לא ניתן לשלוח הודעה כעת.. אנה נסו שוב מאוחר יותר");
-					}, function() {
-					var downloadURL = uploadTask.snapshot.downloadURL;
-					var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,imageName,-1);
-					firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
-					});
-				}
-			uploadImage.myFileImg[0]=undefined;
-			clearValue();
-			alert("ההודעה נשלחה בהצלחה");
+				
+				var b = Math.floor(Math.random()*100000000); 			
+				var imageName = b + file.name;
+				var storageRef = firebase.storage().ref('/generalMessagesImages/' + toClubHouse + '/' + imageName);
+				var uploadTask = storageRef.put(file);
+				uploadTask.on('state_changed', function(snapshot){
+				}, function(error) {
+					alert("לא ניתן לשלוח הודעה כעת.. אנה נסו שוב מאוחר יותר");
+				}, function() {
+				var downloadURL = uploadTask.snapshot.downloadURL;
+				var message = pickMesByPermision(toTeachers,toParents,from,subject,content,downloadURL,imageName,-1);
+				firebase.database().ref('clubhouse/' + toClubHouse + '/generalMessages').push(message);
+				});
+				uploadImage.myFileImg[0]=undefined;
+				clearValue();
+				alert("ההודעה נשלחה בהצלחה");
+				
 			}
+			
+			
 		});
 	}
 

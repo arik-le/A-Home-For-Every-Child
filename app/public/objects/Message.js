@@ -45,62 +45,55 @@ var Message=function()
     /***********************************************************************************/
     var addGenMes=function(m,index)        //draw general messages in home page
     {
-         var sourceMess = firebase.database().ref("users/" + m.source).once("value")
-        .then(function(data)
-        {
-              
-            var sourceUser=data.val();
-            var url = m.imageURL;
-            var myType =sourceUser.userType;
-            var typeSender;
-            if(myType == User.ADMIN)
-                typeSender = "מנהל ראשי";
-            else if(myType == User.SOCIAL)
-                typeSender = "עובד סוציאלי";
-            else
-                typeSender = "מדריך";
+        var url = m.imageURL;
+        var myType =login.getObj(m.source).userType;
+        var typeSender;
+        if(myType == User.ADMIN)
+            typeSender = "מנהל ראשי";
+        else if(myType == User.SOCIAL)
+            typeSender = "עובד סוציאלי";
+        else
+            typeSender = "מדריך";
 
-                var message=
-                    '<div class = "generalMessageBox" id="generalMessageBox_'+index+'">'+
-                        '<div class = "title" id="genTitle">'+
-                            '<h6  dir="rtl">הודעה מאת:' + " " +login.getObj(m.source).firstName+" - "+typeSender+'</h6>'+
-                            '<label id="subjectGMS" dir="rtl">'+m.subject+'<label>'+
-                        '</div>'+
-                        '<div id = "textAreaGM" dir="rtl">'+ m.content + '</br>';
+            var message=
+                '<div class = "generalMessageBox" id="generalMessageBox_'+index+'">'+
+                    '<div class = "title" id="genTitle">'+
+                        '<h6  dir="rtl">הודעה מאת:' + " " +login.getObj(m.source).firstName+" - "+typeSender+'</h6>'+
+                        '<label id="subjectGMS" dir="rtl">'+m.subject+'<label>'+
+                    '</div>'+
+                    '<div id = "textAreaGM" dir="rtl">'+ m.content + '</br>';
 
-                    if(url !== -1)       //  with image
+                if(url !== -1)       //  with image
+                {
+                    message+='<img id = imgGM src=' + url +'/></br>'+
+                    '</div>'+
+                    '<div class="messageFooter">'+
+                        '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>';
+                    if(myType>=User.GUIDE)      //admin ,social ,guide
                     {
-                        message+='<img id = imgGM src=' + url +'/></br>'+
-                        '</div>'+
-                        '<div class="messageFooter">'+
-                            '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>';
-                        if(myType>=User.GUIDE)      //admin ,social ,guide
-                        {
-                            message+= '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
-                            '<label id="subjectGMS">מחק הודעה <label>'+
-                                '<span class="glyphicon glyphicon-trash"></span> ';
-                        }
-                        message+= '</div>'+
-                            '</div>'+
-                    '</div></p>'
+                        message+= '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
+                        '<label id="subjectGMS">מחק הודעה <label>'+
+                            '<span class="glyphicon glyphicon-trash"></span> ';
                     }
-                    else{
-                        message+='</div>'+
-                        '<div class="messageFooter">'+
-                            '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>';
-                        if(myType === User.ADMIN || myType === User.GUIDE)
-                        {
-                            message+= '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
-                            '<label id="subjectGMS">מחק הודעה <label>'+
-                                '<span class="glyphicon glyphicon-trash"></span> ';
-                        }
-                        message+= '</div>'+
-                            '</div>'+
-                    '</div></p>'
-                    }   
-            $("#mesBody").append(message);
-        });
-
+                    message+= '</div>'+
+                        '</div>'+
+                '</div></p>'
+                }
+                else{
+                    message+='</div>'+
+                    '<div class="messageFooter">'+
+                        '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>';
+                    if(myType === User.ADMIN || myType === User.GUIDE)
+                    {
+                        message+= '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
+                        '<label id="subjectGMS">מחק הודעה <label>'+
+                            '<span class="glyphicon glyphicon-trash"></span> ';
+                    }
+                    message+= '</div>'+
+                        '</div>'+
+                '</div></p>'
+                }   
+        $("#mesBody").append(message);
     }
     /***********************************************************************************/
     var deleteGenMessage=function(i)
