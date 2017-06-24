@@ -377,6 +377,7 @@ var clubhouseManagement = (function()
 			var allClubhouses = data.val();   // get the whole tree of clubhouses
 			var keys = Object.keys(allClubhouses);	// get all keys
 			
+			$("#body").html(EditClubhousePage.inputSection);
 			for(var i =0; i<keys.length;i++)
 			{
 				if(page == EDITPAGE)
@@ -395,6 +396,7 @@ var clubhouseManagement = (function()
 					$('#clubhouse_select').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
 				}
 			}
+
 		});
 	}
 
@@ -418,11 +420,13 @@ var clubhouseManagement = (function()
     // Initial page for edit clubHouse
 	 var editClubhouse = function()
 	 {
+		$("#body").html("<img id='loader2' src='images/homepreloader.gif'/ width ='40%'>");
+		$("#loader2").css("display", "inline-block");
 		page = EDITPAGE;
 		edit_clubname=undefined;
 		loadClubhousesData();
 		$('.Nav').collapse('hide');
-		$("#body").html(EditClubhousePage.inputSection);
+		// $("#body").html(EditClubhousePage.inputSection);
         $("#editCHbtn").click(EditCluhouseListener);
 		$('#deleteCHbtn').click(removeCHlistener);
 	 }
