@@ -55,4 +55,8 @@
     text-align: right;    
 }
 
-
+#openUserEditBtn
+{
+    width: 50%;
+    height: 6%;
+}

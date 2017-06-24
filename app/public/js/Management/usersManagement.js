@@ -134,9 +134,9 @@ var usersManagement = function()
 					'<select type="text" id="usersInCH" class="form-control" >'+
 					'</select>'+
 			'</div>'+
-			'</br>'+
+			'</br>'+'</p>'+
 			'<div class="col-md-4 text-center">'+
-				'<button type="button" id="openUserEditBtn" class="btn btn-warning btn3d">לחץ כאן לערוך</button>'+
+				'<button type="button" id="openUserEditBtn" class="btn btn-danger btn3d">ערוך משתמש</button>'+
 			'</div>'+
 		'</div>'
 	}
@@ -543,7 +543,7 @@ var usersManagement = function()
 		var e = document.getElementById("usersInCH");
 		 if(e.selectedIndex<0)
 		 {
-			 alert('לא נבחר שם משתמש');
+			 alert('לא נבחר משתמש לעריכה');
 			 return;
 		 }
 		var userKey = e.options[e.selectedIndex].value;
