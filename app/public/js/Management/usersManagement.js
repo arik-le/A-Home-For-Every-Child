@@ -192,6 +192,7 @@ var usersManagement = function()
 			var allClubhouses = data.val();   // get the whole tree of clubhouses
 			var keys = Object.keys(allClubhouses);	// get all keys
 			var i;	
+			$("#body").html(EditUserOp.inputSection);
 			for(i=0; i<keys.length;i++)
 			{
 				var tempName = allClubhouses[keys[i]].name;
@@ -482,7 +483,8 @@ var usersManagement = function()
      var editUser=function()
     {
 		page = EDITPAGE;
-        $("#body").html(EditUserOp.inputSection);
+		$("#body").html("<img id='loader2' src='images/homepreloader.gif'/ width ='40%'>");
+		$("#loader2").css("display", "inline-block");
         $('.Nav').collapse('hide');
 		clubhousesInfo = [];
 		loadClubhousesData(); 	// attach listeners after loading clubhouses
