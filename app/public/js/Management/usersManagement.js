@@ -192,7 +192,11 @@ var usersManagement = function()
 			var allClubhouses = data.val();   // get the whole tree of clubhouses
 			var keys = Object.keys(allClubhouses);	// get all keys
 			var i;	
-			$("#body").html(EditUserOp.inputSection);
+			if(page == EDITPAGE)
+			{
+				$("#body").html(EditUserOp.inputSection);
+				$('#openUserEditBtn').click(editUserListener);
+			}
 			for(i=0; i<keys.length;i++)
 			{
 				var tempName = allClubhouses[keys[i]].name;
@@ -488,7 +492,7 @@ var usersManagement = function()
         $('.Nav').collapse('hide');
 		clubhousesInfo = [];
 		loadClubhousesData(); 	// attach listeners after loading clubhouses
-		$('#openUserEditBtn').click(editUserListener);
+		
     }
 
 	//=====================================================================
