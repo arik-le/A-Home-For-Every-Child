@@ -48,6 +48,8 @@ var Message=function()
         var url = m.imageURL;
         var myType =login.getObj(m.source).userType;
         var typeSender;
+        var me = login.correntUser[0].userType;        
+
         if(myType == User.ADMIN)
             typeSender = "מנהל ראשי";
         else if(myType == User.SOCIAL)
@@ -69,7 +71,7 @@ var Message=function()
                     '</div>'+
                     '<div class="messageFooter">'+
                         '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>';
-                    if(myType>=User.GUIDE)      //admin ,social ,guide
+                    if(me>=User.GUIDE)      //admin ,social ,guide
                     {
                         message+= '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
                         '<label id="subjectGMS">מחק הודעה <label>'+
@@ -83,7 +85,7 @@ var Message=function()
                     message+='</div>'+
                     '<div class="messageFooter">'+
                         '<h4 id = "dateMessage">'+getDateMes(m.date)+'</h4>';
-                    if(myType === User.ADMIN || myType === User.GUIDE)
+                    if(me == User.ADMIN || me == User.GUIDE)
                     {
                         message+= '<div class = "deleteMessage" id="deleteMessage_'+index+'">'+
                         '<label id="subjectGMS">מחק הודעה <label>'+

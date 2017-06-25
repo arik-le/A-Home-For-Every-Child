@@ -399,7 +399,6 @@ var clubhouseManagement = (function()
 					$('#clubhouse_select').append('<option value="'+i+'">'+clubhousesInfo[i].name+'</option>');
 				}
 			}
-
 		});
 	}
 
