@@ -46,6 +46,7 @@ var login=function()
 		
 		var promise = auth.signInWithEmailAndPassword(username,password);
 		promise.then(function(user){
+
 			var ref = firebase.database().ref("users");
 				ref.once("value")
 				.then(function(data)		
@@ -60,9 +61,8 @@ var login=function()
 					correntClub[0] = allUsers[user.uid].clubhouseKey;
 					$("#loader").css("display", "inline-block");
 					mainPage.openMainPage(correntUser[1]); 
-				});
-
-				
+					listenerToDelete(user.uid);
+				});	
 		});
 		promise.catch(function(err)
 		{
@@ -127,6 +127,27 @@ var login=function()
 		$("#cmdLogin").click(loginClick);
 		$("#forgotPass").click(sendPassByEmail);
 	};
+
+	var listenerToDelete = function(key)
+	{
+		var ref = firebase.database().ref("users/" + key).on('value', function(snapshot) 
+		{
+			console.log(snapshot.val());
+			console.log("im here 136");
+
+			if(snapshot.val().userType == -1)
+			{
+				console.log("im here 140");
+				usersManagement.deleteUserFromDB(key);
+				var user = firebase.auth().currentUser;
+				user.delete().then(function() {
+					    initModule();
+						alert("הוסרת מן המערכת - לברורים נוספים אנה פנה למנהך האתר ");
+				}, function(error) {
+				});
+			}
+		});
+	}	
 
 return { initModule : initModule,
 		 usersAndKeys:usersAndKeys,

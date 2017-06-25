@@ -744,7 +744,7 @@ var usersManagement = function()
 				deleteUserInCH();
 			else if(uType == User.ADMIN)
 			{
-				firebase.database().ref("users/"+userToEdit.userKey).remove();
+				firebase.database().ref("users/" + userToEdit.userKey).update({userType:-1});
 				alert("המשתמש הוסר בהצלחה");
 				editUser();
 			}
@@ -777,7 +777,7 @@ var usersManagement = function()
 				{
 					if(res == "true")
 					{
-						firebase.database().ref("users/"+userToEdit.userKey).remove();
+						firebase.database().ref("users/" + userToEdit.userKey).update({userType:-1});
 						alert("המשתמש הוסר בהצלחה");
 						editUser();
 					}
@@ -810,7 +810,7 @@ var usersManagement = function()
 			{
 				if(res == "true")
 				{
-					firebase.database().ref("users/"+userToEdit.userKey).remove();
+					firebase.database().ref("users/" + userToEdit.userKey).update({userType:-1});
 					alert("המשתמש הוסר בהצלחה");
 					editUser();
 				}
@@ -937,8 +937,12 @@ var usersManagement = function()
 		return "";
 	}
 
+	var deleteUserFromDB = function(key)
+	{
+		firebase.database().ref("users/"+key).remove();
+	}
 
-     return{addUser:addUser,editUser:editUser};
+     return{addUser:addUser,editUser:editUser,deleteUserFromDB:deleteUserFromDB};
 }();
 
 
