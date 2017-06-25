@@ -1,5 +1,10 @@
 var formPage=function()
 { 
+    var ONLY_GUIDES = 2;
+    var ONLY_SOCIAL = 3;
+    var ONLY_ADMIN = 4;
+    var ALL_STUFF = 5;
+
     var questions=[];
     var corForm;
     var numOfQuestions
@@ -55,7 +60,15 @@ var formPage=function()
                 "<span class='input-group-addon'><i class='fa fa-home' aria-hidden='true'></i></span>"+
                 "<select type='text' id='clubhousesForm' class='form-control clubHouseName'></select>"+
             "</div>"+
-            '</br><label id="allTitles2" dir="rtl">בחר מספר שאלות:</label></p>'+
+            '</br><label id="allTitles2" dir="rtl">הרשאות צפיה</label></p>'+
+            '<div id="checkPermision">'+
+				'<label for="guides" class="chkbox">רכזים/מדריכים</label>'+
+				'<input id="selGuides" type="checkbox" name="guides" id="guides" class="custom" />'+
+				'<label for="socials" class="chkbox">עו"ס/ר"צ</label>'+
+				'<input id="selSocial" type="checkbox" name="socials" id="socials" class="custom" checked/>'+
+            "</div>"+
+
+            '<label id="allTitles2" dir="rtl">בחר מספר שאלות:</label></p>'+
              "<div class='input-group'>"+
                 "<span class='input-group-addon'><i class='fa fa-home' aria-hidden='true'></i></span>"+
                 "<select type='text'  id='numOfQustions' class='form-control'>"+
@@ -109,6 +122,7 @@ var formPage=function()
             return;
         }
         var name = login.correntUser[0].firstName +" "+ login.correntUser[0].lastName;
+        var per = checkPremission();
 
         //inject to body
         var str='<div id="allTitles">'+sub+'</div></p>'
@@ -145,7 +159,8 @@ var formPage=function()
                 }
                 questions[i-1]={numOfvalues:a,question:q};
             }
-            var newForm=Form.create(sub,name,questions);      
+
+            var newForm=Form.create(sub,name,questions,per);      
             if(toClubHouse != "allClubs")
                 firebase.database().ref('clubhouse/'+toClubHouse+'/forms').push(newForm);
             else
@@ -160,7 +175,7 @@ var formPage=function()
             }
             alert("טופס הוזן בהצלחה");
             create();
-            loadAllForms();
+    
         });
     }
 
@@ -224,10 +239,13 @@ var formPage=function()
                 
                 <div id="group_btn">
                     <a id="close_btn" class="btn btn-success btn-sq-sm"><span class="glyphicon glyphicon-ok-circle"></span></a>
+                    <a id="print_btn" class="btn btn-primary btn-sq-sm"><span class="glyphicon glyphicon-print"></span></a>
                     <a id="del_btn" class="btn btn-danger btn-sq-sm"><span class="glyphicon glyphicon-trash"></span></a>
                 </div>`;
             $("#body").html(showExactForm);
             $("#close_btn").click(showFormByClubs);
+            $("#print_btn").click(function(){window.print();});
+
         });
     }
 //================================================================================================
@@ -316,6 +334,12 @@ var formPage=function()
         {
             var str="";
             var forms=data.val();
+            if(forms==null)
+            {
+                $("#mesBody").html("<h1 id='allTitles' dir='rtl'>כרגע אין טפסים במערכת...<h1>");
+                return;
+            }
+
             var keys=Object.keys(forms);
             var i=0;
             $("#body").html("");
@@ -338,7 +362,7 @@ var formPage=function()
                 }
                 else
                 {
-                    $("#"+tempId).css("background","#509975");
+                    $("#"+tempId).css("background","lightgray");
                     $("#form_"+(i++)).click(function()
                     {
                         alert("טופס כבר הוזן לא ניתן להזין פעמים");
@@ -423,6 +447,7 @@ var formPage=function()
             clubsKeys=Object.keys(clubs);
             for(var i=0;i<clubsKeys.length;i++)
             {
+                
                 var tempId ="clubForm_"+i;
                 str='<a class="btn btn-sq-lg clubSquare" id="'+tempId+'">'+
                 '<i class="fa fa-home fa-2x"></i><br/>'+clubs[clubsKeys[i]].name+'</a>';
@@ -434,7 +459,6 @@ var formPage=function()
                 }
                 else
                       $("#body").append(str);
-    
                 mainPage.paintButton(i,tempId);
                    
                 $("#clubForm_"+i).click(function()
@@ -452,7 +476,7 @@ var formPage=function()
                             for(var j=0;j<rKeys.length;j++)
                             { 
                                 var user=forms[fKey].result[rKeys[j]].user;
-                                if(users[user]!=undefined)
+                                if(users[user]!=undefined && (login.correntUser[0].userType == forms[fKey].permission || forms[fKey].permission == ALL_STUFF))
                                 {
                                     var indexUser=indexOfobj(users,user);
                                     var str=   '<div class="row massage" id="Form_'+k+'_'+t+'_'+indexUser+'">'+   
@@ -481,16 +505,11 @@ var formPage=function()
                         }
                         t++;
                     }
-
-                });
-                    
+                });    
             } 
         });
-        
-     
-                            
-
     }
+
     var indexOfobj=function(objs,obj)
     {
         var keys=Object.keys(objs);
@@ -516,6 +535,21 @@ var formPage=function()
             });
         }
     }
+
+    var checkPremission = function()
+    {
+		var toGuides = document.getElementById("selGuides").checked; 
+		var toSocial = document.getElementById("selSocial").checked;
+
+        if(!toGuides && !toSocial)
+            return ONLY_ADMIN;
+        if(toGuides && !toSocial)
+            return ONLY_GUIDES;
+        else if(!toGuides && toSocial)
+            return ONLY_SOCIAL;
+        return ALL_STUFF;
+    }
+
     return {
         create:create,
         showForm:showForm,

@@ -5,6 +5,8 @@ var sendMessagePage = function()
 	var ONLY_PARENTS = 0;
 	var ONLY_TEACHERS = 1;
 	var EVERYBODY = 2;
+	var NO_ONE = 3;
+
     var CAPACITY_LIMIT = 30;
 	var isFull = false;
 	var msgPage={
@@ -28,9 +30,8 @@ var sendMessagePage = function()
 				'<div class="tab-pane active" id="privatreMessage">'+
 						'<select class = "userCkecklist" id = "clubHouseSM" required onchange="sendMessagePage.updateUserType()" >'+
 						'</select></br>'+
-				
 			
-						'<label id="royLabel">:שלח אל</label></br></br>'+
+						'<label id="royLabel" dir="rtl">שלח אל:</label></br></br>'+
 						'<select class = "userCkecklist" id = "chooseUserSM" required >'+
 							'<option value="nan" disabled selected>בחר משתמש</option>'+
 						'</select>'+
@@ -43,7 +44,6 @@ var sendMessagePage = function()
 						'<label id="royLabel">:תוכן ההודעה</label></br>'+
 						'<textarea id = "contentSM" class="form-control" rows="10" name="message" placeholder="תוכן ההודעה" dir="rtl"></textarea></br>'+
 					
-
 					'<div class="col-sm-10 col-sm-offset-2">'+
 						'<input id="sendButtonPM" name="submit" type="submit" value="שלח" class="btn btn-primary">'+
 						'<button id="cleanButtonPM" type="button" class="btn">נקה</button>'+
@@ -52,8 +52,8 @@ var sendMessagePage = function()
 				
 			'<div class="tab-pane " id="generalMessage" >'+
 				'<select id = "clubHouseGM" required >'+
-				'</select></br>'+
-				'<label id="royLabel">:שלח אל</label></br></br>'+
+				'</select></p>'+
+				'<label id="royLabel" dir="rtl">בנוסף לצוות, שלח אל:</label></br></br>'+
 				'<label for="teachers" class="chkbox">מורים</label>'+
 				'<input id="selTeachers" type="checkbox" name="teachers" id="teachers" class="custom" />'+
 				'<label for="parents" class="chkbox">הורים</label>'+
@@ -291,11 +291,6 @@ var sendMessagePage = function()
 		var subject=document.getElementById("subjectGM").value;
 		var content=document.getElementById("contentGM").value;
 
-		if(!toTeachers && !toParents)
-		{
-			alert("אנה בחר יעד לשליחה");
-			return;
-		}
 		if(toClubHouse == "nan" || toClubHouse == null || toClubHouse == undefined)
 		{
 			alert("אנה בחר/י מועדונית");
@@ -312,7 +307,6 @@ var sendMessagePage = function()
 			return;
 		}
 	
-
 		if(toClubHouse == "allClubs")
 			sendToAll(from,toTeachers,toParents,subject,content);
 		else
@@ -339,8 +333,10 @@ var sendMessagePage = function()
 			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,EVERYBODY,imageURL,imageName,itemKey);
 		else if(!toTeachers && toParents)
 			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_PARENTS,imageURL,imageName,itemKey);
-		else
+		else if(toTeachers && !toParents)
 			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,ONLY_TEACHERS,imageURL,imageName,itemKey);
+		else
+			return Message.create(from,"general",subject,content, GENERAL_MESSAGE,NO_ONE,imageURL,imageName,itemKey);
 	}
 
 //-------------------------------------------------------------------------------------------------

@@ -53,9 +53,9 @@ var Message=function()
         if(myType == User.ADMIN)
             typeSender = "מנהל ראשי";
         else if(myType == User.SOCIAL)
-            typeSender = "עובד סוציאלי";
+            typeSender = 'עו"ס/ראש צוות';
         else
-            typeSender = "מדריך";
+            typeSender = "מדריך/רכז";
 
             var message=
                 '<div class = "generalMessageBox" id="generalMessageBox_'+index+'">'+

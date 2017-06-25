@@ -1,14 +1,15 @@
 var Form=function()
 {
     var questions=[];
-    var create=function(subject,createdBy,questions)
+    var create=function(subject,createdBy,questions,permission)
     {
         var d = new Date();
         return {
                 questions:questions,
                 subject:subject,
                 createdBy:createdBy,
-                date:getDateForm()
+                date:getDateForm(),
+                permission:permission
             }
     }
    
@@ -19,13 +20,12 @@ var Form=function()
             $(".listQue").html("");
             for(var i=0;i<q.length;i++)
             {
-                 var str='<div id="Q_'+i+'">'+
+                var str='<div id="Q_'+i+'">'+
                             '<label>'+q[i].question+' '+q[i].numOfvalues+'</label>'+
                             '</div>' ;
-                    $(".listQue").append(str);
+                $(".listQue").append(str);
             }
         }
-      
     }
 
     var getDateForm=function()

@@ -107,3 +107,19 @@ tr{
 	background: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	box-shadow: 5px 5px gray;
 }
+
+#checkPermision
+{
+	text-align: center;
+}
+
+#selGuides
+{
+	height:20px;
+	width:20px;
+}
+#selSocial
+{
+	height:20px;
+	width:20px;
+}
