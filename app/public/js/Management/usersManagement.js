@@ -262,8 +262,6 @@ var usersManagement = function()
 		{
 			if (page == ADDPAGE)
 				e = document.getElementById("clubhouse_select_Add");
-			console.log(e);
-			console.log(e.selectedIndex);
 			if(e.selectedIndex == -1)// when there are no clubhouses at DB
 			{
 				alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
@@ -680,7 +678,6 @@ var usersManagement = function()
 			if(userToEdit.clubhouseKey != currClubKey) // clubhouse changed
 			{
 				// update new clubhouse
-				console.log(userToEdit.userType);
 				firebase.database().ref('clubhouse/'+currClubKey+'/usersList')
 					.push({userkey:userToEdit.userKey,username:Nusername,type:userToEdit.userType});
 				
