@@ -172,38 +172,67 @@ var mainPage=function()
     {
         var myType = login.correntUser[0].userType;
         var clubhouses = login.correntUser[0].clubhouseKey;
+         $("#body").html("");
+         
         if(myType == User.SOCIAL)
         {   
             firebase.database().ref("users/"+login.correntUser[1]+"/clubhouseKey").once("value")
             .then(function(data)
             {
                 clubhouses = data.val();
+                for (var i=0;i<clubhouses.length;i++)
+                    addSWToHomePage(i,clubhouses[i]);     
             });
-
         }
 
+        else        // admin only
+        {
+            firebase.database().ref("clubhouse/").once("value")
+            .then(function(data)
+            {
+                $("#body").css("text-align", "center");
+                $("#body").append("<h2 id='allTitles'>בחר מועדונית</h2></p>")
+                var clubs = data.val();
+                var keys = Object.keys(clubs);
+                for(var i=0;i<keys.length;i++)
+                        addToHomePage(i,clubs,keys,i);
+                
+            });
+        }
+    }
+
+
+/***********************************************************************************/
+
+    var addSWToHomePage = function(i,Ckey)
+    {
         firebase.database().ref("clubhouse/").once("value")
         .then(function(data)
         {
-            $("#body").html("");
-            $("#body").css("text-align", "center");
-            $("#body").append("<h2 id='allTitles'>בחר מועדונית</h2></p>")
             var clubs = data.val();
-            var keys = Object.keys(clubs);
-            for(var i=0;i<keys.length;i++)
-            {
-                if(myType == User.SOCIAL)
+            var keys = Object.keys(clubs); 
+            var tempBtnID = 'btn_'+Ckey;
+            var btnInput = 
+            '<a id="'+tempBtnID+'" class="btn btn-sq-lg btn-primary clubSquare">'+
+            '<i class="fa fa-home fa-2x"></i><br/> ' +clubs[Ckey].name + '</a>';
+            $("#body").append(btnInput);
+            paintButton(i,tempBtnID);
+
+            $("#"+tempBtnID).click(function(e)
+            {  
+                 var id=e.target.id;
+                id=id.substring(4,id.length);  
+                firebase.database().ref("clubhouse/").once("value")
+                .then(function(data)
                 { 
-                for(var j=0;j<clubhouses.length;j++) 
-                    if(clubhouses[j]==keys[i])
-                        addToHomePage(i,clubs,keys,j);
-                }
-                else
-                {
-                    var j=i;
-                    addToHomePage(i,clubs,keys,j);
-                }
-            }
+                    var clubs = data.val();
+                    var keys = Object.keys(clubs); 
+                    $("#body").html("");
+
+                    login.correntClub[0]=clubs[id];
+                    loadHomePage(id); 
+                });
+            });
         });
     }
 
