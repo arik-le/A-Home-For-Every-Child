@@ -353,7 +353,7 @@ var clubhouseManagement = (function()
 					}
 				}
 				else
-					firebase.database().ref("users/"+keyUser).remove(); 
+					firebase.database().ref("users/" + keyUser).update({userType:-1}); 
 
 				removeCH(clubKey);
 
