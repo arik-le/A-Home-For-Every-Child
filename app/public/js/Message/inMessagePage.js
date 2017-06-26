@@ -46,7 +46,7 @@ var inMassagePage=function()
                             str+='<h5"> :מאת</h5>'+
                                 '<div class = "subject">';
                                     if(login.getObj(obj.source)!==undefined)
-                                        str+='<textarea disabled dir="rtl"">'+login.getObj(obj.source).firstName+'</textarea>'
+                                        str+='<textarea disabled dir="rtl"">'+login.getObj(obj.source).firstName +' '+login.getObj(obj.source).lastName+'</textarea>'
                                     else
                                         str+='<textarea disabled dir="rtl"">אורח - משתמש אינו קיים במערכת</textarea>'
                                 str+='</div>';
@@ -55,7 +55,7 @@ var inMassagePage=function()
                         {
                             str+='<h5"> :אל</h5>'+
                                 '<div class = "subject">'+
-                                    '<textarea disabled " dir="rtl">'+login.getObj(obj.destination).firstName+'</textarea>'+
+                                    '<textarea disabled " dir="rtl">'+login.getObj(obj.destination).firstName+' '+login.getObj(obj.destination).lastName+'</textarea>'+
                                 '</div>';
                         }
                         
@@ -131,7 +131,7 @@ var inMassagePage=function()
         $("#body").append(createMassage(msg,messageID,isInBox));
         $("#topic"+messageID).click(function()
         {
-            readMessage(messageID);
+            readMessage(messageID,isInBox);
         });
         $("#topic"+messageID).append(topic);
         $("#trash_"+messageID).click(function()
@@ -185,17 +185,31 @@ var inMassagePage=function()
 
 
 //-------------------------------------------------------------------------------------------------
-    var readMessage=function(id)
+    var readMessage=function(id,isInBox)
     {
         var me = login.correntUser[1];
-        firebase.database().ref("users/" + me + "/inboxMessages").once("value")
-        .then(function(data)
+        if(isInBox)
         {
-            var messages = data.val();
-            var keys = Object.keys(messages);
-            var i=keys[id];
-            firebase.database().ref("users/" + me + "/inboxMessages/"+i+"/isRead").set(true);
-        });
+            firebase.database().ref("users/" + me + "/inboxMessages").once("value")
+            .then(function(data)
+            {
+                var messages = data.val();
+                var keys = Object.keys(messages);
+                var i=keys[id];
+                firebase.database().ref("users/" + me + "/inboxMessages/"+i+"/isRead").set(true);
+            });
+        }
+        else
+        {
+            firebase.database().ref("users/" + me + "/outboxMessages").once("value")
+            .then(function(data)
+            {
+                var messages = data.val();
+                var keys = Object.keys(messages);
+                var i=keys[id];
+                firebase.database().ref("users/" + me + "/outboxMessages/"+i+"/isRead").set(true);
+            });
+        }
         $("#enve"+id).removeClass("envelopeN");
         $("#enve"+id).addClass("envelopeR");
     }
