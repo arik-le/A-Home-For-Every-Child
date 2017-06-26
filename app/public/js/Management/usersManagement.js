@@ -680,8 +680,9 @@ var usersManagement = function()
 			if(userToEdit.clubhouseKey != currClubKey) // clubhouse changed
 			{
 				// update new clubhouse
+				console.log(userToEdit.userType);
 				firebase.database().ref('clubhouse/'+currClubKey+'/usersList')
-					.push({userkey:userToEdit.userKey,username:Nusername,type:userType});
+					.push({userkey:userToEdit.userKey,username:Nusername,type:userToEdit.userType});
 				
 				// remove from old clubhouse 
 				removeUserFromClubOnly(userToEdit.clubhouseKey);
