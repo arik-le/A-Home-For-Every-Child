@@ -323,7 +323,7 @@ var clubhouseManagement = (function()
 						deleteClubRef(userObj.userKey,clubKey);
 					else
 					{
-						firebase.database().ref("users/"+userObj.userKey).remove(); 
+						firebase.database().ref("users/" + userObj.userKey).update({userType:-1});
 						removeCH(clubKey);
 					}
 				});

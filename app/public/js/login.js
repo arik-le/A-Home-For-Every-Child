@@ -138,7 +138,7 @@ var login=function()
 				var user = firebase.auth().currentUser;
 				user.delete().then(function() {
 					    initModule();
-						alert("הוסרת מן המערכת - לברורים נוספים אנה פנה למנהך האתר ");
+						alert("הוסרת מן המערכת - לברורים נוספים אנה פנה למנהל האתר ");
 				}, function(error) {
 				});
 			}
