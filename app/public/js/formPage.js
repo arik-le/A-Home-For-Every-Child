@@ -495,29 +495,34 @@ var formPage=function()
                 selectForm.push(false);
             var i=0;
             for(key in forms)
-            {
-                var tempId ="sendedForm_"+i;
-                var str='<a class="btn btn-sq-lg formRec" id="'+tempId+'">'+
-                '<i class="fa fa-clipboard fa-2x"></i><br/>'+forms[key].subject+'</a>';
-                $("#body").append(str);
-                mainPage.paintButton(i,tempId);
-              
-                $("#sendedForm_"+(i++)).click(function()
-                {
-                    var id=this.id;
-                    id=id.split("_")[1];
-                    if(press)
+            {   
+                if(forms[key].permission == login.correntUser[0].userType || forms[key].permission ==5 || login.correntUser[0].userType==User.ADMIN )
+                {   
+                    var tempId ="sendedForm_"+i;
+                    var str='<a class="btn btn-sq-lg formRec" id="'+tempId+'">'+
+                    '<i class="fa fa-clipboard fa-2x"></i><br/>'+forms[key].subject+'</a>';
+                    $("#body").append(str);
+                    mainPage.paintButton(i,tempId);
+                
+                    $("#sendedForm_"+(i++)).click(function()
                     {
-                        
-                        if(!selectForm[id])
-                            $("#sendedForm_"+id).css("background","lightgray");
-                        else
-                            $("#sendedForm_"+id).css("background","#ECE9E6");
-                        selectForm[id]=!selectForm[id];
-                    }
-                    else  
-                        showAnswers(clubID,keys[id]);
-                });
+                        var id=this.id;
+                        id=id.split("_")[1];
+                        if(press)
+                        {
+                            
+                            if(!selectForm[id])
+                                $("#sendedForm_"+id).css("background","lightgray");
+                            else
+                                $("#sendedForm_"+id).css("background","#ECE9E6");
+                            selectForm[id]=!selectForm[id];
+                        }
+                        else  
+                            showAnswers(clubID,keys[id]);
+                    });
+                }
+                else
+                    i+=1;
             }
             $("#body").append('</br></br><a id="delCreatedForm_btn" class="btn btn-danger btn-lg btn-block">מחק</a>');
             $("#delCreatedForm_btn").click(function()
@@ -536,7 +541,7 @@ var formPage=function()
                         loadClubForms(clubID);
                         
                     });
-             }
+                }
                 else
                 {
                      $("#delCreatedForm_btn").html("מחיקה");
@@ -563,13 +568,13 @@ var formPage=function()
            if(results == null)
            {
                 $("#body").html("<h1 id='allTitles' dir='rtl'>לא נשלחו טפסים...<h1>");
-                $("#body").append('<a id="back_btn" class="btn btn-warning btn-lg btn-block">חזור</a>');
+                $("#body").append('<br><a id="back_btn" class="btn btn-warning btn-lg btn-block">חזור</a>');
                 $("#back_btn").click(function() {  setTimeout(function(){loadClubForms(clubID);},250);});
                 return;
            }
            var keys = Object.keys(results);
            for(var i=0;i<keys.length;i++)
-           {    console.log(i);
+           {    
                 var str = '<div class="row massage">'+   
                             '<span class="glyphicon glyphicon-trash col-xs-2 trash" id = "delTopic_'+i+'"></span>'+
                             '<h5 id="Form_'+i+'" class="topic  col-xs-8">'+' מאת :'+results[keys[i]].sendBy+'</h5>'+
@@ -578,8 +583,6 @@ var formPage=function()
                         '</div>'; 
                 $("#body").append(str);
                
-                $("#back_btn").click(function() {  setTimeout(function(){loadClubForms(clubID);},250);});
-
                 $("#delTopic_"+i).click(function()
                 {
                     var id=this.id;
@@ -597,7 +600,8 @@ var formPage=function()
                     $("#del_btn").click(function(){deleteForm(clubID,key,keys[id]);});
                 });  
             }
-             $("#body").append('<a id="back_btn" class="btn btn-warning btn-lg btn-block">חזור</a>');
+             $("#body").append('<br><a id="back_btn" class="btn btn-warning btn-lg btn-block">חזור</a>');
+             $("#back_btn").click(function() {  setTimeout(function(){loadClubForms(clubID);},250);});
         });
     }
 
