@@ -214,7 +214,7 @@ var sendMessagePage = function()
 								firebase.database().ref("users/"+curClub[allUsersInClub[j]].userkey).once("value")
 								.then(function(data)
 								{
-									if(data.val() == null)
+									if(data.val() == null || data.val().userType == -1)
 										return;
 									var user = data.val();
 									var mykeys=Object.keys(user);
@@ -230,6 +230,8 @@ var sendMessagePage = function()
 			firebase.database().ref("users/").once("value")
 			.then(function(data)
 			{
+				if(data.val().userType == -1)
+					return;
 				var users = data.val();
 				var mykeys=Object.keys(users);
 				for(var i=0;i<mykeys.length;i++)
@@ -347,13 +349,15 @@ var sendMessagePage = function()
 		.then(function(data)
 		{
 			var clubs = data.val();
-			var keys = Object.keys(clubs);
+			
+			var keys;
 
 			var file = uploadImage.myFileImg[0];
 			if(file == undefined)
 			{
 				if(clubs != null)
 				{
+					keys = Object.keys(clubs);
 					if(keys.length > CAPACITY_LIMIT)
 					{
 						alert("תיבת הודעות כלליות מלאה - אנא מחק הודעות קודמות");
@@ -374,6 +378,7 @@ var sendMessagePage = function()
 			{
 				if(clubs != null)
 				{
+					keys = Object.keys(clubs);
 					if(keys.length > CAPACITY_LIMIT)
 					{
 						alert("תיבת הודעות כלליות מלאה - אנא מחק הודעות קודמות");

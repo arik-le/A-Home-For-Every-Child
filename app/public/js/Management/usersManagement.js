@@ -262,13 +262,19 @@ var usersManagement = function()
 		{
 			if (page == ADDPAGE)
 				e = document.getElementById("clubhouse_select_Add");
-
+			console.log(e);
+			console.log(e.selectedIndex);
 			if(e.selectedIndex == -1)// when there are no clubhouses at DB
 			{
 				alert("אנא הזן מועדוניות לפני יצירת משתמשים במערכת");
 				return;
 			}
 			Uclubhouse= e.options[e.selectedIndex].text;
+			if(Uclubhouse == "")
+			{
+				alert("שם מועדונית לא נקלט אנא נסה שוב");
+				return;
+			}
 			var clubKey = getClubKeyByName(Uclubhouse);
 			if(type == User.PARENT || type == User.TEACHER)
 			{
@@ -387,8 +393,6 @@ var usersManagement = function()
 
 	var inputsValidation = function(args)
 	{
-		//var usernameRegex  = /^\w+(\-+(\w)*)*$/;
-		// var namesRegex = new RegExp("/^([א-תA-Z0-9])+$/");
 		HebrewChars = /(\S*[\u05D0]+\S*)/g;
 
 		var spacesRegex = /\s/;
@@ -426,7 +430,7 @@ var usersManagement = function()
 
 		promise.then(function(user)
 		{
-			var usersRef = firebase.database().ref('users/'+user.uid);
+			var usersRef = firebase.database().ref("users/"+user.uid);
 			var newUser;
 			if(type == User.ADMIN)
 				newUser = User.create(username,firstName,lastName,type,null,user.uid,"");
@@ -529,7 +533,8 @@ var usersManagement = function()
 				userRef.ref.once("value").then(function(data)
 				{
 					var user=data.val();
-					$('#usersInCH').append('<option value="'+user.userKey+'">'+user.firstName+' '+user.lastName+'</option>');
+					if(user.userType != -1)
+						$('#usersInCH').append('<option value="'+user.userKey+'">'+user.firstName+' '+user.lastName+'</option>');
 					
 				});	
 			}
@@ -559,7 +564,7 @@ var usersManagement = function()
 			alert('key Error: '+userKey);
 			return;
 		}
-		// get the user object
+		// get the user object -- not reachable for deleted user
 		firebase.database().ref("users/"+userKey).once("value")
 		.then(function(data)
 		{
@@ -729,7 +734,7 @@ var usersManagement = function()
 		}
 
 		// var e = document.getElementById("clubhouse_select_Add");
-		var userRef = firebase.database().ref('users/');
+		var userRef = firebase.database().ref("users/");
 		userRef.child(userToEdit.userKey).update(obj);
 		alert("המידע עודכן בהצלחה");
 		editUser();
@@ -882,15 +887,18 @@ var usersManagement = function()
 			{
 				var k = keys[i];
 				var uType=users[k].userType;
-				if( (uType == User.ADMIN) && (users[k].userKey != login.correntUser[1]) )
+				if(uType != -1)
 				{
-					var userRef= firebase.database().ref("users/"+users[k].userKey);
-					userRef.ref.once("value").then(function(data)
+					if( (uType == User.ADMIN) && (users[k].userKey != login.correntUser[1]) )
 					{
-						var user=data.val();
-						$('#usersInCH').append('<option value="'+user.userKey+'">'+user.firstName+' '+user.lastName+'</option>');
-					
-					});	
+						var userRef= firebase.database().ref("users/"+users[k].userKey);
+						userRef.ref.once("value").then(function(data)
+						{
+							var user=data.val();
+							$('#usersInCH').append('<option value="'+user.userKey+'">'+user.firstName+' '+user.lastName+'</option>');
+						
+						});	
+					}
 				}
 			}
 		});

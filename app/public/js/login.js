@@ -60,7 +60,7 @@ var login=function()
 					correntUser[0] = allUsers[user.uid];
 					correntClub[0] = allUsers[user.uid].clubhouseKey;
 					$("#loader").css("display", "inline-block");
-					mainPage.openMainPage(correntUser[1]); 
+					mainPage.openMainPage(user.uid); 
 					listenerToDelete(user.uid);
 				});	
 		});
@@ -132,12 +132,8 @@ var login=function()
 	{
 		var ref = firebase.database().ref("users/" + key).on('value', function(snapshot) 
 		{
-			console.log(snapshot.val());
-			console.log("im here 136");
-
 			if(snapshot.val().userType == -1)
 			{
-				console.log("im here 140");
 				usersManagement.deleteUserFromDB(key);
 				var user = firebase.auth().currentUser;
 				user.delete().then(function() {
