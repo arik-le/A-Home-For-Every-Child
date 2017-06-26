@@ -50,7 +50,7 @@ var sendMessagePage = function()
 					'</div>'+
 				'</div>'+
 				
-			'<div class="tab-pane " id="generalMessage" >'+
+			'<div class="tab-pane" id="generalMessage" >'+
 				'<select id = "clubHouseGM" required >'+
 				'</select></p>'+
 				'<label id="royLabel" dir="rtl">בנוסף לצוות, שלח אל:</label></br></br>'+

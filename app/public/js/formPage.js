@@ -15,20 +15,20 @@ var formPage=function()
 
 
 //================================================================================================
+    
     var addQuestion=function()
     {
         var n=document.getElementById("numOfOption").value;
         var q=document.getElementById("newQuestion").value;
-       // var question=Question.create(q,n);
-       questions.push(Question.create(q,n));
-        //firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+corForm.key+'/questions').push(question);
+        questions.push(Question.create(q,n));
         Form.allQ(questions);
         $(".addQPage").remove();
-       $("#body").append(plus_btn);
-       $("#plus_btn").click(addQuestionPage);
+        $("#body").append(plus_btn);
+        $("#plus_btn").click(addQuestionPage);
     }
 
 //================================================================================================
+    
     var addQuestionPage=function()
     {
         $("#plus_btn").remove();
@@ -44,8 +44,10 @@ var formPage=function()
                 '</div>';
         $(".listQue").append(str);
         $("#addQuestion_btn").click(addQuestion);
-    }    
+    } 
+
 //================================================================================================
+    
     var create=function()
     {
         $('.NAV').collapse('hide');
@@ -96,10 +98,9 @@ var formPage=function()
         updateClubs();
         $("#createForm_btn").click(createForm);
     }
+
 //================================================================================================
 
-    
-//================================================================================================
     var createForm=function()
     {
         var sub = document.getElementById("formSubject").value;
@@ -124,7 +125,6 @@ var formPage=function()
         var name = login.correntUser[0].firstName +" "+ login.correntUser[0].lastName;
         var per = checkPremission();
 
-        //inject to body
         var str='<div id="allTitles">'+sub+'</div></p>'
         $("#body").html(str+"<div id='listQue'></div>");      
         for(var i=0;i<numOfQuestions;i++)
@@ -147,7 +147,6 @@ var formPage=function()
             var aList = [];
             var questions=[];
 
-            
             for(var i=1;i<=numOfQuestions;i++)
             {
                 var q = document.getElementById("Q_"+i).value;
@@ -175,11 +174,11 @@ var formPage=function()
             }
             alert("טופס הוזן בהצלחה");
             create();
-    
         });
     }
 
 //================================================================================================
+
     var addQtoTable=function(q,a,i)
     {
         var queStr='<tr>'+
@@ -189,18 +188,11 @@ var formPage=function()
 		    '</tr>`';
         return queStr;
     }
+
+//================================================================================================
     
-    var keysArray=function(objects)
+    var showForm = function(form,user,id)
     {
-        var keys=[];
-        for(obj in objects )
-            keys.push(obj);
-        return keys;
-    }
-    var showForm = function(form,user)
-    {
-        
-        $('.NAV').collapse('hide');
         $("#body").html("");      
         var showExactForm = 
         
@@ -215,55 +207,55 @@ var formPage=function()
 					</tr>
 				  </thead>
 				  <tbody>`;
-        var answers=keysArray(form.result);
+        var answers=Object.keys(form.result);
         var ans;
+
         for(var i=0;i<answers.length;i++)//find the user answer
             if(form.result[answers[i]].user===user)
                 ans=form.result[answers[i]].answers;
-        var keys=keysArray(form.questions);
+
+        var keys=Object.keys(form.questions);
 		for(i=0;i<keys.length;i++)
             showExactForm+=addQtoTable(form.questions[keys[i]],ans,i);
-        firebase.database().ref('users/'+user).once("value")
-        .then(function(data)
-        {
-            var thisUser=data.val();
-            showExactForm+=  `</tbody>
-                    </table>
-                </div>
-                
-                <div class="fromDeatails">
-                    <h5 id="formLbl">מאת :`+thisUser.lastName+` `+thisUser.firstName+` `+`</h5>
-                    <h5 id="formLbl">ילד :`+thisUser.childName+` `+`</h5>
-                    <h5 id="formLbl">תאריך: 29/5/17</h5>
-                </div>
-                
-                <div id="group_btn">
-                    <a id="close_btn" class="btn btn-success btn-sq-sm"><span class="glyphicon glyphicon-ok-circle"></span></a>
-                    <a id="print_btn" class="btn btn-primary btn-sq-sm"><span class="glyphicon glyphicon-print"></span></a>
-                    <a id="del_btn" class="btn btn-danger btn-sq-sm"><span class="glyphicon glyphicon-trash"></span></a>
-                </div>`;
-            $("#body").html(showExactForm);
-            $("#close_btn").click(showFormByClubs);
-            $("#print_btn").click(function(){window.print();});
-
-        });
+      
+        showExactForm+=  `</tbody>
+                </table>
+            </div>
+            
+            <div class="fromDeatails">
+                <h5 id="formLbl">מאת :`+form.result[answers[id]].sendBy+`</h5>
+                <h5 id="formLbl">ילד :`+form.result[answers[id]].childName+`</h5>
+                <h5 id="formLbl">תאריך:`+form.result[answers[id]].date+`</h5>
+            </div>
+            
+            <div id="group_btn">
+                <a id="close_btn" class="btn btn-success btn-sq-sm"><span class="glyphicon glyphicon-ok-circle"></span></a>
+                <a id="print_btn" class="btn btn-primary btn-sq-sm"><span class="glyphicon glyphicon-print"></span></a>
+                <a id="del_btn" class="btn btn-danger btn-sq-sm"><span class="glyphicon glyphicon-trash"></span></a>
+            </div>`;
+        $("#body").html(showExactForm);
     }
+
 //================================================================================================
+
     var p=function(s)
     {
         console.log(s);
     }
+
 //================================================================================================
+    
     var fillFrom = function(key)
     {
-    firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+key).once("value")
+        firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+key).once("value")
         .then(function(data)
         {
             var keys=[];
-            p(data.be());
+        
             for(obj in data.be().questions )
                 keys.push(obj);
-            numOfQuestions=keys.length;
+
+            numOfQuestions=keys.length
             var form=data.val();
             var str;
             $("#body").html("");
@@ -271,7 +263,7 @@ var formPage=function()
 
             for(var i=0;i<keys.length;i++)
             {
-            firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+key).once("value")
+                firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+key).once("value")
                 .then(function(data)
                 {
                     var keys=[];
@@ -310,6 +302,9 @@ var formPage=function()
             }
         });
     }
+
+//================================================================================================
+
     var isAlreadySolved=function(form)
     {
         var user=login.correntUser[1];
@@ -318,14 +313,16 @@ var formPage=function()
         {
             for(key in results)
             {
-                p(results[key]);
+               
                 if(results[key].user===user)
                     return true;
             }
         }
         return false;
-
     }
+
+//================================================================================================
+
     var loadAllForms=function()
     {
         $('.Nav').collapse('hide');
@@ -354,7 +351,7 @@ var formPage=function()
                 {
                     $("#form_"+(i++)).click(function()
                     {
-                        p(i);
+            
                         var id=this.id;
                         id=id.substring(5,id.length); 
                         fillFrom(keys[id]);
@@ -371,6 +368,8 @@ var formPage=function()
             }
         });
     }
+
+//================================================================================================
  
     var updateClubs=function()				//update the list of clubHouses
 	{		
@@ -387,6 +386,7 @@ var formPage=function()
 	}
 
 //================================================================================================
+    
     var sendForm=function(questions,formKey)
     {
         var ans=[];
@@ -406,181 +406,170 @@ var formPage=function()
             alert("יש לענות על כל השאלות");
             return;
         }
-        var result={user:login.correntUser[1],answers:ans};
+        var name = login.correntUser[0].firstName +" "+ login.correntUser[0].lastName;
+        var child = login.correntUser[0].childName; 
+
+        var result={user:login.correntUser[1],answers:ans,sendBy:name,childName:child,date:getDateForm()};
         firebase.database().ref('clubhouse/'+login.correntClub[0]+'/forms/'+formKey+'/result').push(result);
         loadAllForms()
     }
 
-    var test=function()
+//================================================================================================
+
+    var showFormsByPermission = function()
     {
-        firebase.database().ref('clubhouse/-Kn-BZInu3pPlaW11V7v/forms/-Kn6CV3USW-N-KeL1up2').once("value")
-        .then(function(data)
-        {
-            var form=data.val();
-            var user="DIgNUeLsWndpOtrvK49MUbS3rgg2";
-            showForm(form,user);
-        });
+        $('.Nav').collapse('hide');
+        var clubhouse = login.correntUser[0].clubhouseKey;
+        var myType = login.correntUser[0].userType;
+
+        if(myType == User.GUIDE)
+            loadClubForms(clubhouse);
+        else 
+            loadClubList();
     }
 
-    var showFormByClubs = function()
+//================================================================================================
+
+    var loadClubList =  function()
     {
         var clubhouses = login.correntUser[0].clubhouseKey;
         var myType = login.correntUser[0].userType;
-        var users;
-        var clubs;
-        var clubsKeys;
-        firebase.database().ref('users/').once("value")
-        .then(function(data)
-        {
-            users=data.val();
-        });
-        if(myType == User.GUIDE)
-        {
-            //load next page forms//
-        }
-        $('.Nav').collapse('hide');
+        var str;
+
         $("#body").html("<h2 id='allTitles'>בחר מועדונית - הצגת טפסים</h2></p>")
         firebase.database().ref('clubhouse/').once("value")
         .then(function(data)
         {
             clubs=data.val();
-            clubsKeys=Object.keys(clubs);
-            if(login.correntUser[0].userType<4)
+            keys=Object.keys(clubs);
+            
+            for(var i=0;i<keys.length;i++)
             {
-                 $("#body").html("");
-                    var forms=clubs[login.correntUser[0].clubhouseKey].forms;
-                    var k=0,t=0;//k is the number of form ,t is the place in forms
-                    for(fKey in forms)
-                    {
-                        if(forms[fKey].result!=undefined)
-                        {
-                            var rKeys=Object.keys(forms[fKey].result);//all the keys of the filed form
-                            for(var j=0;j<rKeys.length;j++)
-                            { 
-                                var user=forms[fKey].result[rKeys[j]].user;
-                                if(users[user]!=undefined && (login.correntUser[0].userType == forms[fKey].permission || forms[fKey].permission == ALL_STUFF))
-                                {
-                                    var indexUser=indexOfobj(users,user);
-                                    var str=   '<div class="row massage" id="Form_'+k+'_'+t+'_'+indexUser+'">'+   
-                                                    '<span class="glyphicon glyphicon-trash col-xs-2 trash"></span>'+
-                                                    '<h5 class="topic  col-xs-5">'+' מאת :'+users[user].firstName+' '+users[user].lastName+'</h5>'+
-                                                    '<h5 class="topic  col-xs-3">'+forms[fKey].subject+'</h5>'+
-                                                    '<span class="glyphicon glyphicon-list-alt col-xs-1 envelopeR" id="enve"></span>'+
-                                                    '<div class="col-xs-1"></div>'+
-                                                '</div>';
-                                    $("#body").append(str);
-                                    $("#Form_"+k+"_"+t+"_"+indexUser).click(function()
-                                    {
-                                        var id=this.id.split("_");//k=id[1],t=id[2],indexUser=id[3] 
-                                        var formsKeys=Object.keys(forms);
-                                        var usersKeys=Object.keys(users);
-                                        showForm(forms[formsKeys[id[2]]],usersKeys[id[3]]);
-                                        
-                                    });
-                                    k++;
-                                }
-                                else
-                                {
-                                    //need to delete the form form databse
-                                }
-                            }
-                        }
-                        t++;
-                    }
+                if(myType == User.SOCIAL)
+                { 
+                    for(var j=0;j<clubhouses.length;j++) 
+                        if(clubhouses[j] == keys[i])
+                            drawClubButton(i,clubs[keys[i]].name,keys[i]);
+                }
+                else
+                    drawClubButton(i,clubs[keys[i]].name,keys[i]);
             }
-            else
-            {
-                    for(var i=0;i<clubsKeys.length;i++)
-                    {
-                        var tempId ="clubForm_"+i;
-                        str='<a class="btn btn-sq-lg clubSquare" id="'+tempId+'">'+
-                        '<i class="fa fa-home fa-2x"></i><br/>'+clubs[clubsKeys[i]].name+'</a>';
-                        if(myType == User.SOCIAL)
-                        {
-                            for(var j=0;j<clubhouses.length;j++) 
-                                if(clubhouses[j]==clubsKeys[i])
-                                    $("#body").append(str);
-                        }
-                        else
-                            $("#body").append(str);
-                        mainPage.paintButton(i,tempId);
-                        
-                        $("#clubForm_"+i).click(function()
-                        {
-                            $("#body").html("");
-                            var id=this.id;
-                            id=id.split("_")[1];//take index from div id 
-                            var forms=clubs[clubsKeys[id]].forms;
-                            var k=0,t=0;//k is the number of form ,t is the place in forms
-                            for(fKey in forms)
-                            {
-                                if(forms[fKey].result!=undefined)
-                                {
-                                    var rKeys=Object.keys(forms[fKey].result);//all the keys of the filed form
-                                    for(var j=0;j<rKeys.length;j++)
-                                    { 
-                                        var user=forms[fKey].result[rKeys[j]].user;
-                                        if(users[user]!=undefined && (login.correntUser[0].userType == forms[fKey].permission || forms[fKey].permission == ALL_STUFF))
-                                        {
-                                            var indexUser=indexOfobj(users,user);
-                                            var str=   '<div class="row massage" id="Form_'+k+'_'+t+'_'+indexUser+'">'+   
-                                                            '<span class="glyphicon glyphicon-trash col-xs-2 trash"></span>'+
-                                                            '<h5 class="topic  col-xs-5">'+' מאת :'+users[user].firstName+' '+users[user].lastName+'</h5>'+
-                                                            '<h5 class="topic  col-xs-3">'+forms[fKey].subject+'</h5>'+
-                                                            '<span class="glyphicon glyphicon-list-alt col-xs-1 envelopeR" id="enve"></span>'+
-                                                            '<div class="col-xs-1"></div>'+
-                                                        '</div>';
-                                            $("#body").append(str);
-                                            $("#Form_"+k+"_"+t+"_"+indexUser).click(function()
-                                            {
-                                                var id=this.id.split("_");//k=id[1],t=id[2],indexUser=id[3] 
-                                                var formsKeys=Object.keys(forms);
-                                                var usersKeys=Object.keys(users);
-                                                showForm(forms[formsKeys[id[2]]],usersKeys[id[3]]);
-                                                
-                                            });
-                                            k++;
-                                        }
-                                        else
-                                        {
-                                            //need to delete the form form databse
-                                        }
-                                    }
-                                }
-                                t++;
-                            }
-                        });    
-                    } 
-            }
-            });
+
+        });
     }
 
-    var indexOfobj=function(objs,obj)
+//================================================================================================
+
+    var drawClubButton = function(i,name,club)
     {
-        var keys=Object.keys(objs);
-        for(var i=0;i<keys.length;i++)
-        {   
-             if(obj===keys[i])
-                return i;
-        }
-        return -1;
-    } 
-       
-    var formLis=function(fs)
+        var tempId ="clubForm_"+i;
+        var str='<a class="btn btn-sq-lg clubSquare" id="'+tempId+'">'+
+        '<i class="fa fa-home fa-2x"></i><br/>'+name+'</a>';
+        $("#body").append(str);
+        mainPage.paintButton(i,tempId);
+        $("#clubForm_"+i).click(function()
+        { 
+            setTimeout(function(){loadClubForms(club);},250);
+        });
+    }
+
+//================================================================================================
+
+    var loadClubForms = function(clubID)
     {
-        for(var i=0;i<fs.length;i++)
+        firebase.database().ref('clubhouse/'+clubID+'/forms').once("value")
+        .then(function(data)
         {
-            // p(i);
-            $("#Form_"+i).click(function()
+            var forms=data.val();
+            if(forms==null)
             {
-                    p(fs[i].form.subject);
-                    p(fs[i].user);
-                    p("------------");
-                showForm(fs[i].form,fs[i].user);
-            });
-        }
+                $("#body").html("<h1 id='allTitles' dir='rtl'>כרגע אין טפסים במערכת...<h1>");
+                return;
+            }
+            $("#body").html("");
+
+            var keys=Object.keys(forms);
+            var i=0;
+            for(key in forms)
+            {
+                var tempId ="sendedForm_"+i;
+                var str='<a class="btn btn-sq-lg formRec" id="'+tempId+'">'+
+                '<i class="fa fa-clipboard fa-2x"></i><br/>'+forms[key].subject+'</a>';
+                $("#body").append(str);
+                mainPage.paintButton(i,tempId);
+              
+                $("#sendedForm_"+(i++)).click(function()
+                {
+                    var id=this.id;
+                    id=id.split("_")[1];
+                    showAnswers(clubID,keys[id]);
+                });
+            }
+            $("#body").append('</br></br><a id="delCreatedForm_btn" class="btn btn-danger btn-lg btn-block">מחק</a>');
+        });
     }
 
+//================================================================================================
+
+    var showAnswers = function(clubID,key)
+    {
+        firebase.database().ref('clubhouse/'+clubID+'/forms/'+key).once("value")
+        .then(function(data)
+        {
+           var subject = data.val().subject;
+           $("#body").html("<h1 id='allTitles' dir='rtl'>"+subject+"<h1>");
+
+           var results = data.val().result;
+           if(results == null)
+           {
+                $("#body").html("<h1 id='allTitles' dir='rtl'>לא נשלחו טפסים...<h1>");
+                $("#body").append('<a id="back_btn" class="btn btn-warning btn-lg btn-block">חזור</a>');
+                $("#back_btn").click(function() {  setTimeout(function(){loadClubForms(clubID);},250);});
+                return;
+           }
+           var keys = Object.keys(results);
+           for(var i=0;i<keys.length;i++)
+           {
+                var str = '<div class="row massage">'+   
+                            '<span class="glyphicon glyphicon-trash col-xs-2 trash" id = "delTopic_'+i+'"></span>'+
+                            '<h5 id="Form_'+i+'" class="topic  col-xs-8">'+' מאת :'+results[keys[i]].sendBy+'</h5>'+
+                            '<span class="glyphicon glyphicon-list-alt col-xs-1 envelopeR" id="enve"></span>'+
+                            '<div class="col-xs-1"></div>'+
+                        '</div>';
+                $("#formBody").append(str);
+                $("#body").append('<a id="back_btn" class="btn btn-warning btn-lg btn-block">חזור</a>');
+                $("#back_btn").click(function() {  setTimeout(function(){loadClubForms(clubID);},250);});
+
+                $("#delTopic_"+i).click(function()
+                {
+                    var id=this.id;
+                    id=id.split("_")[1];
+                    deleteForm(clubID,key,keys[id]);
+                });
+
+                $("#Form_"+i).click(function()
+                {
+                    var id=this.id;
+                    id=id.split("_")[1];
+                    showForm(data.val(),results[keys[id]].user,id);
+                    $("#close_btn").click(function() { showAnswers(clubID,key)});
+                    $("#print_btn").click(function(){window.print();});
+                    $("#del_btn").click(function(){deleteForm(clubID,key,keys[id]);});
+                });  
+            }
+        });
+    }
+
+//================================================================================================
+
+    var deleteForm= function(clubID,key,id)
+    {
+        firebase.database().ref("clubhouse/" + clubID + "/forms/"+key+"/result/" + id).remove();
+        showAnswers(clubID,key);
+    }
+
+//================================================================================================
+       
     var checkPremission = function()
     {
 		var toGuides = document.getElementById("selGuides").checked; 
@@ -595,11 +584,23 @@ var formPage=function()
         return ALL_STUFF;
     }
 
+//================================================================================================
+
+    var getDateForm=function()
+    {
+        var date=new Date();
+        var d=date.getDate();
+        var m=date.getMonth()+1;
+        var y=date.getFullYear();
+        return d+"."+m+"."+y;
+    }
+
+//================================================================================================
+
     return {
         create:create,
         showForm:showForm,
         loadAllForms:loadAllForms,
-        showFormByClubs:showFormByClubs,
-        test:test
+        showFormsByPermission:showFormsByPermission,
     }
 }();
