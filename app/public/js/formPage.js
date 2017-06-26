@@ -569,15 +569,15 @@ var formPage=function()
            }
            var keys = Object.keys(results);
            for(var i=0;i<keys.length;i++)
-           {
+           {    console.log(i);
                 var str = '<div class="row massage">'+   
                             '<span class="glyphicon glyphicon-trash col-xs-2 trash" id = "delTopic_'+i+'"></span>'+
                             '<h5 id="Form_'+i+'" class="topic  col-xs-8">'+' מאת :'+results[keys[i]].sendBy+'</h5>'+
                             '<span class="glyphicon glyphicon-list-alt col-xs-1 envelopeR" id="enve"></span>'+
                             '<div class="col-xs-1"></div>'+
-                        '</div>';
-                $("#formBody").append(str);
-                $("#body").append('<a id="back_btn" class="btn btn-warning btn-lg btn-block">חזור</a>');
+                        '</div>'; 
+                $("#body").append(str);
+               
                 $("#back_btn").click(function() {  setTimeout(function(){loadClubForms(clubID);},250);});
 
                 $("#delTopic_"+i).click(function()
@@ -597,6 +597,7 @@ var formPage=function()
                     $("#del_btn").click(function(){deleteForm(clubID,key,keys[id]);});
                 });  
             }
+             $("#body").append('<a id="back_btn" class="btn btn-warning btn-lg btn-block">חזור</a>');
         });
     }
 
