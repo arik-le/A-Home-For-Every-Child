@@ -32,8 +32,8 @@ We're trying to use the best tools and practices in order to produce a quality e
 | Current Release | [![Current Version](https://img.shields.io/github/release/arik-le/A-Home-For-Every-Child.svg?style=flat)](https://github.com/arik-le/A-Home-For-Every-Child/releases) |
 | Issues | [![GitHub issues](https://img.shields.io/github/issues/arik-le/A-Home-For-Every-Child.svg?style=flat)](https://github.com/arik-le/A-Home-For-Every-Child/issues) |
 | Project Management Board| [here](https://github.com/arik-le/A-Home-For-Every-Child/projects/1) |
-| Contributors | [![GitHub contributors](https://img.shields.io/github/contributors/jce-il/project-template.svg)](https://github.com/jce-il/project-template/graphs/contributors)|
-| Deployment | [![Heroku](https://bilyisr-242e7.firebaseapp.com/?app=my-app&style=flat&svg=1&root=index.html)] |
+| Contributors | [![GitHub contributors](https://img.shields.io/github/contributors/jce-il/project-template.svg)](https://github.com/arik-le/A-Home-For-Every-Child/graphs/contributors)|
+| Deployment | [![Firebase](https://img.shields.io/github/contributors/jce-il/project-template.svg)](https://bilyisr-242e7.firebaseapp.com) |
 | Security | [![Known Vulnerabilities](https://snyk.io/test/github/jce-il/project-template/badge.svg)](https://snyk.io/test/github/jce-il/project-template) |
 | Documnetation | [![Inline docs](http://inch-ci.org/github/jce-il/project-template.svg?branch=master)](http://inch-ci.org/github/jce-il/project-template) |
 | Project Course Status | ... |
