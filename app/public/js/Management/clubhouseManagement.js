@@ -321,7 +321,6 @@ var clubhouseManagement = (function()
 					
 					if(userObj.userType == 3)
 						deleteClubRef(userObj.userKey,clubKey);
-					
 					else
 					{
 						firebase.database().ref("users/"+userObj.userKey).remove(); 
@@ -333,7 +332,7 @@ var clubhouseManagement = (function()
 	
 	}
 
-
+	// called only if user type is social worker
 	var deleteClubRef = function(keyUser,clubKey)
 	{
 		var clubsRef = firebase.database().ref("users/"+keyUser+'/clubhouseKey');

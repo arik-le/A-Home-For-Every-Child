@@ -96,6 +96,8 @@ var mainPage=function()
         .then(function(data)
         {
             var messages = data.val();
+            if(data.val() == null || data.val().userType == -1)
+                return;
             if (messages !== null)
             {
                 var count=0;
@@ -129,9 +131,11 @@ var mainPage=function()
 
     var openMainPage=function(userUid) // user is a copy of the original user 
     {
-        firebase.database().ref('users/'+userUid).once("value")
+        firebase.database().ref("users/"+userUid).once("value")
         .then(function(user)
         {
+            if(user.val().userType == -1)
+                return;
             correntUser[0]=user.val();
             var header = topHeader.inputSection;
             var addNavbar = createNavbar();
@@ -166,8 +170,17 @@ var mainPage=function()
 
     var loadAllClubs = function()
     {
-        var clubhouses = login.correntUser[0].clubhouseKey;
         var myType = login.correntUser[0].userType;
+        var clubhouses = login.correntUser[0].clubhouseKey;
+        if(myType == User.SOCIAL)
+        {   
+            firebase.database().ref("users/"+login.correntUser[1]+"/clubhouseKey").once("value")
+            .then(function(data)
+            {
+                clubhouses = data.val();
+            });
+
+        }
 
         firebase.database().ref("clubhouse/").once("value")
         .then(function(data)
@@ -231,10 +244,14 @@ var mainPage=function()
         var myType = login.correntUser[0].userType;
         
         if(myType == User.ADMIN || myType == User.SOCIAL)
+        {
             curClubKey=clubKey;
+        }
         else
+        {
             curClubKey = login.correntUser[0].clubhouseKey;
-
+        }
+        
         $("#body").append('<div id="mesBody"></div>');
 
         firebase.database().ref("clubhouse/" + curClubKey + "/generalMessages").once("value")
@@ -248,7 +265,8 @@ var mainPage=function()
             else
             {
                 var keys = Object.keys(messages);
-                $("#mesBody").append("<div id ='limitMes'> <h1 id='allTitles2' dir='rtl'>"+keys.length+"/"+sendMessagePage.CAPACITY_LIMIT+ " הודעות<h1></div>");
+                if(myType > User.TEACHER)
+                    $("#mesBody").append("<div id ='limitMes'> <h1 id='allTitles2' dir='rtl'>"+keys.length+"/"+sendMessagePage.CAPACITY_LIMIT+ " הודעות<h1></div>");
                 for(var i=keys.length-1;i>=0;i--)
                 {    
                     if(myType > 1 || myType == messages[keys[i]].permision || messages[keys[i]].permision == EVERYONE)
