@@ -477,6 +477,7 @@ var formPage=function()
 
     var loadClubForms = function(clubID)
     {
+        var press=false;
         firebase.database().ref('clubhouse/'+clubID+'/forms').once("value")
         .then(function(data)
         {
@@ -489,6 +490,9 @@ var formPage=function()
             $("#body").html("");
 
             var keys=Object.keys(forms);
+            var selectForm=[];
+            for(key in keys)
+                selectForm.push(false);
             var i=0;
             for(key in forms)
             {
@@ -502,10 +506,46 @@ var formPage=function()
                 {
                     var id=this.id;
                     id=id.split("_")[1];
-                    showAnswers(clubID,keys[id]);
+                    if(press)
+                    {
+                        
+                        if(!selectForm[id])
+                            $("#sendedForm_"+id).css("background","lightgray");
+                        else
+                            $("#sendedForm_"+id).css("background","#ECE9E6");
+                        selectForm[id]=!selectForm[id];
+                    }
+                    else  
+                        showAnswers(clubID,keys[id]);
                 });
             }
             $("#body").append('</br></br><a id="delCreatedForm_btn" class="btn btn-danger btn-lg btn-block">מחק</a>');
+            $("#delCreatedForm_btn").click(function()
+            {
+                press=!press;
+                if(press)
+                {
+                    $("#delCreatedForm_btn").html("בטל");
+                    $("#body").append('<div id="delsel_btn"></br></br><a id="delselectForm_btn" class="btn btn-danger btn-lg btn-block">מחק</a></div>');
+                    $("#delsel_btn").click(function()
+                    {
+                        
+                        for(var i=0;i<selectForm.length;i++)
+                            if(selectForm[i])
+                                    firebase.database().ref('clubhouse/'+clubID+'/forms').child(keys[i]).remove();
+                        loadClubForms(clubID);
+                        
+                    });
+             }
+                else
+                {
+                     $("#delCreatedForm_btn").html("מחיקה");
+                     $("#delsel_btn").remove();
+                     for(var i=0;i<selectForm.length;i++)
+                        $("#sendedForm_"+i).css("background","#ECE9E6");
+                }
+             
+            });
         });
     }
 
