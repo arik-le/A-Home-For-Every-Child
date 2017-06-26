@@ -170,8 +170,17 @@ var mainPage=function()
 
     var loadAllClubs = function()
     {
-        var clubhouses = login.correntUser[0].clubhouseKey;
         var myType = login.correntUser[0].userType;
+        var clubhouses = login.correntUser[0].clubhouseKey;
+        if(myType == User.SOCIAL)
+        {   
+            firebase.database().ref("users/"+login.correntUser[1]+"/clubhouseKey").once("value")
+            .then(function(data)
+            {
+                clubhouses = data.val();
+            });
+
+        }
 
         firebase.database().ref("clubhouse/").once("value")
         .then(function(data)
