@@ -172,7 +172,6 @@ var mainPage=function()
     {
         var myType = login.correntUser[0].userType;
         var clubhouses = login.correntUser[0].clubhouseKey;
-         $("#body").html("");
          
         if(myType == User.SOCIAL)
         {   
@@ -180,6 +179,7 @@ var mainPage=function()
             .then(function(data)
             {
                 clubhouses = data.val();
+                $("#body").html("");
                 for (var i=0;i<clubhouses.length;i++)
                     addSWToHomePage(i,clubhouses[i]);     
             });
@@ -190,6 +190,7 @@ var mainPage=function()
             firebase.database().ref("clubhouse/").once("value")
             .then(function(data)
             {
+                $("#body").html("");
                 $("#body").css("text-align", "center");
                 $("#body").append("<h2 id='allTitles'>בחר מועדונית</h2></p>")
                 var clubs = data.val();
@@ -200,7 +201,6 @@ var mainPage=function()
             });
         }
     }
-
 
 /***********************************************************************************/
 
