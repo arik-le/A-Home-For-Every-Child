@@ -487,7 +487,7 @@ var formPage=function()
                 $("#body").html("<h1 id='allTitles' dir='rtl'>כרגע אין טפסים במערכת...<h1>");
                 return;
             }
-            $("#body").html("");
+            $("#body").html("<div id = 'formsBody'></div>");
 
             var keys=Object.keys(forms);
             var selectForm=[];
@@ -501,7 +501,7 @@ var formPage=function()
                     var tempId ="sendedForm_"+i;
                     var str='<a class="btn btn-sq-lg formRec" id="'+tempId+'">'+
                     '<i class="fa fa-clipboard fa-2x"></i><br/>'+forms[key].subject+'</a>';
-                    $("#body").append(str);
+                    $("#formsBody").append(str);
                     mainPage.paintButton(i,tempId);
                 
                     $("#sendedForm_"+(i++)).click(function()
@@ -510,7 +510,6 @@ var formPage=function()
                         id=id.split("_")[1];
                         if(press)
                         {
-                            
                             if(!selectForm[id])
                                 $("#sendedForm_"+id).css("background","lightgray");
                             else
@@ -531,7 +530,7 @@ var formPage=function()
                 if(press)
                 {
                     $("#delCreatedForm_btn").html("בטל");
-                    $("#body").append('<div id="delsel_btn"></br></br><a id="delselectForm_btn" class="btn btn-danger btn-lg btn-block">מחק</a></div>');
+                    $("#body").append('<div id="delsel_btn"></br><a id="delselectForm_btn" class="btn btn-danger btn-lg btn-block">מחק</a></div>');
                     $("#delsel_btn").click(function()
                     {
                         
