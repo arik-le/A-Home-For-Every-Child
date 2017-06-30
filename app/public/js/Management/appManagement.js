@@ -18,9 +18,9 @@ var appManagement = function ()
 
      var initPage=function()
      {
-            $("#body").html(headLine.inputSection);
-            $(".usersMng").click (usersManagement.initPage);
-            $(".clubHouseMng").click (clubhouseManagement.initPage);
+        $("#body").html(headLine.inputSection);
+        $(".usersMng").click (usersManagement.initPage);
+        $(".clubHouseMng").click (clubhouseManagement.initPage);
      }
 //-------------------------------------------------------------------------------------------------
 

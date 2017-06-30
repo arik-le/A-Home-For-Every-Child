@@ -421,7 +421,6 @@ var usersManagement = function()
 
 	var checkAndPush = function(username,firstName,lastName,type,clubKey,childName)
 	{	
-
 		var password=document.getElementById("password").value;
 		var auth = firebase.auth();
 		var promise = auth.createUserWithEmailAndPassword(username,password);
@@ -457,9 +456,6 @@ var usersManagement = function()
 			alert('אנא הכנס כתובת דוא"ל חוקית');
 		});
 	}
-	
-	
-	
 
 	var addClubSelectValue = function()
 	{
@@ -471,6 +467,7 @@ var usersManagement = function()
 		AddSectionClubName = clubhousesInfo[index].name;
 		return AddSectionClubName;
 	}
+
 	// sw multiselect listener
 	var SwClubListener = function(e)
 	{	
@@ -536,7 +533,6 @@ var usersManagement = function()
 					
 				});	
 			}
-		
 		});
     }
 
@@ -887,14 +883,13 @@ var usersManagement = function()
 				var uType=users[k].userType;
 				if(uType != -1)
 				{
-					if( (uType == User.ADMIN) && (users[k].userKey != login.correntUser[1]) )
+					if( (uType == User.ADMIN) && (users[k].userKey != login.correntUser[1]) && users[k].userKey != User.SUPER_ADMIN )
 					{
 						var userRef= firebase.database().ref("users/"+users[k].userKey);
 						userRef.ref.once("value").then(function(data)
 						{
 							var user=data.val();
 							$('#usersInCH').append('<option value="'+user.userKey+'">'+user.firstName+' '+user.lastName+'</option>');
-						
 						});	
 					}
 				}

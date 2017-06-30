@@ -38,6 +38,12 @@ var clubhouseManagement = (function()
 		if(clubToEdit.address != address)
 			obj.address = address;
 
+		if(!checkString(name))
+		{
+			alert("שם לא תקין - קיים תו של רווח מספר פעמים");
+			retrun;
+		}
+
 		var ref = firebase.database().ref("clubhouse");
 		ref.once("value")
 		.then(function(data)		// 		when value recieved
@@ -94,7 +100,7 @@ var clubhouseManagement = (function()
 							"<div class='col-sm-10'>"+
 								"<div class='input-group'>"+
 									"<span class='input-group-addon'><i class='fa fa-home fa' aria-hidden='true'></i></span>"+
-									"<input type='text' class='form-control' name='clubhouseName' id='clubhouseNameID'  placeholder='הכנס שם מועדונית'/>"+
+									"<input type='text' class='form-control' name='clubhouseName' id='clubhouseNameID' maxlength='15' dir='rtl' placeholder='הכנס שם מועדונית'/>"+
 								"</div>"+
 							"</div>"+
 						"</div>"+
@@ -104,7 +110,7 @@ var clubhouseManagement = (function()
 							"<div class='col-sm-10'>"+
 								"<div class='input-group'>"+
 									"<span class='input-group-addon'><i class='fa fa-map-marker fa' aria-hidden='true'></i></span>"+
-									"<input type='text' class='form-control' name='clubhouseAddress' id='clubhouseAddrID'  placeholder='הכנס כתובת מועדונית'/>"+
+									"<input type='text' class='form-control' name='clubhouseAddress' id='clubhouseAddrID' dir='rtl' placeholder='הכנס כתובת מועדונית'/>"+
 								"</div>"+
 							"</div>"+
 						"</div>"+
@@ -242,7 +248,6 @@ var clubhouseManagement = (function()
 
 	var CHsellection = function(e)
 	{
-
 		edit_clubname = e.target.innerText;
 		edit_clubIndex = getClubKeyIndex(e.target.innerText.trim());
 		firebase.database().ref("clubhouse/").once("value")
@@ -329,35 +334,33 @@ var clubhouseManagement = (function()
 				});
 			}
 		});
-	
 	}
 
 	// called only if user type is social worker
 	var deleteClubRef = function(keyUser,clubKey)
 	{
 		var clubsRef = firebase.database().ref("users/"+keyUser+'/clubhouseKey');
-			clubsRef.once("value").then(function(data)
-			{
-				if(data.val() == null)
-					return;	
-				var clubsData = data.val();			
-				var cKeys = Object.keys(clubsData);
-				if(cKeys.length > 1)
-				{  
-					for(var i=0;i<cKeys.length;i++)
-					{
-						var clKey = clubsData[cKeys[i]];
-						var k = cKeys[i];
-						if(clKey == clubKey)
-							firebase.database().ref("users/"+keyUser+'/clubhouseKey').child(k).remove();
-					}
+		clubsRef.once("value").then(function(data)
+		{
+			if(data.val() == null)
+				return;	
+			var clubsData = data.val();			
+			var cKeys = Object.keys(clubsData);
+			if(cKeys.length > 1)
+			{  
+				for(var i=0;i<cKeys.length;i++)
+				{
+					var clKey = clubsData[cKeys[i]];
+					var k = cKeys[i];
+					if(clKey == clubKey)
+						firebase.database().ref("users/"+keyUser+'/clubhouseKey').child(k).remove();
 				}
-				else
-					firebase.database().ref("users/" + keyUser).update({userType:-1}); 
+			}
+			else
+				firebase.database().ref("users/" + keyUser).update({userType:-1}); 
 
-				removeCH(clubKey);
-
-			});
+			removeCH(clubKey);
+		});
 	}
 
 	// loads only strings of names for now.
@@ -416,6 +419,21 @@ var clubhouseManagement = (function()
 		return{ clubhousesInfo:clubhousesInfo} ;  
 	}
 
+	var checkString = function(str)	//check if there is " " twice
+	{
+		var count = 0;
+		for(var i=0;i<str.length;i++)
+		{
+			if(str.charAt(i) == " ")
+				count++;
+			else
+				count = 0;
+
+			if(str.charAt(i) == " " && count == 2)
+				return false;
+		}
+		return true;
+	}
 
 	 //-------------------------------------------------------------------------------------------------
     // Initial page for edit clubHouse
@@ -427,11 +445,11 @@ var clubhouseManagement = (function()
 		edit_clubname=undefined;
 		loadClubhousesData();
 		$('.Nav').collapse('hide');
-		
-      
 	 }
 	 //-------------------------------------------------------------------------------------------------
 	
 
-    return{getClubhousesInfo:getClubhousesInfo  , addClubhouse:addClubhouse , editClubhouse:editClubhouse};
+    return{getClubhousesInfo:getClubhousesInfo,
+		 	addClubhouse:addClubhouse,
+			editClubhouse:editClubhouse};
 }());

@@ -5,6 +5,7 @@ var User = function(username,password)
 	const GUSER = 2;
 	const SWUSER = 3;
 	const ADMIN = 4;
+	const SUPER_ADMIN = "YWe6sZG9xfgI8xnhpM93fCEgXvu2";
 
 	var create = function(username,firstName,lastName,userType,clubhouseKey,userKey,childName)
 	{
@@ -28,6 +29,6 @@ var User = function(username,password)
 			TEACHER:TUSER,
 			GUIDE:GUSER,
 			SOCIAL:SWUSER,
-			ADMIN:ADMIN }
-		
+			ADMIN:ADMIN,
+			SUPER_ADMIN }
 }();
