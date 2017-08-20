@@ -297,6 +297,7 @@ var formPage=function()
                     $("#sendForm_btn").click(function()
                     {
                         sendForm(data.be().questions,data.key);
+                        $("#body").css("text-align", "center");
                     })
                 });
             }
@@ -494,9 +495,12 @@ var formPage=function()
             for(key in keys)
                 selectForm.push(false);
             var i=0;
+            var countNoPermission=0;
             for(key in forms)
             {   
-                if(forms[key].permission == login.correntUser[0].userType || forms[key].permission ==5 || login.correntUser[0].userType==User.ADMIN )
+                if(forms[key].permission !== login.correntUser[0].userType )
+                    countNoPermission++;
+                if(forms[key].permission == login.correntUser[0].userType || forms[key].permission == 5 || login.correntUser[0].userType==User.ADMIN )
                 {   
                     var tempId ="sendedForm_"+i;
                     var str='<a class="btn btn-sq-lg formRec" id="'+tempId+'">'+
@@ -523,33 +527,37 @@ var formPage=function()
                 else
                     i+=1;
             }
-            $("#body").append('</br></br><a id="delCreatedForm_btn" class="btn btn-danger btn-lg btn-block">מחק</a>');
-            $("#delCreatedForm_btn").click(function()
+            if(countNoPermission !== keys.length || forms[key].permission == login.correntUser[0].userType || forms[key].permission == 5 || login.correntUser[0].userType==User.ADMIN )
             {
-                press=!press;
-                if(press)
+                $("#body").append('</br></br><a id="delCreatedForm_btn" class="btn btn-danger btn-lg btn-block">מחק</a>');
+                $("#delCreatedForm_btn").click(function()
                 {
-                    $("#delCreatedForm_btn").html("בטל");
-                    $("#body").append('<div id="delsel_btn"></br><a id="delselectForm_btn" class="btn btn-danger btn-lg btn-block">מחק</a></div>');
-                    $("#delsel_btn").click(function()
+                    press=!press;
+                    if(press)
                     {
-                        
+                        $("#delCreatedForm_btn").html("בטל");
+                        $("#body").append('<div id="delsel_btn"></br><a id="delselectForm_btn" class="btn btn-danger btn-lg btn-block">מחק</a></div>');
+                        $("#delsel_btn").click(function()
+                        {
+                            
+                            for(var i=0;i<selectForm.length;i++)
+                                if(selectForm[i])
+                                        firebase.database().ref('clubhouse/'+clubID+'/forms').child(keys[i]).remove();
+                            loadClubForms(clubID);
+                            
+                        });
+                    }
+                    else
+                    {
+                        $("#delCreatedForm_btn").html("מחיקה");
+                        $("#delsel_btn").remove();
                         for(var i=0;i<selectForm.length;i++)
-                            if(selectForm[i])
-                                    firebase.database().ref('clubhouse/'+clubID+'/forms').child(keys[i]).remove();
-                        loadClubForms(clubID);
-                        
-                    });
-                }
-                else
-                {
-                     $("#delCreatedForm_btn").html("מחיקה");
-                     $("#delsel_btn").remove();
-                     for(var i=0;i<selectForm.length;i++)
-                        $("#sendedForm_"+i).css("background","#ECE9E6");
-                }
-             
-            });
+                            $("#sendedForm_"+i).css("background","#ECE9E6");
+                    }
+                });
+            }
+            else                
+                $("#body").html("<h1 id='allTitles' dir='rtl'>כרגע אין טפסים במערכת...<h1>");
         });
     }
 
