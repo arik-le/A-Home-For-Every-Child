@@ -134,10 +134,13 @@ var sendMessagePage = function()
 		}
 		else
 		{
-			select ='<option value="nan" disabled selected>סוג משתמש</option>'+
-				'<option class="ptUser" value="0">הורה</option>'+
-				'<option class="TtUser" value="1">מורה</option>'+
-				'<option class="GuUser" value="2">רכז/מדריך</option>'+
+			select ='<option value="nan" disabled selected>סוג משתמש</option>';
+			if(myType != User.TEACHER && myType != User.PARENT)
+				{
+				select +='<option class="ptUser" value="0">הורה</option>'+
+				'<option class="TtUser" value="1">מורה</option>';
+				}
+				select +='<option class="GuUser" value="2">רכז/מדריך</option>'+
 				'<option class="SWUser" value="3">ראש צוות/עו"ס</option>'+
 				'<option class="admin" value="4">מנהל</option>'
 
@@ -159,10 +162,11 @@ var sendMessagePage = function()
 			club = login.correntUser[0].clubhouseKey;
 		
 		var select;
-		if(club!= "allAdmin")
+		if(club != "allAdmin")
 		{
+		
 			select ='<option value="nan" disabled selected>סוג משתמש</option>'+
-						'<option class="ptUser" value="0">הורה</option>'+
+						'<option class="ptUser" value="0">הורה</option>';
 						'<option class="TtUser" value="1">מורה</option>'+
 						'<option class="GuUser" value="2">רכז/מדריך</option>'+
 						'<option class="SWUser" value="3">ראש צוות/עו"ס</option>';
