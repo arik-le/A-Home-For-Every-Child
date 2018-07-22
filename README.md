@@ -41,9 +41,7 @@ We're trying to use the best tools and practices in order to produce a quality e
 ## Please visit our [live application](https://bilyisr-242e7.firebaseapp.com/)
 Alright, the app is ready to use
  #### For Login to the app use this details:
-     
-     * Login Name: guest
-     * Password: 1
+ Contact one of the developers for access to the App
 
 
 
